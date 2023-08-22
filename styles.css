@@ -1,0 +1,101 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: "Kumbh Sans", sans-serif;
+  }
+  .sidebar {
+    padding: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 408px;
+    height: 100%;
+    /* background-color: pink; */
+    z-index: 1;
+  }
+  .menu {
+    float: top;
+    height: auto;
+    width: 100%;
+    box-shadow: 0px 0px 10px #0000006a;
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 0.85);
+    /* center vertically on page */
+    top: 1%;
+    left: 1%;
+    /* rounded corners */
+    border-radius: 5px;
+    padding-top: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  .legend {
+    float: top;
+    height: auto;
+    width: 408px;
+    box-shadow: 0px 0px 10px #0000006a;
+    /* z-index: 1; */
+    background-color: rgba(255, 255, 255, 0.85);
+    /* center vertically on page */
+    top: 1%;
+    left: 1%;
+    /* rounded corners */
+    border-radius: 5px;
+    padding-top: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .map {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .live-data {
+    position: fixed;
+    left: 408px;
+    top: 0px;
+    padding-top: 10px;
+    z-index: 1;
+    width: 300px;
+    /* overflow-x: visible; */
+    /* font-family: 'Kumbh Sans', sans-serif; */
+  }
+  /* create a class called live-data-text that matches h1 styling */
+  .live-data-text {
+    font-family: 'Kanit', monospace;
+    font-size: 2em;
+    font-weight: 400;
+    color: #000;
+    margin: 0;
+    padding: 0;
+    /* add a drop shadow */
+    /* text-shadow: 5px 5px 8px #ffffffb8; */
+    text-shadow: 0 1rem 3rem rgba(0,0,0,.3);
+    white-space: nowrap;
+  
+  }
+  
+  .live-data-graphic {
+    margin: 0;
+    padding: 0;
+  }
+  .popup-custom{
+    font-family: 'Inconsolata', Courier, monospace;
+    font-size: 1em;
+    font-weight: 300;
+    line-height: 1.3em;
+    color: rgb(72, 72, 72);
+    margin: 0px !important;
+  }
+  /* font-family: 'B612 Mono', monospace;
+  font-family: 'Fira Sans', sans-serif;
+  font-family: 'Inconsolata', monospace;
+  font-family: 'Kanit', sans-serif;
+  font-family: 'Kumbh Sans', sans-serif;
+  font-family: 'Major Mono Display', monospace;
+  font-family: 'Montserrat', sans-serif;
+  font-family: 'Ubuntu Mono', monospace; */

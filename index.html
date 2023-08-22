@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Trace Raster Data</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v3.0.0-beta.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v3.0.0-beta.1/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet" href="https://bootswatch.com/5/flatly/bootstrap.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <!-- bootswatch -->
+
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <div class="sidebar" style="overflow-y:scroll; max-height: 100%;">
+        <div class="card secondary mb-3 shadow-sm" style="max-width: 100%; opacity: 0.9">
+            <div class="card-header fw-bold">
+                <img src="./favicon.ico" style="height: 30px; right: 0px">
+                <div class="vr my-0 py-0 mx-2"></div>
+                Cowpea Demo
+            </div>
+            <div class="card-body">
+                <select class="form-select" id="data-select">
+                    <option value="max">Max</option>
+                    <option value="min">Min</option>
+                    <option value="average">Average</option>
+
+                </select>
+            </div>
+        </div>
+    </div>
+        </fieldset>
+        </form>
+        </form>
+        <script>
+
+            const selectElement = document.getElementById("data-select");
+            // add an event listener to the dropdown and assign the value to a variable name selectedColor
+            // let selectedColor = "inferno";
+            // console.log(selectedColor)
+            // selectElement.addEventListener("change", function() {
+            //     selectedColor = this.value;
+            //     console.log(selectedColor);
+            //     map.setPaintProperty("cog-layer", 'raster-color', [ "interpolate", ["linear"], ["raster-value"], -2000, palettes[selectedColor][0], 32658, palettes[selectedColor][1], 49972, palettes[selectedColor][2], 67286, palettes[selectedColor][3], 84600, palettes[selectedColor][4] ]);
+
+            // });
+
+            mapboxgl.accessToken = 'pk.eyJ1IjoicGxvdGxpbmUiLCJhIjoiY2xmOGo1NW4wMGVtNzNya2UyNnllZGcyciJ9.gUFn8Mj5HQbagkpQWaDqaw';
+            const map = new mapboxgl.Map({
+                container: 'map', 
+                style: 'mapbox://styles/plotline/cll735ypl00ao01rdbh4m4a99', 
+                center: [-74.5, 40], 
+                zoom: 6, 
+                hash: true,
+            });
+
+
+            map.on('load', () => {
+                map.addSource("cog", {
+                    "type": "raster",
+                    "tiles": ["./temp/{z}/{x}/{y}.png"],
+                    "tileSize": 256,
+                    "scheme": "tms"
+                }
+                )
+                map.addLayer({
+                    id: 'cog-layer',
+                    'type': 'raster',
+                    'source': 'cog',
+                    'paint': {
+                        "raster-color": [
+                            "interpolate",
+                            ["linear"],
+                            ["raster-value"],
+                            -2000, palettes[selectedColor][0],
+                            32658, palettes[selectedColor][1],
+                            49972, palettes[selectedColor][2],
+                            67286, palettes[selectedColor][3],
+                            84600, palettes[selectedColor][4]
+                        ],
+                        "raster-color-mix": [84600, 0, 0, 0],
+                        "raster-color-range": [-1968, 84600]
+                    }
+                });
+            })
+
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>
+
+<!-- [ 256 * 256 * 256 * 0.1, 256 * 256 * 0.1, 256 * 0.1, -10000] -->

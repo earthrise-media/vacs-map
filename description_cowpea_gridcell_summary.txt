@@ -1,0 +1,31 @@
+Data description 
+
+cowpea_gridcell_summary.csv
+
+Kevin Karl and Jose Guarin
+August 9th 2023
+
+Column description
+
+Exp = experiment number based on gridcell ID. Each experiment is run 20 times corresponding to 20 years between 2040 to 2059 for each gridcell. We take the mean for the experiments run at each gridcell to represent the “2050s”
+
+Lat/lon = self explanatory. This model (the “SIMPLE” model) stipulates a point for each 0.5 x 0.5 degree gridcell. 
+
+baseline_yield = average yield for the reference baseline period (2000 to 2019) used to calculate the percentage change in estimated yield for the different climate change scenarios. In kg/hectare.
+
+The rest of the columns are combinations of the following two climate change factors:
+
+SSPs = Shared Socioeconomic Pathways. Here we are using SSP1-2.6 (low emissions scenario) and SSP3-7.0 (high emissions scenario).
+
+GCMs = the Global Circulation Models we are using are GFDL-ESM4 and IPSL-CM6A-LR.
+
+So, applying the combinations, we have:
+
+ssp126_gfdl (low emissions)
+ssp370_gfdl (high emissions)
+ssp126_ipsl (low emissions)
+ssp370_ipsl (high emissions)
+
+The appended “_av” text to the above strings refers to absolute values (i.e., yield, in kg/ha) and the  appended“ _pc” text to the above strings refers to percentage change in the yield from baseline_yields.
+
+The main result that we hope communicate through this analysis is the mean percentage change, for each gridcell, under the four climate change scenarios, for each crop. Again, each gridcell being represented by the mean of each particular time series (whether baseline reference period or 2050s).
