@@ -205,31 +205,29 @@ const colorScheme = {
   warm: ["#6e40aa", "#963db3", "#bf3caf", "#e4419d", "#fe4b83", "#ff5e63", "#ff7847", "#fb9633", "#e2b72f", "#c6d63c", "#aff05b"],
   cool: ["#6e40aa", "#6054c8", "#4c6edb", "#368ce1", "#23abd8", "#1ac7c2", "#1ddfa3", "#30ef82", "#52f667", "#7ff658", "#aff05b"],
   cubehelix: ["#000000", "#1a1530", "#163d4e", "#1f6642", "#54792f", "#a07949", "#d07e93", "#cf9cda", "#c1caf3", "#d2eeef", "#ffffff"],
-  turbo: ["#23171b", "#4a58dd", "#2f9df5", "#27d7c4", "#4df884", "#95fb51", "#dedd32", "#ffa423", "#f65f18", "#ba2208", "#900c00"],
+  turbo: ["#900c00", "#ba2208", "#f65f18", "#ffa423", "#dedd32", "#95fb51", "#4df884", "#27d7c4", "#2f9df5", "#4a58dd", "#23171b"],
 };
 
 mapboxgl.accessToken = "pk.eyJ1IjoicGxvdGxpbmUiLCJhIjoiY2xmOGo1NW4wMGVtNzNya2UyNnllZGcyciJ9.gUFn8Mj5HQbagkpQWaDqaw";
 const map = new mapboxgl.Map({
   container: "map",
-  style: "mapbox://styles/plotline/cll735ypl00ao01rdbh4m4a99",
-  projection: "mercator",
-  center: [17.47, 9.73],
-  zoom: 2.3,
+  style: "mapbox://styles/plotline/cln0rhs6b024901r8f4sk1f7t",
+  projection: "globe",
+  center: [14.2, 1.41],
+  zoom: 2.54,
+  minZoom: 2,
   hash: true,
 });
 
 let cropMenu = document.getElementById("crop-select");
-let dataMenu = document.getElementById("data-select");
 let sizeMenu = document.getElementById("size-select");
 let colorMenu = document.getElementById("color-select");
 let colorSchemeMenu = document.getElementById("color-scheme-select");
-let sizeCol = sizeMenu.value + cropMenu.value + dataMenu.value;
-let colorCol = colorMenu.value + cropMenu.value + dataMenu.value;
-let sizeMin = dataQuantiles[sizeCol]["quantile_1"];
-let sizeMax = dataQuantiles[sizeCol]["quantile_99"];
-
-console.log(sizeMin, sizeMax, cropMenu.value, dataMenu.value, sizeMenu.value, colorMenu.value);
-console.log(sizeMenu.value + cropMenu.value + dataMenu.value);
+let sizeCol = sizeMenu.value.split("__").join(cropMenu.value);
+let colorCol = colorMenu.value.split("__").join(cropMenu.value);
+// making size max and min the max and min across all projections so max is from historical data and min is from 
+let sizeMin = 6.15;
+let sizeMax = 5421.63;
 // for every key in colorScheme add an option with that key to the colorSchemeMenu
 for (const key in colorScheme) {
   let option = document.createElement("option");
@@ -257,64 +255,65 @@ map.on("load", () => {
         "interpolate",
         ["linear"],
         ["get", colorCol],
-        dataQuantiles[colorCol]["quantile_1"],
+        0.3,
         colorScheme[colorSchemeMenu.value][0],
-        dataQuantiles[colorCol]["quantile_10"],
+        0.5,
         colorScheme[colorSchemeMenu.value][1],
-        dataQuantiles[colorCol]["quantile_20"],
+        0.6,
         colorScheme[colorSchemeMenu.value][2],
-        dataQuantiles[colorCol]["quantile_30"],
+        0.7,
         colorScheme[colorSchemeMenu.value][3],
-        dataQuantiles[colorCol]["quantile_40"],
+        0.8,
         colorScheme[colorSchemeMenu.value][4],
-        dataQuantiles[colorCol]["quantile_50"],
+        0.9,
         colorScheme[colorSchemeMenu.value][5],
-        dataQuantiles[colorCol]["quantile_60"],
+        1,
         colorScheme[colorSchemeMenu.value][6],
-        dataQuantiles[colorCol]["quantile_70"],
+        1.1,
         colorScheme[colorSchemeMenu.value][7],
-        dataQuantiles[colorCol]["quantile_80"],
+        1.2,
         colorScheme[colorSchemeMenu.value][8],
-        dataQuantiles[colorCol]["quantile_90"],
+        1.3,
         colorScheme[colorSchemeMenu.value][9],
-        dataQuantiles[colorCol]["quantile_99"],
+        1.4,
         colorScheme[colorSchemeMenu.value][10],
       ],
     },
   });
-  // when colorSchemeMenu changes, update the circle-color paint property
+  // handles when color scheme changes
   colorSchemeMenu.onchange = function () {
     map.setPaintProperty("maize_hist-layer", "circle-color", [
       "interpolate",
       ["linear"],
       ["get", colorCol],
-      dataQuantiles[colorCol]["quantile_1"],
+      0.3,
       colorScheme[colorSchemeMenu.value][0],
-      dataQuantiles[colorCol]["quantile_10"],
+      0.5,
       colorScheme[colorSchemeMenu.value][1],
-      dataQuantiles[colorCol]["quantile_20"],
+      0.6,
       colorScheme[colorSchemeMenu.value][2],
-      dataQuantiles[colorCol]["quantile_30"],
+      0.7,
       colorScheme[colorSchemeMenu.value][3],
-      dataQuantiles[colorCol]["quantile_40"],
+      0.8,
       colorScheme[colorSchemeMenu.value][4],
-      dataQuantiles[colorCol]["quantile_50"],
+      0.9,
       colorScheme[colorSchemeMenu.value][5],
-      dataQuantiles[colorCol]["quantile_60"],
+      1,
       colorScheme[colorSchemeMenu.value][6],
-      dataQuantiles[colorCol]["quantile_70"],
+      1.1,
       colorScheme[colorSchemeMenu.value][7],
-      dataQuantiles[colorCol]["quantile_80"],
+      1.2,
       colorScheme[colorSchemeMenu.value][8],
-      dataQuantiles[colorCol]["quantile_90"],
+      1.3,
       colorScheme[colorSchemeMenu.value][9],
-      dataQuantiles[colorCol]["quantile_99"],
+      1.4,
       colorScheme[colorSchemeMenu.value][10],
     ]);
   };
-  // when dataMenu changes update the dataCol variable and the circle-radius paint property
-  dataMenu.onchange = function () {
-    sizeCol = sizeMenu.value + cropMenu.value + dataMenu.value;
+
+  // handles when size menu changes
+  sizeMenu.onchange = function () {
+    sizeCol = sizeMenu.value.split("__").join(cropMenu.value);
     sizeMin = dataQuantiles[sizeCol]["quantile_1"];
     sizeMax = dataQuantiles[sizeCol]["quantile_99"];
     map.setPaintProperty("maize_hist-layer", "circle-radius", [
@@ -327,4 +326,41 @@ map.on("load", () => {
       ["interpolate", ["linear"], ["get", sizeCol], sizeMin, 150, sizeMax, 300],
     ]);
   };
+
+  // handles when color menu changes
+  colorMenu.onchange = function () {
+    colorCol = colorMenu.value.split("__").join(cropMenu.value);
+    map.setPaintProperty("maize_hist-layer", "circle-color", [
+      "interpolate",
+      ["linear"],
+      ["get", colorCol],
+      0.3,
+      colorScheme[colorSchemeMenu.value][0],
+      0.5,
+      colorScheme[colorSchemeMenu.value][1],
+      0.6,
+      colorScheme[colorSchemeMenu.value][2],
+      0.7,
+      colorScheme[colorSchemeMenu.value][3],
+      0.8,
+      colorScheme[colorSchemeMenu.value][4],
+      0.9,
+      colorScheme[colorSchemeMenu.value][5],
+      1,
+      colorScheme[colorSchemeMenu.value][6],
+      1.1,
+      colorScheme[colorSchemeMenu.value][7],
+      1.2,
+      colorScheme[colorSchemeMenu.value][8],
+      1.3,
+      colorScheme[colorSchemeMenu.value][9],
+      1.4,
+      colorScheme[colorSchemeMenu.value][10],
+    ]);
+  };
+
+  // dots on click functionality
+  map.on("click", "maize_hist-layer", (e) => {
+    console.log(e.features[0].properties);
+  });
 });
