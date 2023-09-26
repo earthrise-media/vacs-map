@@ -190,6 +190,7 @@ const dataQuantiles = {
 };
 
 const colorScheme = {
+  rdylgn: ["#a50026", "#d73027", "#f46d43", "#fdae61", "#fee08b", "#ffffbf", "#d9ef8b", "#a6d96a", "#66bd63", "#1a9850", "#006837"],
   blues: ["#f7fbff", "#e3eef9", "#cfe1f2", "#b5d4e9", "#93c3df", "#6daed5", "#4b97c9", "#2f7ebc", "#1864aa", "#0a4a90", "#08306b"],
   greens: ["#f7fcf5", "#e8f6e3", "#d3eecd", "#b7e2b1", "#97d494", "#73c378", "#4daf62", "#2f984f", "#157f3b", "#036429", "#00441b"],
   greys: ["#ffffff", "#f2f2f2", "#e2e2e2", "#cecece", "#b4b4b4", "#979797", "#7a7a7a", "#5f5f5f", "#404040", "#1e1e1e", "#000000"],
@@ -205,7 +206,6 @@ const colorScheme = {
   cool: ["#6e40aa", "#6054c8", "#4c6edb", "#368ce1", "#23abd8", "#1ac7c2", "#1ddfa3", "#30ef82", "#52f667", "#7ff658", "#aff05b"],
   cubehelix: ["#000000", "#1a1530", "#163d4e", "#1f6642", "#54792f", "#a07949", "#d07e93", "#cf9cda", "#c1caf3", "#d2eeef", "#ffffff"],
   turbo: ["#23171b", "#4a58dd", "#2f9df5", "#27d7c4", "#4df884", "#95fb51", "#dedd32", "#ffa423", "#f65f18", "#ba2208", "#900c00"],
-  rdylgn: ["#a50026", "#d73027", "#f46d43", "#fdae61", "#fee08b", "#ffffbf", "#d9ef8b", "#a6d96a", "#66bd63", "#1a9850", "#006837"],
 };
 
 mapboxgl.accessToken = "pk.eyJ1IjoicGxvdGxpbmUiLCJhIjoiY2xmOGo1NW4wMGVtNzNya2UyNnllZGcyciJ9.gUFn8Mj5HQbagkpQWaDqaw";
@@ -218,18 +218,15 @@ const map = new mapboxgl.Map({
   hash: true,
 });
 
-// historical data is from 1990 - 2019 projected data is 2035 - 2064
-
-// let selectedYear = 1990;
-
 let cropMenu = document.getElementById("crop-select");
 let dataMenu = document.getElementById("data-select");
 let sizeMenu = document.getElementById("size-select");
 let colorMenu = document.getElementById("color-select");
 let colorSchemeMenu = document.getElementById("color-scheme-select");
-let dataCol = sizeMenu.value + cropMenu.value + dataMenu.value;
-let sizeMin = dataQuantiles[dataCol]["quantile_1"];
-let sizeMax = dataQuantiles[dataCol]["quantile_99"];
+let sizeCol = sizeMenu.value + cropMenu.value + dataMenu.value;
+let colorCol = colorMenu.value + cropMenu.value + dataMenu.value;
+let sizeMin = dataQuantiles[sizeCol]["quantile_1"];
+let sizeMax = dataQuantiles[sizeCol]["quantile_99"];
 
 console.log(sizeMin, sizeMax, cropMenu.value, dataMenu.value, sizeMenu.value, colorMenu.value);
 console.log(sizeMenu.value + cropMenu.value + dataMenu.value);
@@ -254,33 +251,33 @@ map.on("load", () => {
     source: "maize_hist-source",
     // filter: ["match", ["get", "SowingYear_maize_hist"], [selectedYear], true, false],
     paint: {
-      "circle-radius": ["interpolate", ["exponential", 1.99], ["zoom"], 2, ["interpolate", ["linear"], ["get", dataCol], sizeMin, 1, sizeMax, 2], 10, ["interpolate", ["linear"], ["get", dataCol], sizeMin, 150, sizeMax, 300]],
+      "circle-radius": ["interpolate", ["exponential", 1.99], ["zoom"], 2, ["interpolate", ["linear"], ["get", sizeCol], sizeMin, 1, sizeMax, 2], 10, ["interpolate", ["linear"], ["get", sizeCol], sizeMin, 150, sizeMax, 300]],
       // "circle-radius": 5,
       "circle-color": [
         "interpolate",
         ["linear"],
-        ["get", dataCol],
-        dataQuantiles[dataCol]["quantile_1"],
+        ["get", colorCol],
+        dataQuantiles[colorCol]["quantile_1"],
         colorScheme[colorSchemeMenu.value][0],
-        dataQuantiles[dataCol]["quantile_10"],
+        dataQuantiles[colorCol]["quantile_10"],
         colorScheme[colorSchemeMenu.value][1],
-        dataQuantiles[dataCol]["quantile_20"],
+        dataQuantiles[colorCol]["quantile_20"],
         colorScheme[colorSchemeMenu.value][2],
-        dataQuantiles[dataCol]["quantile_30"],
+        dataQuantiles[colorCol]["quantile_30"],
         colorScheme[colorSchemeMenu.value][3],
-        dataQuantiles[dataCol]["quantile_40"],
+        dataQuantiles[colorCol]["quantile_40"],
         colorScheme[colorSchemeMenu.value][4],
-        dataQuantiles[dataCol]["quantile_50"],
+        dataQuantiles[colorCol]["quantile_50"],
         colorScheme[colorSchemeMenu.value][5],
-        dataQuantiles[dataCol]["quantile_60"],
+        dataQuantiles[colorCol]["quantile_60"],
         colorScheme[colorSchemeMenu.value][6],
-        dataQuantiles[dataCol]["quantile_70"],
+        dataQuantiles[colorCol]["quantile_70"],
         colorScheme[colorSchemeMenu.value][7],
-        dataQuantiles[dataCol]["quantile_80"],
+        dataQuantiles[colorCol]["quantile_80"],
         colorScheme[colorSchemeMenu.value][8],
-        dataQuantiles[dataCol]["quantile_90"],
+        dataQuantiles[colorCol]["quantile_90"],
         colorScheme[colorSchemeMenu.value][9],
-        dataQuantiles[dataCol]["quantile_99"],
+        dataQuantiles[colorCol]["quantile_99"],
         colorScheme[colorSchemeMenu.value][10],
       ],
     },
@@ -290,29 +287,44 @@ map.on("load", () => {
     map.setPaintProperty("maize_hist-layer", "circle-color", [
       "interpolate",
       ["linear"],
-      ["get", dataCol],
-      dataQuantiles[dataCol]["quantile_1"],
+      ["get", colorCol],
+      dataQuantiles[colorCol]["quantile_1"],
       colorScheme[colorSchemeMenu.value][0],
-      dataQuantiles[dataCol]["quantile_10"],
+      dataQuantiles[colorCol]["quantile_10"],
       colorScheme[colorSchemeMenu.value][1],
-      dataQuantiles[dataCol]["quantile_20"],
+      dataQuantiles[colorCol]["quantile_20"],
       colorScheme[colorSchemeMenu.value][2],
-      dataQuantiles[dataCol]["quantile_30"],
+      dataQuantiles[colorCol]["quantile_30"],
       colorScheme[colorSchemeMenu.value][3],
-      dataQuantiles[dataCol]["quantile_40"],
+      dataQuantiles[colorCol]["quantile_40"],
       colorScheme[colorSchemeMenu.value][4],
-      dataQuantiles[dataCol]["quantile_50"],
+      dataQuantiles[colorCol]["quantile_50"],
       colorScheme[colorSchemeMenu.value][5],
-      dataQuantiles[dataCol]["quantile_60"],
+      dataQuantiles[colorCol]["quantile_60"],
       colorScheme[colorSchemeMenu.value][6],
-      dataQuantiles[dataCol]["quantile_70"],
+      dataQuantiles[colorCol]["quantile_70"],
       colorScheme[colorSchemeMenu.value][7],
-      dataQuantiles[dataCol]["quantile_80"],
+      dataQuantiles[colorCol]["quantile_80"],
       colorScheme[colorSchemeMenu.value][8],
-      dataQuantiles[dataCol]["quantile_90"],
+      dataQuantiles[colorCol]["quantile_90"],
       colorScheme[colorSchemeMenu.value][9],
-      dataQuantiles[dataCol]["quantile_99"],
+      dataQuantiles[colorCol]["quantile_99"],
       colorScheme[colorSchemeMenu.value][10],
+    ]);
+  };
+  // when dataMenu changes update the dataCol variable and the circle-radius paint property
+  dataMenu.onchange = function () {
+    sizeCol = sizeMenu.value + cropMenu.value + dataMenu.value;
+    sizeMin = dataQuantiles[sizeCol]["quantile_1"];
+    sizeMax = dataQuantiles[sizeCol]["quantile_99"];
+    map.setPaintProperty("maize_hist-layer", "circle-radius", [
+      "interpolate",
+      ["exponential", 1.99],
+      ["zoom"],
+      2,
+      ["interpolate", ["linear"], ["get", sizeCol], sizeMin, 1, sizeMax, 2],
+      10,
+      ["interpolate", ["linear"], ["get", sizeCol], sizeMin, 150, sizeMax, 300],
     ]);
   };
 });
