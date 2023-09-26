@@ -1,63 +1,318 @@
 const rangeElement = document.getElementById("maize-year");
+const dataQuantiles = {
+  yield_ratio_maize_126: {
+    min: 0.0,
+    quantile_1: 0.320679826244946,
+    quantile_2: 0.3665178117368092,
+    quantile_10: 0.5078634642928715,
+    quantile_20: 0.603901278295438,
+    quantile_30: 0.6812192339734442,
+    quantile_40: 0.7511014446979176,
+    quantile_50: 0.8222431308226588,
+    quantile_60: 0.8856544020092065,
+    quantile_70: 0.9462014907604208,
+    quantile_80: 0.9907185066550891,
+    quantile_90: 1.0578471081092335,
+    quantile_98: 1.3141182515987966,
+    quantile_99: 1.4587238067925545,
+    max: "inf",
+  },
+  yield_ratio_maize_370: {
+    min: 0.0,
+    quantile_1: 0.21719770363899676,
+    quantile_2: 0.2519661786087626,
+    quantile_10: 0.3729102970189739,
+    quantile_20: 0.46544588894156774,
+    quantile_30: 0.5564343901788148,
+    quantile_40: 0.6513872530893962,
+    quantile_50: 0.7538395104184578,
+    quantile_60: 0.8408960864918201,
+    quantile_70: 0.9193339085360102,
+    quantile_80: 0.9802138984990384,
+    quantile_90: 1.1022211800742965,
+    quantile_98: 1.5536560160306123,
+    quantile_99: 1.8411379005300281,
+    max: 5.5528455284552845,
+  },
+  yield_maize_hist: {
+    min: 0.0,
+    quantile_1: 6.199333333333334,
+    quantile_2: 11.264666666666669,
+    quantile_10: 230.8,
+    quantile_20: 800.1533333333332,
+    quantile_30: 1486.8296296296296,
+    quantile_40: 2200.3155555555554,
+    quantile_50: 2837.7166666666667,
+    quantile_60: 3314.42,
+    quantile_70: 3676.3966666666665,
+    quantile_80: 3975.5066666666667,
+    quantile_90: 4252.34074074074,
+    quantile_98: 4609.35111111111,
+    quantile_99: 4708.950000000001,
+    max: 5421.62962962963,
+  },
+  yield_maize_126: {
+    min: 0.0,
+    quantile_1: 6.216333333333334,
+    quantile_2: 10.712,
+    quantile_10: 148.26896551724136,
+    quantile_20: 525.6445977011493,
+    quantile_30: 966.9201149425287,
+    quantile_40: 1510.8827586206894,
+    quantile_50: 2068.0333333333333,
+    quantile_60: 2657.06,
+    quantile_70: 3183.9068965517245,
+    quantile_80: 3612.576091954023,
+    quantile_90: 4060.2882758620694,
+    quantile_98: 4480.206298850574,
+    quantile_99: 4598.684655172414,
+    max: 4998.275862068966,
+  },
+  yield_maize_370: {
+    min: 0.0,
+    quantile_1: 6.1496666666666675,
+    quantile_2: 11.498000000000001,
+    quantile_10: 138.12999999999997,
+    quantile_20: 428.75333333333333,
+    quantile_30: 770.9482758620691,
+    quantile_40: 1193.9310344827586,
+    quantile_50: 1721.4482758620688,
+    quantile_60: 2341.592643678161,
+    quantile_70: 2932.0433333333326,
+    quantile_80: 3451.193333333333,
+    quantile_90: 4007.568965517242,
+    quantile_98: 4463.945344827584,
+    quantile_99: 4607.233103448277,
+    max: 5043.517241379311,
+  },
+  biomass_maize_hist: {
+    min: 1.0,
+    quantile_1: 18.064666666666668,
+    quantile_2: 33.324000000000005,
+    quantile_10: 678.8233333333333,
+    quantile_20: 2353.5933333333332,
+    quantile_30: 4373.051851851852,
+    quantile_40: 6471.4222222222215,
+    quantile_50: 8346.05,
+    quantile_60: 9748.36,
+    quantile_70: 10812.903333333334,
+    quantile_80: 11692.513333333334,
+    quantile_90: 12506.777777777777,
+    quantile_98: 13557.119999999999,
+    quantile_99: 13849.869629629631,
+    max: 15946.074074074075,
+  },
+  biomass_maize_126: {
+    min: 1.0,
+    quantile_1: 18.232666666666667,
+    quantile_2: 31.266,
+    quantile_10: 436.20344827586194,
+    quantile_20: 1545.9252873563216,
+    quantile_30: 2844.0997701149427,
+    quantile_40: 4443.75172413793,
+    quantile_50: 6082.416666666667,
+    quantile_60: 7815.066666666667,
+    quantile_70: 9364.413793103447,
+    quantile_80: 10625.244597701148,
+    quantile_90: 11942.162413793105,
+    quantile_98: 13176.826988505745,
+    quantile_99: 13525.72051724138,
+    max: 14701.172413793103,
+  },
+  biomass_maize_370: {
+    min: 1.0,
+    quantile_1: 17.983,
+    quantile_2: 33.76133333333333,
+    quantile_10: 406.2566666666666,
+    quantile_20: 1261.08,
+    quantile_30: 2267.713793103448,
+    quantile_40: 3511.4206896551723,
+    quantile_50: 5063.103448275862,
+    quantile_60: 6887.070804597702,
+    quantile_70: 8623.566666666664,
+    quantile_80: 10150.74,
+    quantile_90: 11787.031034482761,
+    quantile_98: 13129.504482758617,
+    quantile_99: 13550.678965517243,
+    max: 14833.586206896553,
+  },
+  duration_maize_hist: {
+    min: 28.2,
+    quantile_1: 38.31633333333333,
+    quantile_2: 44.029333333333334,
+    quantile_10: 58.46666666666667,
+    quantile_20: 68.36666666666666,
+    quantile_30: 74.51296296296296,
+    quantile_40: 78.56666666666666,
+    quantile_50: 81.49074074074073,
+    quantile_60: 84.74074074074075,
+    quantile_70: 88.83888888888887,
+    quantile_80: 94.90666666666667,
+    quantile_90: 104.37333333333333,
+    quantile_98: 132.63992592592575,
+    quantile_99: 148.20148148148184,
+    max: 226.14814814814815,
+  },
+  duration_maize_126: {
+    min: 25.6,
+    quantile_1: 31.98166666666667,
+    quantile_2: 35.79257471264368,
+    quantile_10: 48.74741379310345,
+    quantile_20: 56.827586206896555,
+    quantile_30: 63.51206896551724,
+    quantile_40: 69.76666666666667,
+    quantile_50: 74.3103448275862,
+    quantile_60: 77.4,
+    quantile_70: 81.1806896551724,
+    quantile_80: 86.97241379310344,
+    quantile_90: 96.66785714285716,
+    quantile_98: 120.35733333333333,
+    quantile_99: 131.5764482758621,
+    max: 241.32142857142858,
+  },
+  duration_maize_370: {
+    min: 24.333333333333332,
+    quantile_1: 29.482333333333333,
+    quantile_2: 32.4,
+    quantile_10: 43.73142857142857,
+    quantile_20: 52.0,
+    quantile_30: 58.36666666666667,
+    quantile_40: 64.62068965517241,
+    quantile_50: 70.23735632183909,
+    quantile_60: 74.0,
+    quantile_70: 78.56666666666666,
+    quantile_80: 84.93149425287356,
+    quantile_90: 94.38137931034484,
+    quantile_98: 117.34793103448268,
+    quantile_99: 127.21966666666673,
+    max: 229.82142857142858,
+  },
+};
+
+const colorScheme = {
+  blues: ["#f7fbff", "#e3eef9", "#cfe1f2", "#b5d4e9", "#93c3df", "#6daed5", "#4b97c9", "#2f7ebc", "#1864aa", "#0a4a90", "#08306b"],
+  greens: ["#f7fcf5", "#e8f6e3", "#d3eecd", "#b7e2b1", "#97d494", "#73c378", "#4daf62", "#2f984f", "#157f3b", "#036429", "#00441b"],
+  greys: ["#ffffff", "#f2f2f2", "#e2e2e2", "#cecece", "#b4b4b4", "#979797", "#7a7a7a", "#5f5f5f", "#404040", "#1e1e1e", "#000000"],
+  oranges: ["#fff5eb", "#fee8d3", "#fdd8b3", "#fdc28c", "#fda762", "#fb8d3d", "#f2701d", "#e25609", "#c44103", "#9f3303", "#7f2704"],
+  purples: ["#fcfbfd", "#f1eff6", "#e2e1ef", "#cecee5", "#b6b5d8", "#9e9bc9", "#8782bc", "#7363ac", "#61409b", "#501f8c", "#3f007d"],
+  reds: ["#fff5f0", "#fee3d6", "#fdc9b4", "#fcaa8e", "#fc8a6b", "#f9694c", "#ef4533", "#d92723", "#bb151a", "#970b13", "#67000d"],
+  cividis: ["#002051", "#0a326a", "#2b446e", "#4d566d", "#696970", "#7f7c75", "#948f78", "#ada476", "#caba6a", "#ead156", "#fdea45"],
+  virids: ["#440154", "#482475", "#414487", "#355f8d", "#2a788e", "#21918c", "#22a884", "#44bf70", "#7ad151", "#bddf26", "#fde725"],
+  inferno: ["#000004", "#160b39", "#420a68", "#6a176e", "#932667", "#bc3754", "#dd513a", "#f37819", "#fca50a", "#f6d746", "#fcffa4"],
+  magma: ["#000004","#140e36","#3b0f70","#641a80","#8c2981","#b73779","#de4968","#f7705c","#fe9f6d","#fecf92","#fcfdbf"],
+  plasma: ["#0d0887","#41049d","#6a00a8","#8f0da4","#b12a90","#cc4778","#e16462","#f2844b","#fca636","#fcce25","#f0f921"],
+  warm: ["#6e40aa", "#963db3", "#bf3caf", "#e4419d", "#fe4b83", "#ff5e63", "#ff7847", "#fb9633", "#e2b72f", "#c6d63c", "#aff05b"],
+  cool: ["#6e40aa", "#6054c8", "#4c6edb", "#368ce1", "#23abd8", "#1ac7c2", "#1ddfa3", "#30ef82", "#52f667", "#7ff658", "#aff05b"],
+  cubehelix: ["#000000", "#1a1530", "#163d4e", "#1f6642", "#54792f", "#a07949", "#d07e93", "#cf9cda", "#c1caf3", "#d2eeef", "#ffffff"],
+  turbo: ["#23171b", "#4a58dd", "#2f9df5", "#27d7c4", "#4df884", "#95fb51", "#dedd32", "#ffa423", "#f65f18", "#ba2208", "#900c00"],
+  rdylgn: ["#a50026", "#d73027", "#f46d43", "#fdae61", "#fee08b", "#ffffbf", "#d9ef8b", "#a6d96a", "#66bd63", "#1a9850", "#006837"],
+};
 
 mapboxgl.accessToken = "pk.eyJ1IjoicGxvdGxpbmUiLCJhIjoiY2xmOGo1NW4wMGVtNzNya2UyNnllZGcyciJ9.gUFn8Mj5HQbagkpQWaDqaw";
 const map = new mapboxgl.Map({
   container: "map",
   style: "mapbox://styles/plotline/cll735ypl00ao01rdbh4m4a99",
-  center: [-74.5, 40],
-  zoom: 6,
+  projection: "mercator",
+  center: [17.47, 9.73],
+  zoom: 2.3,
   hash: true,
 });
 
 // historical data is from 1990 - 2019 projected data is 2035 - 2064
 
-let selectedYear = 1990;
-let maizeMax = 5945;
-let maizeMin = 0;
-// interpret selectedYear as string
+// let selectedYear = 1990;
+
+let cropMenu = document.getElementById("crop-select");
+let dataMenu = document.getElementById("data-select");
+let sizeMenu = document.getElementById("size-select");
+let colorMenu = document.getElementById("color-select");
+let colorSchemeMenu = document.getElementById("color-scheme-select");
+let dataCol = sizeMenu.value + cropMenu.value + dataMenu.value;
+let sizeMin = dataQuantiles[dataCol]["quantile_1"];
+let sizeMax = dataQuantiles[dataCol]["quantile_99"];
+
+console.log(sizeMin, sizeMax, cropMenu.value, dataMenu.value, sizeMenu.value, colorMenu.value);
+console.log(sizeMenu.value + cropMenu.value + dataMenu.value);
+// for every key in colorScheme add an option with that key to the colorSchemeMenu
+for (const key in colorScheme) {
+  let option = document.createElement("option");
+  option.text = key;
+  colorSchemeMenu.add(option);
+}
 
 
 
-// when the element of id maize-year is changed, update the selectedYear variable and filter map for selectedYear
-rangeElement.addEventListener("change", (event) => {
-  selectedYear = event.target.value;
-  console.log(selectedYear);
-  console.log(typeof selectedYear);
-  console.log(["match", ["get", "SowingYear_maize_hist"], [selectedYear], true, false])
-  map.setFilter("maize_hist-layer", ["match", ["get", "SowingYear_maize_hist"], [parseInt(selectedYear)], true, false]);
-});
-// console.log(string(selectedYear))
 
 map.on("load", () => {
-  // add a geojson source named maize_historical
   map.addSource("maize_hist-source", {
     type: "geojson",
-    data: "./data/maize_hist.geojson",
+    data: "https://plotine-vacs.s3.us-east-2.amazonaws.com/maize_ratios.geojson",
   });
   map.addLayer({
     id: "maize_hist-layer",
     type: "circle",
     source: "maize_hist-source",
-    filter: ["match", ["get", "SowingYear_maize_hist"], [selectedYear], true, false],
+    // filter: ["match", ["get", "SowingYear_maize_hist"], [selectedYear], true, false],
     paint: {
-        "circle-radius": ["interpolate", ["exponential", 1.99], ["zoom"], 2, ["interpolate", ["linear"], ["get", "Yield_maize_hist"], maizeMin, 1, maizeMax, 2], 10, ["interpolate", ["linear"], ["get", "Yield_maize_hist"], maizeMin, 150, maizeMax, 300]],
-    //   "circle-radius": 5,
-      "circle-color": "#ffe16b",
+      "circle-radius": ["interpolate", ["exponential", 1.99], ["zoom"], 2, ["interpolate", ["linear"], ["get", dataCol], sizeMin, 1, sizeMax, 2], 10, ["interpolate", ["linear"], ["get", dataCol], sizeMin, 150, sizeMax, 300]],
+      // "circle-radius": 5,
+      "circle-color": [
+        "interpolate",
+        ["linear"],
+        ["get", dataCol],
+        dataQuantiles[dataCol]["quantile_1"],
+        colorScheme[colorSchemeMenu.value][0],
+        dataQuantiles[dataCol]["quantile_10"],
+        colorScheme[colorSchemeMenu.value][1],
+        dataQuantiles[dataCol]["quantile_20"],
+        colorScheme[colorSchemeMenu.value][2],
+        dataQuantiles[dataCol]["quantile_30"],
+        colorScheme[colorSchemeMenu.value][3],
+        dataQuantiles[dataCol]["quantile_40"],
+        colorScheme[colorSchemeMenu.value][4],
+        dataQuantiles[dataCol]["quantile_50"],
+        colorScheme[colorSchemeMenu.value][5],
+        dataQuantiles[dataCol]["quantile_60"],
+        colorScheme[colorSchemeMenu.value][6],
+        dataQuantiles[dataCol]["quantile_70"],
+        colorScheme[colorSchemeMenu.value][7],
+        dataQuantiles[dataCol]["quantile_80"],
+        colorScheme[colorSchemeMenu.value][8],
+        dataQuantiles[dataCol]["quantile_90"],
+        colorScheme[colorSchemeMenu.value][9],
+        dataQuantiles[dataCol]["quantile_99"],
+        colorScheme[colorSchemeMenu.value][10],
+      ],
     },
   });
+  // when colorSchemeMenu changes, update the circle-color paint property
+  colorSchemeMenu.onchange = function () {
+    map.setPaintProperty("maize_hist-layer", "circle-color", [
+      "interpolate",
+      ["linear"],
+      ["get", dataCol],
+      dataQuantiles[dataCol]["quantile_1"],
+      colorScheme[colorSchemeMenu.value][0],
+      dataQuantiles[dataCol]["quantile_10"],
+      colorScheme[colorSchemeMenu.value][1],
+      dataQuantiles[dataCol]["quantile_20"],
+      colorScheme[colorSchemeMenu.value][2],
+      dataQuantiles[dataCol]["quantile_30"],
+      colorScheme[colorSchemeMenu.value][3],
+      dataQuantiles[dataCol]["quantile_40"],
+      colorScheme[colorSchemeMenu.value][4],
+      dataQuantiles[dataCol]["quantile_50"],
+      colorScheme[colorSchemeMenu.value][5],
+      dataQuantiles[dataCol]["quantile_60"],
+      colorScheme[colorSchemeMenu.value][6],
+      dataQuantiles[dataCol]["quantile_70"],
+      colorScheme[colorSchemeMenu.value][7],
+      dataQuantiles[dataCol]["quantile_80"],
+      colorScheme[colorSchemeMenu.value][8],
+      dataQuantiles[dataCol]["quantile_90"],
+      colorScheme[colorSchemeMenu.value][9],
+      dataQuantiles[dataCol]["quantile_99"],
+      colorScheme[colorSchemeMenu.value][10],
+    ]);
+  };
 });
-
-// [
-//   {
-//     layout: {},
-//     filter: ["match", ["get", "SowingYear_maize_hist"], [year], true, false],
-//     type: "circle",
-//     source: "composite",
-//     id: "min ipsl",
-//     paint: {
-//       "circle-radius": ["interpolate", ["exponential", 1.99], ["zoom"], 2, ["interpolate", ["linear"], ["get", "ssp370_ipsl_av"], 113, 1, 1971, 2], 10, ["interpolate", ["linear"], ["get", "ssp370_ipsl_av"], 113, 150, 1971, 300]],
-//       "circle-color": ["interpolate", ["linear"], ["get", "ssp370_ipsl_pc"], -92.1, "#e70404", -50, "#ffe16b", 0, "#0ecc00"],
-//     },
-//     "source-layer": "cowpea_summary-1628hx",
-//   }
-// ];

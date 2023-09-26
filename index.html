@@ -38,24 +38,38 @@
             </div>
             <div class="card-body">
 
-                <label for="type-select" class="form-label">Dataset</label>
-                <select class="form-select" id="type-select">
-                    <option value="historical">Historical</option>
-                    <option value="ssp126">SSP126</option>
-                    <option value="ssp126">SSP370</option>
+                <label for="crop-select" class="form-label">Crop</label>
+                <select class="form-select" id="crop-select">
+                    <option value="maize_">Maize</option>
+                </select>
+
+                <label for="data-select" class="form-label pt-2">Data</label>
+                <select class="form-select" id="data-select">
+                    <!-- <option value="historical">Historical</option> -->
+                    <option value="126">SSP126</option>
+                    <option value="370">SSP370</option>
+                </select>
+
+                <label for="size-select" class="form-label pt-2">Size By</label>
+                <select class="form-select" id="size-select">
+                    <option value="yield_">Yield</option>
                 </select>
 
 
-                <label for="color-select" class="form-label">Color By</label>
+                <label for="color-select" class="form-label pt-2">Color By</label>
                 <select class="form-select" id="color-select">
-                    <option value="yield">Yield</option>
+                    <option value="yield_ratio_">Yield Change</option>
                 </select>
 
-                <fieldset class="form-group py-4">
+                <label for="color-scheme-select" class="form-label pt-2">Color Scheme</label>
+                <select class="form-select" id="color-scheme-select">
+                </select>
+
+                <!-- <fieldset class="form-group py-4">
                     <label for="maize-year" class="form-label">Year</label>
                     <input type="range" class="form-range" id="maize-year" min="1990" max="2019" step="1" value="1990">
 
-                </fieldset>
+                </fieldset> -->
             </div>
         </div>
     </div>
