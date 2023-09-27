@@ -200,8 +200,8 @@ const colorScheme = {
   cividis: ["#002051", "#0a326a", "#2b446e", "#4d566d", "#696970", "#7f7c75", "#948f78", "#ada476", "#caba6a", "#ead156", "#fdea45"],
   virids: ["#440154", "#482475", "#414487", "#355f8d", "#2a788e", "#21918c", "#22a884", "#44bf70", "#7ad151", "#bddf26", "#fde725"],
   inferno: ["#000004", "#160b39", "#420a68", "#6a176e", "#932667", "#bc3754", "#dd513a", "#f37819", "#fca50a", "#f6d746", "#fcffa4"],
-  magma: ["#000004","#140e36","#3b0f70","#641a80","#8c2981","#b73779","#de4968","#f7705c","#fe9f6d","#fecf92","#fcfdbf"],
-  plasma: ["#0d0887","#41049d","#6a00a8","#8f0da4","#b12a90","#cc4778","#e16462","#f2844b","#fca636","#fcce25","#f0f921"],
+  magma: ["#000004", "#140e36", "#3b0f70", "#641a80", "#8c2981", "#b73779", "#de4968", "#f7705c", "#fe9f6d", "#fecf92", "#fcfdbf"],
+  plasma: ["#0d0887", "#41049d", "#6a00a8", "#8f0da4", "#b12a90", "#cc4778", "#e16462", "#f2844b", "#fca636", "#fcce25", "#f0f921"],
   warm: ["#6e40aa", "#963db3", "#bf3caf", "#e4419d", "#fe4b83", "#ff5e63", "#ff7847", "#fb9633", "#e2b72f", "#c6d63c", "#aff05b"],
   cool: ["#6e40aa", "#6054c8", "#4c6edb", "#368ce1", "#23abd8", "#1ac7c2", "#1ddfa3", "#30ef82", "#52f667", "#7ff658", "#aff05b"],
   cubehelix: ["#000000", "#1a1530", "#163d4e", "#1f6642", "#54792f", "#a07949", "#d07e93", "#cf9cda", "#c1caf3", "#d2eeef", "#ffffff"],
@@ -225,9 +225,10 @@ let colorMenu = document.getElementById("color-select");
 let colorSchemeMenu = document.getElementById("color-scheme-select");
 let sizeCol = sizeMenu.value.split("__").join(cropMenu.value);
 let colorCol = colorMenu.value.split("__").join(cropMenu.value);
-// making size max and min the max and min across all projections so max is from historical data and min is from 
+// making size max and min the max and min across all projections so max is from historical data and min is from
 let sizeMin = 6.15;
 let sizeMax = 5421.63;
+let hoveredCircleId = null;
 // for every key in colorScheme add an option with that key to the colorSchemeMenu
 for (const key in colorScheme) {
   let option = document.createElement("option");
@@ -235,51 +236,61 @@ for (const key in colorScheme) {
   colorSchemeMenu.add(option);
 }
 
-
-
-
 map.on("load", () => {
   map.addSource("maize_hist-source", {
     type: "geojson",
     data: "https://plotine-vacs.s3.us-east-2.amazonaws.com/maize_ratios.geojson",
+    // add id to features
+    generateId: true,
   });
-  map.addLayer({
-    id: "maize_hist-layer",
-    type: "circle",
-    source: "maize_hist-source",
-    // filter: ["match", ["get", "SowingYear_maize_hist"], [selectedYear], true, false],
-    paint: {
-      "circle-radius": ["interpolate", ["exponential", 1.99], ["zoom"], 2, ["interpolate", ["linear"], ["get", sizeCol], sizeMin, 1, sizeMax, 2], 10, ["interpolate", ["linear"], ["get", sizeCol], sizeMin, 150, sizeMax, 300]],
-      // "circle-radius": 5,
-      "circle-color": [
-        "interpolate",
-        ["linear"],
-        ["get", colorCol],
-        0.3,
-        colorScheme[colorSchemeMenu.value][0],
-        0.5,
-        colorScheme[colorSchemeMenu.value][1],
-        0.6,
-        colorScheme[colorSchemeMenu.value][2],
-        0.7,
-        colorScheme[colorSchemeMenu.value][3],
-        0.8,
-        colorScheme[colorSchemeMenu.value][4],
-        0.9,
-        colorScheme[colorSchemeMenu.value][5],
-        1,
-        colorScheme[colorSchemeMenu.value][6],
-        1.1,
-        colorScheme[colorSchemeMenu.value][7],
-        1.2,
-        colorScheme[colorSchemeMenu.value][8],
-        1.3,
-        colorScheme[colorSchemeMenu.value][9],
-        1.4,
-        colorScheme[colorSchemeMenu.value][10],
-      ],
+  map.addLayer(
+    {
+      id: "maize_hist-layer",
+      type: "circle",
+      source: "maize_hist-source",
+      // filter: ["match", ["get", "SowingYear_maize_hist"], [selectedYear], true, false],
+      paint: {
+        "circle-radius": ["interpolate", ["exponential", 1.99], ["zoom"], 2, ["interpolate", ["linear"], ["get", sizeCol], sizeMin, 1, sizeMax, 2], 10, ["interpolate", ["linear"], ["get", sizeCol], sizeMin, 150, sizeMax, 300]],
+        "circle-color": [
+          "interpolate",
+          ["linear"],
+          ["get", colorCol],
+          0.3,
+          colorScheme[colorSchemeMenu.value][0],
+          0.5,
+          colorScheme[colorSchemeMenu.value][1],
+          0.6,
+          colorScheme[colorSchemeMenu.value][2],
+          0.7,
+          colorScheme[colorSchemeMenu.value][3],
+          0.8,
+          colorScheme[colorSchemeMenu.value][4],
+          0.9,
+          colorScheme[colorSchemeMenu.value][5],
+          1,
+          colorScheme[colorSchemeMenu.value][6],
+          1.1,
+          colorScheme[colorSchemeMenu.value][7],
+          1.2,
+          colorScheme[colorSchemeMenu.value][8],
+          1.3,
+          colorScheme[colorSchemeMenu.value][9],
+          1.4,
+          colorScheme[colorSchemeMenu.value][10],
+        ],
+        "circle-pitch-alignment": "map",
+        // "circle-translate": [0,0],
+        // "circle-translate": ["case", ["boolean", ["feature-state", "hover"], false], [10, 0], [0, 0]],
+        // make dark grey circle outline appear when hover feature state is true
+        "circle-stroke-color": "gray",
+        "circle-stroke-width": ["case", ["boolean", ["feature-state", "hover"], false], 4, 0],
+      },
+      // create feature state for hover
+      // make circle-translate  10px on feature state hover equals true
+      // make circle-translate 0px on feature state hover equals false
     },
-  });
+    "road-label-simple"
+  );
   // handles when color scheme changes
   colorSchemeMenu.onchange = function () {
     map.setPaintProperty("maize_hist-layer", "circle-color", [
@@ -316,15 +327,7 @@ map.on("load", () => {
     sizeCol = sizeMenu.value.split("__").join(cropMenu.value);
     sizeMin = dataQuantiles[sizeCol]["quantile_1"];
     sizeMax = dataQuantiles[sizeCol]["quantile_99"];
-    map.setPaintProperty("maize_hist-layer", "circle-radius", [
-      "interpolate",
-      ["exponential", 1.99],
-      ["zoom"],
-      2,
-      ["interpolate", ["linear"], ["get", sizeCol], sizeMin, 1, sizeMax, 2],
-      10,
-      ["interpolate", ["linear"], ["get", sizeCol], sizeMin, 150, sizeMax, 300],
-    ]);
+    map.setPaintProperty("maize_hist-layer", "circle-radius", ["interpolate", ["exponential", 1.99], ["zoom"], 2, ["interpolate", ["linear"], ["get", sizeCol], sizeMin, 1, sizeMax, 2], 10, ["interpolate", ["linear"], ["get", sizeCol], sizeMin, 150, sizeMax, 300]]);
   };
 
   // handles when color menu changes
@@ -358,8 +361,36 @@ map.on("load", () => {
       colorScheme[colorSchemeMenu.value][10],
     ]);
   };
+  // map.on("mousemove", "maize_hist-layer", (e) => {
+  //   console.log(e.features[0].properties);
+  //   if (e.features.length > 0) {
+  //     if (hoveredCircleId) {
+  //       map.setFeatureState({ source: "maize_hist-source", id: hoveredCircleId }, { hover: false });
+  //     }
+  //     hoveredCircleId = e.features[0].id;
+  //     map.setFeatureState({ source: "maize_hist-source", id: hoveredCircleId }, { hover: true });
+  //   }
+  // });
+  map.on("mousemove", "maize_hist-layer", (e) => {
+    map.getCanvas().style.cursor = "pointer";
+    if (e.features.length > 0) {
+      if (hoveredCircleId !== null) {
+        map.setFeatureState({ source: "maize_hist-source", id: hoveredCircleId }, { hover: false });
+      }
+      hoveredCircleId = e.features[0].id;
+      console.log(e.features[0].properties);
+      map.setFeatureState({ source: "maize_hist-source", id: hoveredCircleId }, { hover: true });
+    }
+  });
 
-  // dots on click functionality
+  map.on("mouseleave", "maize_hist-layer", () => {
+    map.getCanvas().style.cursor = "";
+    if (hoveredCircleId !== null) {
+      map.setFeatureState({ source: "maize_hist-source", id: hoveredCircleId }, { hover: false });
+    }
+    hoveredCircleId = null;
+  });
+
   map.on("click", "maize_hist-layer", (e) => {
     console.log(e.features[0].properties);
   });
