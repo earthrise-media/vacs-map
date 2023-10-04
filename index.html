@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://bootswatch.com/5/flatly/bootstrap.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="styles.css" />
     <style>
         body {
@@ -29,44 +29,50 @@
 
 <body>
     <div id="map"></div>
-    <div class="sidebar" style="overflow-y:scroll; max-height: 100%;">
-        <div class="card secondary mb-3 shadow-sm" style="max-width: 100%; opacity: 0.9">
-            <div class="card-header fw-bold">
-                <img src="./favicon.ico" style="height: 30px; right: 0px">
-                <div class="vr my-0 py-0 mx-2"></div>
-                VACS MAIZE DEMO
-            </div>
-            <div class="card-body">
-
-                <label for="crop-select" class="form-label">Crop</label>
-                <select class="form-select" id="crop-select">
+    <div class="sidebar">
+        <div class="accordion shadow-sm" id="accordionExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button bg-body-tertiary text-bg-light fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  VACS Data Explorer
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  <label for="crop-select" class="form-label">Crop</label>
+                  <select class="form-select" id="crop-select">
                     <option value="_maize_">Maize</option>
-                </select>
-
-                <!-- <label for="data-select" class="form-label pt-2">Data</label> -->
-                <!-- <select class="form-select" id="data-select">
-                    <option value="historical">Historical</option>
-                    <option value="126">SSP126</option>
-                    <option value="370">SSP370</option>
-                </select> -->
-
-                <label for="size-select" class="form-label pt-2">Size By</label>
-                <select class="form-select" id="size-select">
+                  </select>
+          
+                  <label for="size-select" class="form-label pt-2">Size By</label>
+                  <select class="form-select" id="size-select">
                     <option value="yield_maize_hist">Historical Yield</option>
                     <option value="yield__126">SSP126 Projected Yield</option>
                     <option value="yield__370">SSP370 Projected Yield</option>
-                </select>
-
-
-                <label for="color-select" class="form-label pt-2">Color By</label>
-                <select class="form-select" id="color-select">
+                  </select>
+          
+                  <label for="color-select" class="form-label pt-2">Color By</label>
+                  <select class="form-select" id="color-select">
                     <option value="yield_ratio__370">Yield Change SSP370</option>
                     <option value="yield_ratio__126">Yield Change SSP126</option>
-                </select>
-
-                <label for="color-scheme-select" class="form-label pt-2">Color Scheme</label>
-                <select class="form-select" id="color-scheme-select">
-                </select>
+                  </select>
+                  <label for="color-scheme-select" class="form-label pt-2">Color Scheme</label>
+                  <select class="form-select" id="color-scheme-select">
+                  </select>
+                  <h5 class="pt-3">Crop Profile</h5>
+                  <div class="crop-profile p-0">
+                    <canvas id="cp-radar" width="400" height="400"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+    </div>
+    <div class="click-menu card shadow-sm" id="click-menu">
+        <div class="">
+            <div class="card-body" id="click-menu-body">
+              <canvas id="bar-chart" width="400" height="400"></canvas>
             </div>
         </div>
     </div>

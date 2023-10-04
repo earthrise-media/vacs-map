@@ -243,6 +243,23 @@ map.on("load", () => {
     // add id to features
     generateId: true,
   });
+
+  map.addLayer(
+    {
+      id: "maize_hist-shadow",
+      type: "circle",
+      source: "maize_hist-source",
+      // filter: ["match", ["get", "SowingYear_maize_hist"], [selectedYear], true, false],
+      paint: {
+        "circle-radius": ["interpolate", ["exponential", 1.99], ["zoom"], 2, ["interpolate", ["linear"], ["get", sizeCol], sizeMin, 1, sizeMax, 2], 10, ["interpolate", ["linear"], ["get", sizeCol], sizeMin, 150, sizeMax, 300]],
+        "circle-color": ["case", ["boolean", ["feature-state", "hover"], false], "rgba(0,0,0,0.5)", "rgba(0,0,0,0)"],
+        "circle-pitch-alignment": "map",
+        "circle-translate": ["interpolate", ["exponential", 1.7], ["zoom"], 2, [3, 3], 10, [30, 30]],
+        "circle-blur": ["interpolate", ["linear"], ["zoom"], 2, 0.5, 10, 0.2],
+      },
+    },
+    "road-label-simple"
+  );
   map.addLayer(
     {
       id: "maize_hist-layer",
@@ -282,8 +299,8 @@ map.on("load", () => {
         // "circle-translate": [0,0],
         // "circle-translate": ["case", ["boolean", ["feature-state", "hover"], false], [10, 0], [0, 0]],
         // make dark grey circle outline appear when hover feature state is true
-        "circle-stroke-color": "gray",
-        "circle-stroke-width": ["case", ["boolean", ["feature-state", "hover"], false], 4, 0],
+        // "circle-stroke-color": "gray",
+        // "circle-stroke-width": ["case", ["boolean", ["feature-state", "hover"], false], 4, 0],
       },
       // create feature state for hover
       // make circle-translate  10px on feature state hover equals true
@@ -328,6 +345,7 @@ map.on("load", () => {
     sizeMin = dataQuantiles[sizeCol]["quantile_1"];
     sizeMax = dataQuantiles[sizeCol]["quantile_99"];
     map.setPaintProperty("maize_hist-layer", "circle-radius", ["interpolate", ["exponential", 1.99], ["zoom"], 2, ["interpolate", ["linear"], ["get", sizeCol], sizeMin, 1, sizeMax, 2], 10, ["interpolate", ["linear"], ["get", sizeCol], sizeMin, 150, sizeMax, 300]]);
+    map.setPaintProperty("maize_hist-shadow", "circle-radius", ["interpolate", ["exponential", 1.99], ["zoom"], 2, ["interpolate", ["linear"], ["get", sizeCol], sizeMin, 1, sizeMax, 2], 10, ["interpolate", ["linear"], ["get", sizeCol], sizeMin, 150, sizeMax, 300]]);
   };
 
   // handles when color menu changes
@@ -390,8 +408,138 @@ map.on("load", () => {
     }
     hoveredCircleId = null;
   });
+  // on mouse down de activate hover state
+  map.on("mousedown", "maize_hist-layer", () => {
+    if (hoveredCircleId !== null) {
+      map.setFeatureState({ source: "maize_hist-source", id: hoveredCircleId }, { hover: false });
+    }
+    hoveredCircleId = null;
+  });
+  // on mouse up activate hover state
+  map.on("mouseup", "maize_hist-layer", (e) => {
+    if (e.features.length > 0) {
+      if (hoveredCircleId !== null) {
+        map.setFeatureState({ source: "maize_hist-source", id: hoveredCircleId }, { hover: true });
+      }
+      hoveredCircleId = e.features[0].id;
+      console.log(e.features[0].properties);
+      map.setFeatureState({ source: "maize_hist-source", id: hoveredCircleId }, { hover: true });
+    }
+  });
+  // add show class to the div with id click-menu
 
+  map.on("click", (e) => {
+    document.getElementById("click-menu").classList.remove("show");
+  });
   map.on("click", "maize_hist-layer", (e) => {
     console.log(e.features[0].properties);
+    document.getElementById("click-menu").classList.add("show");
+    // update data in bar chart
+    yieldBarChart.data.datasets[0].data = randomValues(5);
+    yieldBarChart.data.datasets[1].data = randomValues(5);
+    yieldBarChart.data.datasets[2].data = randomValues(5);
+    yieldBarChart.update();
+
+    
+
   });
+  
+});
+
+
+// add a chart js radar chart to the cp-radar element
+// write a function that returns an array of 10 random numbers
+function randomValues(num) {
+  let arr = [];
+  for (let i = 0; i < num; i++) {
+    arr.push(Math.round(Math.random() * 10));
+  }
+  console.log(arr)
+  return arr;
+}
+let cpRadar = document.getElementById("cp-radar");
+let cpRadarChart = new Chart(cpRadar, {
+  type: "polarArea",
+  data: {
+    labels: ["Protein", "Calcium", "Iron", "Zinc", "Folate", "Vitamin A", ["Genebank", "Distribution"], ["Money", "Invested"], ["Seed", "Quantity"], ["Projected", "Yield"], ["Current", "Yield"], ["Soil Health", "Contribution"], "Heat Tolerance", "Drought Tolerance", ["Flood", "Resilience"]],
+    datasets: [
+      {
+        label: "Maize",
+        data: randomValues(15) ,
+        backgroundColor: ["#6DBEBF50", "#6DBEBF50", "#6DBEBF50", "#6DBEBF50", "#6DBEBF50", "#6DBEBF50", "#57A0E550", "#57A0E550", "#57A0E550", "#57A0E550", "#57A0E550", "#57A0E550", "#ED6D8550", "#ED6D8550", "#ED6D8550"],
+        borderColor: ["#6DBEBF", "#6DBEBF", "#6DBEBF", "#6DBEBF", "#6DBEBF", "#6DBEBF", "#57A0E5", "#57A0E5", "#57A0E5", "#57A0E5", "#57A0E5", "#57A0E5", "#ED6D85", "#ED6D85", "#ED6D85"],
+        borderWidth: 0.75,
+        pointBackgroundColor: "#697d7d",
+        pointBorderColor: "#fff",
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: "rgb(255, 99, 132)",
+      },
+    ],
+  },
+  options: {
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+    scales: {
+      r: {
+        pointLabels: {
+          display: true,
+          centerPointLabels: true,
+          font: {
+            size: 10,
+          },
+        },
+        angleLines: {
+          display: false,
+        },
+        suggestedMin: -1,
+        suggestedMax: 10,
+        ticks: {
+          display: false,
+        },
+      },
+    },
+  },
+});
+let yieldBar = document.getElementById("bar-chart");
+let yieldBarChart = new Chart(yieldBar, {
+  type: "bar",
+  data: {
+    labels: ["Maize", "Rice", "Wheat", "Sorghum", "Millet"],
+    datasets: [
+      {
+        label: 'Historic Yield',
+        data: randomValues(5),
+        backgroundColor:  "#6DBEBF",
+      },
+      {
+        label: 'SSP 126 Prediction',
+        data: randomValues(5),
+        backgroundColor:  "#57A0E5",
+      },
+      {
+        label: 'SSP 370 Prediction',
+        data: randomValues(5),
+        backgroundColor:  "#ED6D85",
+      },
+    ]
+  },
+  options: {
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+    responsive: true,
+    scales: {
+      x: {
+        stacked: false,
+      },
+      y: {
+        stacked: false
+      }
+    },
+  }
 });
