@@ -1,6 +1,7 @@
 <template></template>
 
 <script setup>
+import * as d3 from 'd3';
 import { computed, onMounted, toRefs, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { point, featureCollection } from '@turf/helpers';
@@ -43,6 +44,14 @@ const selectedColumn = computed(() => {
     selectedCrop.value,
     selectedModel.value,
   ].join('_');
+});
+
+const selectedColumnExtent = computed(() => {
+  return cropYieldsStore.getExtent(selectedColumn.value);
+});
+
+const selectedColumnQuintiles = computed(() => {
+  return cropYieldsStore.getQuintiles(selectedColumn.value);
 });
 
 onMounted(() => {
@@ -116,7 +125,25 @@ const addLayerToMap = (geoJson) => {
   addLayer();
 };
 
-const getCircleColor = () => {
+const getCircleColorQuintiles = (quintiles) => {
+  if (!quintiles) return 'gray';
+
+  const getColor = quantile => {
+    // This is the easiest thing we can do for sequential color schemes--use 
+    // d3 to interpolate a given color scheme.
+
+    // There are built-in d3 interpolators we can use:
+    const interpolator = d3.interpolateGreens;
+
+    // Or it's pretty easy to define your own:
+    // (you can include as many colors here as you like)
+    // const interpolator = d3.interpolateHsl("purple", "orange");
+
+    return interpolator(quantile);
+  };
+
+  // This is linear interpolating between quantiles but we could easily switch
+  // to strict buckets if we prefer.
   return [
     'case',
     ['!=', ['get', selectedColumn.value], null],
@@ -124,11 +151,7 @@ const getCircleColor = () => {
       'interpolate',
       ['linear'],
       ['get', selectedColumn.value],
-      // TODO these are hard coded right now, will likely want the real extent
-      // of the data and/or quintiles
-      0, 'red',
-      500, 'yellow',
-      1000, 'green',
+      ...quintiles.map(({ value, quantile }) => ([value, getColor(quantile)])).flat()
     ],
     'transparent',
   ];
@@ -159,6 +182,73 @@ const getCircleRadius = () => {
       28000, 10
       ]
   ];
+};
+
+const getCircleColorExtent = (extent) => {
+  if (extent[0] === undefined) return 'gray';
+  const [min, max] = extent;
+  const middle = min + (max - min) / 2;
+
+  // We could switch the color selection here to a similar scheme as in
+  // getCircleColorQuintiles if we wanted
+
+  return [
+    'case',
+    ['!=', ['get', selectedColumn.value], null],
+    [
+      'interpolate',
+      ['linear'],
+      ['get', selectedColumn.value],
+      min, 'red',
+      middle, 'yellow',
+      max, 'green',
+    ],
+    'white',
+  ];
+};
+
+const getCircleColorDiverging = (extent, center) => {
+  if (extent[0] === undefined) return 'gray';
+  const [min, max] = extent;
+
+  const getColor = value => {
+    // See getCircleColorQuintiles for details about how this works
+    // const interpolator = d3.interpolateBrBG;
+
+    const interpolator = d3.interpolatePiYG;
+
+    // const interpolator = d3.interpolateHsl("purple", "orange");
+
+    return interpolator(value);
+  };
+
+  return [
+    'case',
+    ['!=', ['get', selectedColumn.value], null],
+    [
+      'interpolate',
+      ['linear'],
+      ['get', selectedColumn.value],
+      min, getColor(0),
+      center, getColor(0.5),
+      max, getColor(1),
+    ],
+    'white',
+  ];
+}
+
+const getCircleColor = () => {
+  if (selectedMetric.value === 'yieldratio') {
+    // < 1, decrease
+    // 1 = no change
+    // > 1, increase
+    return getCircleColorDiverging(selectedColumnExtent.value, 1);
+  }
+
+  return getCircleColorQuintiles(selectedColumnQuintiles.value);
+
+  // Defaulting to using quintiles but here's how to invoke another method:
+  // return getCircleColorExtent(selectedColumnExtent.value);
 };
 
 const updateLayer = () => {
