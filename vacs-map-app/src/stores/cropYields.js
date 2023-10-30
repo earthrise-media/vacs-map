@@ -54,9 +54,43 @@ export const useCropYieldsStore = defineStore('cropYields', () => {
     data.value = Object.freeze(transformedData);
   };
 
+  const getColumnValues = columnName => {
+    if (!(data.value && data.value.length)) return null;
+    return data.value.map(d => d[columnName]).filter(d => !!d).sort(d3.ascending);
+  };
+
+  /*
+   * Get an extent for the given column name. Uses the 98th percentile for the
+   * maximum to guard against outliers.
+   */
+  const getExtent = columnName => {
+    const values = getColumnValues(columnName);
+    return [
+      values[0],
+      d3.quantileSorted(values, 0.98),
+    ];
+  };
+
+  const getQuintiles = columnName => {
+    const values = getColumnValues(columnName);
+    return [
+      ...d3.range(0, 1, 0.2).map(d => ({
+        value: d3.quantileSorted(values, d),
+        quantile: d,
+      })),
+      {
+        value: d3.quantileSorted(values, 0.98),
+        quantile: 1,
+      },
+    ]
+  };
+
   return {
     data,
     loading,
     load,
+
+    getExtent,
+    getQuintiles,
   };
 });
