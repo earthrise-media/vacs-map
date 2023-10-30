@@ -96,7 +96,7 @@ const addLayer = () => {
         'interpolate',
         ['linear'],
         ['zoom'],
-        1, 2,
+        1, 1,
         5, 5,
         9, 25
       ],
@@ -106,7 +106,7 @@ const addLayer = () => {
       'circle-opacity': 1,
       'circle-color': getCircleColor(),
     }
-  }, 'settlement-subdivision-label');
+  }, 'country-label-filter');
 
   updateLayer();
 };
@@ -130,13 +130,41 @@ const getCircleColor = () => {
       500, 'yellow',
       1000, 'green',
     ],
-    'white',
+    'transparent',
+  ];
+};
+
+const getCircleRadius = () => {
+  return [
+    'interpolate',
+    ['linear'],
+    ['zoom'],
+    1,
+    [
+      'interpolate', 
+      ['linear'], 
+      ['get', selectedMetric.value],
+      // value, size
+      0, 0.1,
+      10000, 0.3,
+      28000, 0.5
+      ],
+    6,
+    [
+      'interpolate', 
+      ['linear'], 
+      ['get', selectedMetric.value],
+      0, 2,
+      10000, 5,
+      28000, 10
+      ]
   ];
 };
 
 const updateLayer = () => {
   if (!map.value.getLayer(LAYER_ID)) return;
   map.value.setPaintProperty(LAYER_ID, 'circle-color', getCircleColor());
+  // map.value.setPaintProperty(LAYER_ID, 'circle-radius', getCircleRadius());
 };
 
 watch(mapReady, () => {
