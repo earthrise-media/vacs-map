@@ -105,13 +105,19 @@ const addLayer = () => {
         'interpolate',
         ['linear'],
         ['zoom'],
-        1, 1,
-        5, 5,
+        1, 0.75,
+        3, 3,
+        5, 7,
         9, 25
       ],
       'circle-stroke-width': 0.2,
-      'circle-stroke-color': 'gray',
-      'circle-stroke-opacity': 0,
+      'circle-stroke-color': [
+          'case',
+          ['!=', ['get', selectedColumn.value], null],
+          'lightgrey',
+          'transparent',
+        ],
+      'circle-stroke-opacity': 1,
       'circle-opacity': 1,
       'circle-color': getCircleColor(),
     }
@@ -133,11 +139,11 @@ const getCircleColorQuintiles = (quintiles) => {
     // d3 to interpolate a given color scheme.
 
     // There are built-in d3 interpolators we can use:
-    const interpolator = d3.interpolateGreens;
+    // const interpolator = d3.interpolateGreens;
 
     // Or it's pretty easy to define your own:
     // (you can include as many colors here as you like)
-    // const interpolator = d3.interpolateHsl("purple", "orange");
+    const interpolator = d3.interpolateHsl("#F99A2A", "#1CAC50");
 
     return interpolator(quantile);
   };
@@ -215,9 +221,7 @@ const getCircleColorDiverging = (extent, center) => {
     // See getCircleColorQuintiles for details about how this works
     // const interpolator = d3.interpolateBrBG;
 
-    const interpolator = d3.interpolatePiYG;
-
-    // const interpolator = d3.interpolateHsl("purple", "orange");
+    const interpolator = d3.interpolateHsl("#F99A2A", "#1CAC50");
 
     return interpolator(value);
   };
@@ -230,10 +234,10 @@ const getCircleColorDiverging = (extent, center) => {
       ['linear'],
       ['get', selectedColumn.value],
       min, getColor(0),
-      center, getColor(0.5),
+      center, '#EBED8A',
       max, getColor(1),
     ],
-    'white',
+    'transparent',
   ];
 }
 

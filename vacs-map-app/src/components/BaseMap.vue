@@ -24,7 +24,7 @@ const initializeMap = () => {
   let mapOptions = {
     container: 'baseMapContainer',
     style: MAPBOX_STYLE,
-    bounds: INITIAL_MAP_BOUNDS,
+    bounds: INITIAL_MAP_BOUNDS
   };
 
   map.value = new mapboxgl.Map(mapOptions);
