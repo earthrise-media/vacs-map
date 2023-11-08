@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Display a map on a webpage</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v3.0.0-rc.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v3.0.0-rc.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map" style="z-index: -1;"></div>
+    <!-- add a toggle that toggles between sand and carbon -->
+    <div id="menu">
+        <input id="toggle-sand" type="radio" name="toggle" value="sand" checked="checked">
+        <label for="toggle-sand">Sand</label>
+        <input id="toggle-carbon" type="radio" name="toggle" value="carbon">
+        <label for="toggle-carbon">Carbon</label>
+    </div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoicGxvdGxpbmUiLCJhIjoiY2xmOGo1NW4wMGVtNzNya2UyNnllZGcyciJ9.gUFn8Mj5HQbagkpQWaDqaw';
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+            style: 'mapbox://styles/plotline/clooo3czr003501pqcsjm24ja', // style URL
+            center: [5, 21], // starting position [lng, lat]
+            zoom: 2.5, // starting zoom
+            hash: true
+        });
+        // add a layer to map that uses a raster tile source located at .data/unsynced-data/soil/sand-tiles/{z}/{x}/{y}.png
+        const palettes = {
+            inferno: ["#000004", "#57106e", "#bc3754", "#f98e09", "#fcffa4"],
+            magma: ["#000004", "#51127c", "#b73779", "#fc8961", "#fcfdbf"],
+            plasma: ["#0d0887", "#7e03a8", "#cc4778", "#f89540", "#f0f921"],
+            viridis: ["#440154", "#3b528b", "#21918c", "#5ec962", "#fde725"],
+            cividis: ["#002051", "#3c4d6e", "#7f7c75", "#bbaf71", "#fdea45"],
+            turbo: ["#23171b", "#26bce1", "#95fb51", "#ff821d", "#900c00"],
+            warm: ["#6e40aa", "#d23ea7", "#ff5e63", "#efa72f", "#aff05b"],
+            cool: ["#6e40aa", "#417de0", "#1ac7c2", "#40f373", "#aff05b"],
+            // sequential single
+            blues: ["#eff3ff", "#bdd7e7", "#6baed6", "#3182bd", "#08519c"],
+            greens: ["#edf8e9", "#bae4b3", "#74c476", "#31a354", "#006d2c"],
+            grays: ["#f7f7f7", "#cccccc", "#969696", "#636363", "#252525"],
+            oranges: ["#feedde", "#fdbe85", "#fd8d3c", "#e6550d", "#a63603"],
+            purples: ["#f2f0f7", "#cbc9e2", "#9e9ac8", "#756bb1", "#54278f"],
+            reds: ["#fee5d9", "#fcae91", "#fb6a4a", "#de2d26", "#a50f15"],
+            // sequential multi
+            bugn: ["#edf8fb", "#b2e2e2", "#66c2a4", "#2ca25f", "#006d2c"],
+            bupu: ["#edf8fb", "#b3cde3", "#8c96c6", "#8856a7", "#810f7c"],
+            gnbu: ["#f0f9e8", "#bae4bc", "#7bccc4", "#43a2ca", "#0868ac"],
+            orrd: ["#fee8c8", "#fdbb84", "#e34a33", "#b30000"],
+            pubu: ["#f1eef6", "#bdc9e1", "#74a9cf", "#2b8cbe", "#045a8d"],
+            pubugn: ["#f6eff7", "#bdc9e1", "#67a9cf", "#1c9099", "#016c59"],
+            puor: ["#f1a340", "#f7f7f7", "#998ec3", "#762a83"],
+            purd: ["#e7e1ef", "#c994c7", "#dd1c77", "#980043"],
+            rdpu: ["#feebe2", "#fbb4b9", "#f768a1", "#c51b8a", "#7a0177"],
+            ylgn: ["#ffffe5", "#f7fcb9", "#d9f0a3", "#addd8e", "#31a354"],
+            ylgnbu: ["#ffffcc", "#a1dab4", "#41b6c4", "#2c7fb8", "#253494"],
+            ylorbr: ["#ffffe5", "#fff7bc", "#fec44f", "#d95f0e", "#993404"],
+            ylorrd: ["#ffffb2", "#fecc5c", "#fd8d3c", "#f03b20", "#bd0026"],
+            // diverging
+            brbg: ["#a6611a", "#dfc27d", "#f5f5f5", "#80cdc1", "#018571"],
+            prgn: ["#7b3294", "#c2a5cf", "#f7f7f7", "#a6dba0", "#008837"],
+            piyg: ["#d01c8b", "#f1b6da", "#f7f7f7", "#b8e186", "#4dac26"],
+            puor: ["#5e3c99", "#b2abd2", "#f7f7f7", "#fdb863", "#e66101"],
+            rdbu: ["#ca0020", "#f4a582", "#f7f7f7", "#92c5de", "#0571b0"],
+            rdgy: ["#ca0020", "#f4a582", "#ffffff", "#bababa", "#404040"],
+            rdylbu: ["#d7191c", "#fdae61", "#ffffbf", "#abd9e9", "#2c7bb6"],
+            rdylgn: ["#d7191c", "#fdae61", "#ffffbf", "#a6d96a", "#1a9641"],
+            spectral: ["#d7191c", "#fdae61", "#ffffbf", "#abdda4", "#2b83ba"],
+            // cyclical
+            rainbow: ["#6e40aa", "#ff5e63", "#aff05b", "#1ac7c2", "#6e40aa"],
+            sinebow: ["#ff4040", "#7fee11", "#00bfbf", "#7f11ee", "#ff4040"],
+            // categorical
+            tableau10: ["#4e79a7", "#f28e2c", "#e15759", "#76b7b2", "#59a14f", "#edc949", "#af7aa1", "#ff9da7", "#9c755f", "#bab0ab"],
+            category10: ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"],
+            pastel: ["#fbb4ae", "#b3cde3", "#ccebc5", "#decbe4", "#fed9a6", "#ffffcc", "#e5d8bd", "#fddaec", "#f2f2f2"]
+        };
+        selectedColor = 'rdylgn';
+        maxRasterValue = 100;
+
+        map.on('load', () => {
+            map.addSource('sand-tiles-source', {
+                type: 'raster',
+                tiles: [
+                    'https://plotine-vacs.s3.us-east-2.amazonaws.com/sand-tiles/{z}/{x}/{y}.png'
+                ],
+                tileSize: 256,
+                scheme: "tms",
+                minzoom: 0,
+                maxzoom: 9,
+            });
+            map.addSource('carbon-tiles-source', {
+                type: 'raster',
+                tiles: [
+                    'https://plotine-vacs.s3.us-east-2.amazonaws.com/carbon-tiles/{z}/{x}/{y}.png'
+                ],
+                tileSize: 256,
+                scheme: "tms",
+                minzoom: 0,
+                maxzoom: 9,
+            });
+            map.addLayer({
+                id: 'sand-tiles-layer',
+                type: 'raster',
+                source: 'sand-tiles-source',
+                'paint': {
+                    "raster-color": [
+                        "interpolate",
+                        ["linear"],
+                        ["raster-value"],
+                        (0), palettes[selectedColor][4],
+                        (maxRasterValue * 0.25), palettes[selectedColor][3],
+                        (maxRasterValue * .5), palettes[selectedColor][2],
+                        (maxRasterValue * 0.75), palettes[selectedColor][1],
+                        (maxRasterValue * 1), palettes[selectedColor][0]
+                    ],
+                    "raster-color-mix": [255, 0, 0, 0],
+                    "raster-color-range": [0, maxRasterValue]
+                },
+                layout: {
+                    visibility: 'visible'
+                }
+            });
+            map.addLayer({
+                id: 'carbon-tiles-layer',
+                type: 'raster',
+                source: 'carbon-tiles-source',
+                'paint': {
+                    "raster-color": [
+                        "interpolate",
+                        ["linear"],
+                        ["raster-value"],
+                        (maxRasterValue*0), palettes[selectedColor][0],
+                        (maxRasterValue*.05), palettes[selectedColor][1],
+                        (maxRasterValue*.15), palettes[selectedColor][2],
+                        (maxRasterValue*.35), palettes[selectedColor][3],
+                        (maxRasterValue*.75), palettes[selectedColor][4]
+                    ],
+                    "raster-color-mix": [255, 0, 0, 0],
+                    "raster-color-range": [0, maxRasterValue]
+                },
+                layout: {
+                    visibility: 'none'
+                }
+            });
+        });
+        document.getElementById('toggle-sand').addEventListener('change', function (e) {
+            if (e.target.checked) {
+                map.setLayoutProperty('sand-tiles-layer', 'visibility', 'visible');
+                map.setLayoutProperty('carbon-tiles-layer', 'visibility', 'none');
+            }
+        });
+        document.getElementById('toggle-carbon').addEventListener('change', function (e) {
+            if (e.target.checked) {
+                map.setLayoutProperty('sand-tiles-layer', 'visibility', 'none');
+                map.setLayoutProperty('carbon-tiles-layer', 'visibility', 'visible');
+            }
+        });
+    </script>
+
+</body>
+
+</html>

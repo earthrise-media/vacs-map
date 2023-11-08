@@ -239,9 +239,10 @@ for (const key in colorScheme) {
 map.on("load", () => {
   map.addSource("maize_hist-source", {
     type: "geojson",
-    data: "https://plotine-vacs.s3.us-east-2.amazonaws.com/maize_ratios.geojson",
+    data: "./data/synced-data/crop-yields-mean-models.geojson",
     // add id to features
     generateId: true,
+    Attribution: "AgMIP",
   });
 
   map.addLayer(
