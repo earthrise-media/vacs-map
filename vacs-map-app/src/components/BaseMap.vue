@@ -44,8 +44,11 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.base-map-wrapper {
+  flex-grow: 1;
+}
+
 .base-map {
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
 }
 </style>
