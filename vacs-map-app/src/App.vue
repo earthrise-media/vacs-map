@@ -14,6 +14,7 @@
 import { computed, ref } from 'vue';
 import MapContainerColor from '@/components/MapContainerColor.vue';
 import MapContainerColorRadius from '@/components/MapContainerColorRadius.vue';
+import MapContainerNotFilled from '@/components/MapContainerNotFilled.vue';
 import Filters from '@/components/Filters.vue';
 
 const availableMaps = [
@@ -26,6 +27,11 @@ const availableMaps = [
     id: 'color-and-radius-1',
     name: 'dynamic color and radius (cropyield)',
     component: MapContainerColorRadius,
+  },
+  {
+    id: 'not-filled',
+    name: 'circles not filled',
+    component: MapContainerNotFilled,
   },
 ];
 const selectedMap = ref(availableMaps[0].id);

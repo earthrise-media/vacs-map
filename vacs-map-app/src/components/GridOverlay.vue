@@ -40,6 +40,16 @@ const props = defineProps({
     default: () => [],
   },
 
+  fill: {
+    type: Boolean,
+    default: true,
+  },
+
+  stroke: {
+    type: Boolean,
+    default: false,
+  },
+
   map: {
     type: Object,
     default: null,
@@ -62,11 +72,13 @@ const {
   colorColumnExtent,
   colorColumnQuintiles,
   colorDiverging,
+  fill,
   radiusColumn,
   radiusColumnExtent,
   map,
   mapReady,
-  sourceId
+  sourceId,
+  stroke,
 } = toRefs(props);
 
 const addLayer = () => {
@@ -77,11 +89,11 @@ const addLayer = () => {
     type: 'circle',
     paint: {
       'circle-radius': getCircleRadius(),
-      'circle-stroke-width': 0.2,
-      'circle-stroke-color': 'gray',
-      'circle-stroke-opacity': 0,
+      'circle-stroke-width': fill.value ? 0.2 : 1.5,
+      'circle-stroke-color': getCircleStrokeColor(),
+      'circle-stroke-opacity': fill.value ? 0 : 0.8,
       'circle-opacity': 1,
-      'circle-color': getCircleColor(),
+      'circle-color': getCircleFillColor(),
     }
   }, 'country-label-filter');
 
@@ -218,6 +230,16 @@ const getCircleColorDiverging = (extent, center) => {
   ];
 }
 
+const getCircleFillColor = () => {
+  if (!fill.value) return 'transparent';
+  return getCircleColor();
+};
+
+const getCircleStrokeColor = () => {
+  if (!stroke.value) return 'transparent';
+  return getCircleColor();
+};
+
 const getCircleColor = () => {
   if (colorDiverging.value) {
     // < 1, decrease
@@ -234,7 +256,8 @@ const getCircleColor = () => {
 
 const updateLayer = () => {
   if (!map.value.getLayer(id.value)) return;
-  map.value.setPaintProperty(id.value, 'circle-color', getCircleColor());
+  map.value.setPaintProperty(id.value, 'circle-color', getCircleFillColor());
+  map.value.setPaintProperty(id.value, 'circle-stroke-color', getCircleStrokeColor());
   map.value.setPaintProperty(id.value, 'circle-radius', getCircleRadius());
 };
 
