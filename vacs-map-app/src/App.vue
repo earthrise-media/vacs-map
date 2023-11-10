@@ -15,6 +15,7 @@ import { computed, ref } from 'vue';
 import MapContainerColor from '@/components/MapContainerColor.vue';
 import MapContainerColorRadius from '@/components/MapContainerColorRadius.vue';
 import MapContainerNotFilled from '@/components/MapContainerNotFilled.vue';
+import MapContainerNotFilledTwoLayers from '@/components/MapContainerNotFilledTwoLayers.vue';
 import Filters from '@/components/Filters.vue';
 
 const availableMaps = [
@@ -32,6 +33,11 @@ const availableMaps = [
     id: 'not-filled',
     name: 'circles not filled',
     component: MapContainerNotFilled,
+  },
+  {
+    id: 'not-filled-2',
+    name: 'circles not filled, two layers',
+    component: MapContainerNotFilledTwoLayers,
   },
 ];
 const selectedMap = ref(availableMaps[0].id);
