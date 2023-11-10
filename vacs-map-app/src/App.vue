@@ -1,6 +1,6 @@
 <template>
   <main>
-    <BaseMap />
+    <MapContainer />
     <div class="overlay">
       <Filters />
     </div>
@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import BaseMap from '@/components/BaseMap.vue';
+import MapContainer from '@/components/MapContainer.vue';
 import Filters from '@/components/Filters.vue';
 </script>
 
