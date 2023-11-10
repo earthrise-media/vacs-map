@@ -30,6 +30,16 @@ const props = defineProps({
     default: false,
   },
 
+  radiusColumn: {
+    type: String,
+    default: '',
+  },
+
+  radiusColumnExtent: {
+    type: Array,
+    default: () => [],
+  },
+
   map: {
     type: Object,
     default: null,
@@ -52,6 +62,8 @@ const {
   colorColumnExtent,
   colorColumnQuintiles,
   colorDiverging,
+  radiusColumn,
+  radiusColumnExtent,
   map,
   mapReady,
   sourceId
@@ -64,14 +76,7 @@ const addLayer = () => {
     source: sourceId.value,
     type: 'circle',
     paint: {
-      'circle-radius': [
-        'interpolate',
-        ['linear'],
-        ['zoom'],
-        1, 1,
-        5, 5,
-        9, 25
-      ],
+      'circle-radius': getCircleRadius(),
       'circle-stroke-width': 0.2,
       'circle-stroke-color': 'gray',
       'circle-stroke-opacity': 0,
@@ -116,30 +121,48 @@ const getCircleColorQuintiles = (quintiles) => {
 };
 
 const getCircleRadius = () => {
-  return [
-    'interpolate',
-    ['linear'],
-    ['zoom'],
-    1,
-    [
-      'interpolate', 
-      ['linear'], 
-      ['get', selectedMetric.value],
-      // value, size
-      0, 0.1,
-      10000, 0.3,
-      28000, 0.5
+  if (!radiusColumn.value || !radiusColumnExtent.value) {
+    return [
+      'interpolate',
+      ['linear'],
+      ['zoom'],
+      1, 1,
+      5, 5,
+      9, 25
+    ];
+  }
+  else {
+    const [min, max] = radiusColumnExtent.value;
+    const inputs = [
+      min,
+      min + (max - min) / 2,
+      max,
+    ];
+
+    return [
+      'interpolate',
+      ['linear'],
+      ['zoom'],
+      1,
+      [
+        'interpolate', 
+        ['linear'], 
+        ['get', radiusColumn.value],
+        inputs[0], 0.1,
+        inputs[1], 0.3,
+        inputs[2], 0.5
       ],
-    6,
-    [
-      'interpolate', 
-      ['linear'], 
-      ['get', selectedMetric.value],
-      0, 2,
-      10000, 5,
-      28000, 10
+      6,
+      [
+        'interpolate', 
+        ['linear'], 
+        ['get', radiusColumn.value],
+        inputs[0], 2,
+        inputs[1], 5,
+        inputs[2], 10
       ]
-  ];
+    ];
+  }
 };
 
 const getCircleColorExtent = (extent) => {
@@ -212,7 +235,7 @@ const getCircleColor = () => {
 const updateLayer = () => {
   if (!map.value.getLayer(id.value)) return;
   map.value.setPaintProperty(id.value, 'circle-color', getCircleColor());
-  // map.value.setPaintProperty(id.value, 'circle-radius', getCircleRadius());
+  map.value.setPaintProperty(id.value, 'circle-radius', getCircleRadius());
 };
 
 watch(mapReady, () => {
