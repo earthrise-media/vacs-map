@@ -1,7 +1,7 @@
 <template>
   <div class="base-map-wrapper">
     <div id="baseMapContainer" class="base-map"></div>
-    <GridOverlay :map="map" :mapReady="mapReady" />
+    <slot :map="map" :map-ready="mapReady"></slot>
   </div>
 </template>
 
@@ -14,7 +14,6 @@ import {
   MAPBOX_GL_ACCESS_TOKEN,
   MAPBOX_STYLE,
 } from '@/constants';
-import GridOverlay from './GridOverlay.vue';
 
 const map = shallowRef(null);
 const mapReady = ref(false);
@@ -45,8 +44,11 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.base-map-wrapper {
+  flex-grow: 1;
+}
+
 .base-map {
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
 }
 </style>

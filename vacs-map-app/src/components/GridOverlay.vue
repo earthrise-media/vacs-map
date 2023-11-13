@@ -2,21 +2,54 @@
 
 <script setup>
 import * as d3 from 'd3';
-import { computed, onMounted, toRefs, watch } from 'vue';
-import { storeToRefs } from 'pinia';
-import { point, featureCollection } from '@turf/helpers';
-import { useFiltersStore } from '@/stores/filters';
-import { useCropYieldsStore } from '@/stores/cropYields';
-import { useGridStore } from '@/stores/grid';
-
-const LAYER_ID = 'grid-overlay';
-const SOURCE_ID = 'grid-overlay';
-
-const cropYieldsStore = useCropYieldsStore();
-const filtersStore = useFiltersStore();
-const gridStore = useGridStore();
+import { computed, toRefs, watch } from 'vue';
 
 const props = defineProps({
+  id: {
+    type: String,
+    default: '',
+  },
+
+  colorColumn: {
+    type: String,
+    default: '',
+  },
+
+  colorColumnExtent: {
+    type: Array,
+    default: () => [],
+  },
+
+  colorColumnQuintiles: {
+    type: Array,
+    default: () => [],
+  },
+
+  colorDiverging: {
+    type: Boolean,
+    default: false,
+  },
+
+  radiusColumn: {
+    type: String,
+    default: '',
+  },
+
+  radiusColumnExtent: {
+    type: Array,
+    default: () => [],
+  },
+
+  fill: {
+    type: Boolean,
+    default: true,
+  },
+
+  stroke: {
+    type: Boolean,
+    default: false,
+  },
+
   map: {
     type: Object,
     default: null,
@@ -26,103 +59,45 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-});
 
-const { map, mapReady } = toRefs(props);
+  sourceId: {
+    type: String,
+    default: '',
+  },
+});
 
 const {
-  selectedCrop,
-  selectedMetric,
-  selectedModel
-} = storeToRefs(filtersStore);
-const { data: cropYieldsData } = storeToRefs(cropYieldsStore);
-const { data: gridData } = storeToRefs(gridStore);
-
-const selectedColumn = computed(() => {
-  return [
-    selectedMetric.value,
-    selectedCrop.value,
-    selectedModel.value,
-  ].join('_');
-});
-
-const selectedColumnExtent = computed(() => {
-  return cropYieldsStore.getExtent(selectedColumn.value);
-});
-
-const selectedColumnQuintiles = computed(() => {
-  return cropYieldsStore.getQuintiles(selectedColumn.value);
-});
-
-onMounted(() => {
-  gridStore.load();
-  cropYieldsStore.load();
-});
-
-// TODO do this stuff in another store?
-const joinData = (grid, yields) => {
-  const joined = Object.fromEntries(grid.map(row => ([row.id, row])));
-  yields
-    .forEach(row => {
-      if (joined[row.id]) {
-        joined[row.id] = { ...joined[row.id], ...row};
-      }
-    })
-  return Object.values(joined);
-};
-
-const joinedData = computed(() => {
-  if (!gridData.value) return [];
-  if (cropYieldsData.value) {
-    return joinData(gridData.value, cropYieldsData.value);
-  }
-  return gridData.value;
-});
-
-const joinedGeoJson = computed(() => {
-  return featureCollection(
-    joinedData.value.map(row => point([row.X, row.Y], row, { id: row.id }))
-  );
-});
-
-const addSource = (geoJson) => {
-  if (!map.value || !mapReady.value || map.value.getSource(SOURCE_ID)) return;
-
-  map.value.addSource(SOURCE_ID, {
-    type: 'geojson',
-    data: geoJson,
-  });
-};
+  id,
+  colorColumn,
+  colorColumnExtent,
+  colorColumnQuintiles,
+  colorDiverging,
+  fill,
+  radiusColumn,
+  radiusColumnExtent,
+  map,
+  mapReady,
+  sourceId,
+  stroke,
+} = toRefs(props);
 
 const addLayer = () => {
-  if (!map.value || !mapReady.value || map.value.getLayer(LAYER_ID)) return;
+  if (!map.value || !mapReady.value || map.value.getLayer(id.value)) return;
   map.value.addLayer({
-    id: LAYER_ID,
-    source: SOURCE_ID,
+    id: id.value,
+    source: sourceId.value,
     type: 'circle',
     paint: {
-      'circle-radius': [
-        'interpolate',
-        ['linear'],
-        ['zoom'],
-        1, 1,
-        5, 5,
-        9, 25
-      ],
-      'circle-stroke-width': 0.2,
-      'circle-stroke-color': 'gray',
-      'circle-stroke-opacity': 0,
+      'circle-radius': getCircleRadius(),
+      'circle-stroke-width': fill.value ? 0.2 : 1.5,
+      'circle-stroke-color': getCircleStrokeColor(),
+      'circle-stroke-opacity': fill.value ? 0 : 0.8,
       'circle-opacity': 1,
-      'circle-color': getCircleColor(),
+      'circle-color': getCircleFillColor(),
     }
   }, 'country-label-filter');
 
   updateLayer();
-};
-
-const addLayerToMap = (geoJson) => {
-  addSource(geoJson);
-  addLayer();
 };
 
 const getCircleColorQuintiles = (quintiles) => {
@@ -146,11 +121,11 @@ const getCircleColorQuintiles = (quintiles) => {
   // to strict buckets if we prefer.
   return [
     'case',
-    ['!=', ['get', selectedColumn.value], null],
+    ['!=', ['get', colorColumn.value], null],
     [
       'interpolate',
       ['linear'],
-      ['get', selectedColumn.value],
+      ['get', colorColumn.value],
       ...quintiles.map(({ value, quantile }) => ([value, getColor(quantile)])).flat()
     ],
     'transparent',
@@ -158,30 +133,48 @@ const getCircleColorQuintiles = (quintiles) => {
 };
 
 const getCircleRadius = () => {
-  return [
-    'interpolate',
-    ['linear'],
-    ['zoom'],
-    1,
-    [
-      'interpolate', 
-      ['linear'], 
-      ['get', selectedMetric.value],
-      // value, size
-      0, 0.1,
-      10000, 0.3,
-      28000, 0.5
+  if (!radiusColumn.value || !radiusColumnExtent.value) {
+    return [
+      'interpolate',
+      ['linear'],
+      ['zoom'],
+      1, 1,
+      5, 5,
+      9, 25
+    ];
+  }
+  else {
+    const [min, max] = radiusColumnExtent.value;
+    const inputs = [
+      min,
+      min + (max - min) / 2,
+      max,
+    ];
+
+    return [
+      'interpolate',
+      ['linear'],
+      ['zoom'],
+      1,
+      [
+        'interpolate', 
+        ['linear'], 
+        ['get', radiusColumn.value],
+        inputs[0], 0.1,
+        inputs[1], 0.3,
+        inputs[2], 0.5
       ],
-    6,
-    [
-      'interpolate', 
-      ['linear'], 
-      ['get', selectedMetric.value],
-      0, 2,
-      10000, 5,
-      28000, 10
+      6,
+      [
+        'interpolate', 
+        ['linear'], 
+        ['get', radiusColumn.value],
+        inputs[0], 2,
+        inputs[1], 5,
+        inputs[2], 10
       ]
-  ];
+    ];
+  }
 };
 
 const getCircleColorExtent = (extent) => {
@@ -194,11 +187,11 @@ const getCircleColorExtent = (extent) => {
 
   return [
     'case',
-    ['!=', ['get', selectedColumn.value], null],
+    ['!=', ['get', colorColumn.value], null],
     [
       'interpolate',
       ['linear'],
-      ['get', selectedColumn.value],
+      ['get', colorColumn.value],
       min, 'red',
       middle, 'yellow',
       max, 'green',
@@ -224,11 +217,11 @@ const getCircleColorDiverging = (extent, center) => {
 
   return [
     'case',
-    ['!=', ['get', selectedColumn.value], null],
+    ['!=', ['get', colorColumn.value], null],
     [
       'interpolate',
       ['linear'],
-      ['get', selectedColumn.value],
+      ['get', colorColumn.value],
       min, getColor(0),
       center, getColor(0.5),
       max, getColor(1),
@@ -237,45 +230,42 @@ const getCircleColorDiverging = (extent, center) => {
   ];
 }
 
+const getCircleFillColor = () => {
+  if (!fill.value) return 'transparent';
+  return getCircleColor();
+};
+
+const getCircleStrokeColor = () => {
+  if (!stroke.value) return 'transparent';
+  return getCircleColor();
+};
+
 const getCircleColor = () => {
-  if (selectedMetric.value === 'yieldratio') {
+  if (colorDiverging.value) {
     // < 1, decrease
     // 1 = no change
     // > 1, increase
-    return getCircleColorDiverging(selectedColumnExtent.value, 1);
+    return getCircleColorDiverging(colorColumnExtent.value, 1);
   }
 
-  return getCircleColorQuintiles(selectedColumnQuintiles.value);
+  return getCircleColorQuintiles(colorColumnQuintiles.value);
 
   // Defaulting to using quintiles but here's how to invoke another method:
-  // return getCircleColorExtent(selectedColumnExtent.value);
+  // return getCircleColorExtent(colorColumnExtent.value);
 };
 
 const updateLayer = () => {
-  if (!map.value.getLayer(LAYER_ID)) return;
-  map.value.setPaintProperty(LAYER_ID, 'circle-color', getCircleColor());
-  // map.value.setPaintProperty(LAYER_ID, 'circle-radius', getCircleRadius());
+  if (!map.value.getLayer(id.value)) return;
+  map.value.setPaintProperty(id.value, 'circle-color', getCircleFillColor());
+  map.value.setPaintProperty(id.value, 'circle-stroke-color', getCircleStrokeColor());
+  map.value.setPaintProperty(id.value, 'circle-radius', getCircleRadius());
 };
 
 watch(mapReady, () => {
-  if (!joinedGeoJson.value) return;
-  addLayerToMap(joinedGeoJson.value);
+  addLayer();
 });
 
-watch(joinedGeoJson, () => {
-  if (!joinedGeoJson.value) return;
-  addLayerToMap(joinedGeoJson.value);
-});
-
-watch(selectedMetric, () => {
-  updateLayer();
-});
-
-watch(selectedModel, () => {
-  updateLayer();
-});
-
-watch(selectedCrop, () => {
+watch(colorColumn, () => {
   updateLayer();
 });
 </script>

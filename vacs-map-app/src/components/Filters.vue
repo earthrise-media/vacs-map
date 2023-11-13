@@ -57,10 +57,8 @@ const {
 
 <style scoped>
 .filters {
-  background: white;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 0.5rem;
-  padding: 1rem;
 }
 </style>
