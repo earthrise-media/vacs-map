@@ -16,6 +16,7 @@ import MapContainerColor from '@/components/MapContainerColor.vue';
 import MapContainerColorRadius from '@/components/MapContainerColorRadius.vue';
 import MapContainerNotFilled from '@/components/MapContainerNotFilled.vue';
 import MapContainerNotFilledTwoLayers from '@/components/MapContainerNotFilledTwoLayers.vue';
+import MapContainerColorAfricanUnion from '@/components/MapContainerColorAfricanUnion.vue';
 import Filters from '@/components/Filters.vue';
 
 const availableMaps = [
@@ -38,6 +39,11 @@ const availableMaps = [
     id: 'not-filled-2',
     name: 'circles not filled, two layers',
     component: MapContainerNotFilledTwoLayers,
+  },
+  {
+    id: 'african-union',
+    name: 'circles + african union regions',
+    component: MapContainerColorAfricanUnion,
   },
 ];
 const selectedMap = ref(availableMaps[0].id);
