@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+env:
+  cloudfront_distribution: ${{ secrets.CLOUDFRONT_DISTRIBUTION }}
 jobs:
   deploy-to-s3:
     name: Deploy to S3
@@ -26,3 +28,6 @@ jobs:
         working-directory: vacs-map-app
         run: |
           aws s3 sync dist s3://stories2.theplotline.org/vacs/ --delete
+      - name: Clear Cloudfront cache
+        run: |
+          aws cloudfront create-invalidation $cloudfront_distribution --paths '/vacs/*'
