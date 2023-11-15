@@ -30,4 +30,4 @@ jobs:
           aws s3 sync dist s3://stories2.theplotline.org/vacs/ --delete
       - name: Clear Cloudfront cache
         run: |
-          aws cloudfront create-invalidation $cloudfront_distribution --paths '/vacs/*'
+          aws cloudfront create-invalidation --distribution-id $cloudfront_distribution --paths '/vacs/*'
