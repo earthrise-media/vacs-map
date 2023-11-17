@@ -7,7 +7,7 @@
         :color-column="selectedColumn"
         :color-column-extent="selectedColumnExtent"
         :color-column-quintiles="selectedColumnQuintiles"
-        :color-diverging="false"
+        :color-diverging="selectedMetric === 'yieldratio'"
         :radius-column="radiusColumn"
         :radius-column-extent="radiusColumnExtent"
         :sourceId="sourceId"
