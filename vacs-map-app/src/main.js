@@ -9,6 +9,8 @@ import MapExplorer from './MapExplorer.vue';
 import ClimateChangeOverview from '@/components/pages/ClimateChangeOverview.vue';
 import CropTypeOverview from '@/components/pages/CropTypeOverview.vue';
 import GeographyOverview from '@/components/pages/GeographyOverview.vue';
+import QueryPlugin from '@/store-plugins/query';
+import { getActivePinia } from 'pinia';
 
 const app = createApp(App)
 
@@ -29,3 +31,5 @@ const router = VueRouter.createRouter({
 app.use(createPinia());
 app.use(router);
 app.mount('#app');
+
+getActivePinia().use(QueryPlugin);

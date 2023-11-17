@@ -23,14 +23,18 @@ export const useFiltersStore = defineStore('filters', () => {
         .filter(k => k !== 'id')
         .map(k => k.split('_')[0])
     )).sort();
-    selectedMetric.value = availableMetrics.value[0];
+    if (!selectedMetric.value) {
+      selectedMetric.value = availableMetrics.value[0];
+    }
 
     availableCrops.value = Array.from(new Set(
       Object.keys(firstRow)
         .filter(k => k.startsWith('yield'))
         .map(k => k.split('_')[1])
     )).sort();
-    selectedCrop.value = availableCrops.value[0];
+    if (!selectedCrop.value) {
+      selectedCrop.value = availableCrops.value[0];
+    }
 
     availableModels.value = Array.from(new Set(
       Object.keys(firstRow)
