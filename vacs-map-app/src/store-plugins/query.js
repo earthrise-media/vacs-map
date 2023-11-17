@@ -27,7 +27,7 @@ const getParams = (pinia) => {
   return Object.fromEntries(
     toPersist
       .map(({ store, key, outputKey }) => {
-        const value = pinia[store][key];
+        const value = pinia[store]?.[key];
         if (!value) return;
         return [outputKey, value];
       })
