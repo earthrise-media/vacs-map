@@ -43,7 +43,9 @@ export const useCropYieldsStore = defineStore('cropYields', () => {
         ].join('_');
 
         let yieldRatioValue = null;
-        if (d[k] !== null && d[historicalKey] !== null) yieldRatioValue = d[k] / d[historicalKey];
+        if (d[k] !== null && d[historicalKey] !== null) {
+          yieldRatioValue = (d[k] - d[historicalKey]) / d[historicalKey];
+        }
 
         rowWithYields[yieldRatioKey] = yieldRatioValue;
       });
