@@ -2,16 +2,11 @@
   <LayoutOpen>
     <div class="map-wrapper-row">
       <div class="callout">
+        <div class="callout-header">
+          What crops have the most potential in climate change?
+        </div>
         <div class="callout-content">
-          How does
-          <select v-model="topic" class="topic-picker">
-            <option
-              v-for="t in topicUrlOptions"
-              :key="t.value"
-              :value="t.value"
-            >{{ t.label }}</option>
-          </select>
-          impact decisions about food security?
+The Vision for Adapted Crops and Soils (VACS) aims to foster more resilient food systems, with an initial focus on the African continent. VACS seeks to boost agricultural productivity and nutrition by developing diverse, climate-resilient crop varieties and building healthy soils. Keep reading
         </div>
         <button class="go-to-topic" @click="navigate">
           Find out
@@ -29,11 +24,9 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import LayoutOpen from '@/components/layouts/LayoutOpen.vue';
 import MapContainerColor from '@/components/MapContainerColor.vue';
-import { topicUrlOptions } from '@/constants/topics';
 
 const router = useRouter();
-const topic = ref(topicUrlOptions[0].value);
-const navigate = () => router.push(topic.value);
+const navigate = () => router.push('/crops');
 </script>
 
 <style scoped>
@@ -56,10 +49,13 @@ const navigate = () => router.push(topic.value);
   align-items: flex-start;
   justify-content: center;
   padding: 0 5rem;
-  font-size: 3em;
   flex-basis: 0;
   flex-grow: 1;
   gap: 2rem;
+}
+
+.callout-header {
+  font-size: 3em;
   line-height: 1.25em;
 }
 

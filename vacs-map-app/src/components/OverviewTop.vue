@@ -2,11 +2,8 @@
   <div class="overview-top">
     <div class="row">
       <div>
-        How does <TopicPicker :value="topic" /> impact decisions about food security?
+        What crops have the most potential in climate change?
       </div>
-      <NavigationButton to="/map-explore">Explore the map</NavigationButton>
-    </div>
-    <div class="row">
       <NavigationButton to="/">Go Back</NavigationButton>
     </div>
   </div>
