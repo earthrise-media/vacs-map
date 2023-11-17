@@ -108,11 +108,11 @@ const getCircleColorQuintiles = (quintiles) => {
     // d3 to interpolate a given color scheme.
 
     // There are built-in d3 interpolators we can use:
-    const interpolator = d3.interpolateGreens;
+    // const interpolator = d3.interpolateGreens;
 
     // Or it's pretty easy to define your own:
     // (you can include as many colors here as you like)
-    // const interpolator = d3.interpolateHsl("purple", "orange");
+    const interpolator = d3.interpolateHsl("purple", "orange");
 
     return interpolator(quantile);
   };
@@ -126,6 +126,7 @@ const getCircleColorQuintiles = (quintiles) => {
       'interpolate',
       ['linear'],
       ['get', colorColumn.value],
+      // what color should we assign to each quintile?
       ...quintiles.map(({ value, quantile }) => ([value, getColor(quantile)])).flat()
     ],
     'transparent',
