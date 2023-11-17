@@ -12,12 +12,14 @@
 
 <script setup>
 import { computed, ref } from 'vue';
+import { storeToRefs } from 'pinia';
 import MapContainerColor from '@/components/MapContainerColor.vue';
 import MapContainerColorRadius from '@/components/MapContainerColorRadius.vue';
 import MapContainerNotFilled from '@/components/MapContainerNotFilled.vue';
 import MapContainerNotFilledTwoLayers from '@/components/MapContainerNotFilledTwoLayers.vue';
 import MapContainerColorAfricanUnion from '@/components/MapContainerColorAfricanUnion.vue';
 import Filters from '@/components/Filters.vue';
+import { useMapExploreStore } from '@/stores/mapExplore';
 
 const availableMaps = [
   {
@@ -46,7 +48,14 @@ const availableMaps = [
     component: MapContainerColorAfricanUnion,
   },
 ];
-const selectedMap = ref(availableMaps[0].id);
+
+const mapExploreStore = useMapExploreStore();
+const { selectedMap } = storeToRefs(mapExploreStore);
+
+if (!selectedMap.value) {
+  selectedMap.value = availableMaps[0].id;
+}
+
 const selectedMapComponent = computed(() => {
   return availableMaps.find(({ id }) => id === selectedMap.value).component;
 });
