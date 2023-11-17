@@ -140,7 +140,8 @@ const getCircleRadius = () => {
       ['linear'],
       ['zoom'],
       1, 1,
-      5, 5,
+      3, 3,
+      5, 7,
       9, 25
     ];
   }
@@ -209,9 +210,9 @@ const getCircleColorDiverging = (extent, center) => {
     // See getCircleColorQuintiles for details about how this works
     // const interpolator = d3.interpolateBrBG;
 
-    const interpolator = d3.interpolatePiYG;
+    // const interpolator = d3.interpolatePiYG;
 
-    // const interpolator = d3.interpolateHsl("purple", "orange");
+    const interpolator = d3.interpolateHsl("#FF8A00", "#1CAC50");
 
     return interpolator(value);
   };
@@ -224,10 +225,10 @@ const getCircleColorDiverging = (extent, center) => {
       ['linear'],
       ['get', colorColumn.value],
       min, getColor(0),
-      center, getColor(0.5),
+      center, "#D4D5A5",
       max, getColor(1),
     ],
-    'white',
+    'transparent',
   ];
 }
 
