@@ -65,6 +65,7 @@ export const useCropYieldsStore = defineStore('cropYields', () => {
    */
   const getExtent = columnName => {
     const values = getColumnValues(columnName);
+    if (!values) return null;
     return [
       values[0],
       d3.quantileSorted(values, 0.98),
@@ -73,6 +74,7 @@ export const useCropYieldsStore = defineStore('cropYields', () => {
 
   const getQuintiles = columnName => {
     const values = getColumnValues(columnName);
+    if (!values) return null;
     return [
       ...d3.range(0, 1, 0.2).map(d => ({
         value: d3.quantileSorted(values, d),
