@@ -64,7 +64,8 @@ const addLayer = () => {
     source: sourceId.value,
     type: 'line',
     paint: {
-      'line-color': 'black',
+      'line-color': '#bdbdbd',
+      'line-width': 2
     }
   }, 'country-label-filter');
 
