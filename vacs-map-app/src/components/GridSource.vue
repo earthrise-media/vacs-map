@@ -64,7 +64,7 @@ const joinedGeoJson = computed(() => {
 });
 
 const addSource = (geoJson) => {
-  if (!map.value || !mapReady.value || map.value.getSource(id)) return;
+  if (!map.value || !mapReady.value || map.value.getSource(id.value)) return;
 
   map.value.addSource(id.value, {
     type: 'geojson',
