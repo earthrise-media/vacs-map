@@ -243,10 +243,10 @@ const getCircleStrokeColor = () => {
 
 const getCircleColor = () => {
   if (colorDiverging.value) {
-    // < 1, decrease
-    // 1 = no change
-    // > 1, increase
-    return getCircleColorDiverging(colorColumnExtent.value, 1);
+    // < 0, decrease
+    // 0 = no change
+    // > 0, increase
+    return getCircleColorDiverging(colorColumnExtent.value, 0);
   }
 
   return getCircleColorQuintiles(colorColumnQuintiles.value);
