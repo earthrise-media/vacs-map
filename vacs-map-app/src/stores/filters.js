@@ -24,7 +24,7 @@ export const useFiltersStore = defineStore('filters', () => {
         .map(k => k.split('_')[0])
     )).sort();
     if (!selectedMetric.value) {
-      selectedMetric.value = availableMetrics.value[0];
+      selectedMetric.value = 'yieldratio';
     }
 
     availableCrops.value = Array.from(new Set(
