@@ -3,7 +3,7 @@
     <div class="map-wrapper-row">
       <div class="callout">
         <div class="callout-header">
-          What crops have the most potential in climate change?
+          What crops have the most potential in a changing climate?
         </div>
         <div class="callout-content">
 The Vision for Adapted Crops and Soils (VACS) aims to foster more resilient food systems, with an initial focus on the African continent. VACS seeks to boost agricultural productivity and nutrition by developing diverse, climate-resilient crop varieties and building healthy soils. Keep reading

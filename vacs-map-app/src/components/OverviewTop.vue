@@ -2,25 +2,20 @@
   <div class="overview-top">
     <div class="row">
       <div>
-        What crops have the most potential in climate change?
+        What crops have the most potential in a changing climate?
       </div>
-      <NavigationButton to="/">Go Back</NavigationButton>
+      <NavigationButton :to="backRoute">Go Back</NavigationButton>
     </div>
   </div>
 </template>
 
 <script setup>
-import { toRefs } from 'vue';
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 import NavigationButton from '@/components/NavigationButton.vue';
-import TopicPicker from '@/components/TopicPicker.vue';
 
-const props = defineProps({
-  topic: {
-    type: String,
-    default: '',
-  },
-});
-const { topic } = toRefs(props);
+const route = useRoute();
+const backRoute = computed(() => route.path === '/map-explore' ? '/crops' : '/');
 </script>
 
 <style scoped>
