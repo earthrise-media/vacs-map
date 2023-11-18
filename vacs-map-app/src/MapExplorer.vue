@@ -1,13 +1,17 @@
 <template>
-  <main>
-    <div class="top-bar">
-      <select v-model="selectedMap">
-        <option v-for="map in availableMaps" :value="map.id">{{ map.name }}</option>
-      </select>
-      <Filters />
+  <LayoutOverview>
+    <div class="map-wrapper-row">
+      <ExploreSidebar />
+      <div class="map-wrapper">
+        <component :is="selectedMapComponent" />
+        <div class="map-overlay">
+          <select v-model="selectedMap">
+            <option v-for="map in availableMaps" :value="map.id">{{ map.name }}</option>
+          </select>
+        </div>
+      </div>
     </div>
-    <component :is="selectedMapComponent" />
-  </main>
+  </LayoutOverview>
 </template>
 
 <script setup>
@@ -20,8 +24,10 @@ import MapContainerNotFilledTwoLayers from '@/components/MapContainerNotFilledTw
 import MapContainerColorAfricanUnion from '@/components/MapContainerColorAfricanUnion.vue';
 import MapContainerColorSoil from '@/components/MapContainerColorSoil.vue';
 import MapContainerColorSand from '@/components/MapContainerColorSand.vue';
-import Filters from '@/components/Filters.vue';
+import { useFiltersStore } from '@/stores/filters';
 import { useMapExploreStore } from '@/stores/mapExplore';
+import LayoutOverview from './components/layouts/LayoutOverview.vue';
+import ExploreSidebar from './components/ExploreSidebar.vue';
 
 const availableMaps = [
   {
@@ -74,18 +80,23 @@ const selectedMapComponent = computed(() => {
 </script>
 
 <style scoped>
-.top-bar {
-  padding: 0.5rem 2rem;
+.map-wrapper-row {
   display: flex;
   flex-direction: row;
-  gap: 0.5rem;
-  align-items: center;
+  height: 100%;
 }
 
-.overlay {
+.map-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.map-overlay {
   position: absolute;
-  left: 1rem;
-  top: 3rem;
+  top: 5rem;
+  right: 1rem;
 }
 </style>
 
