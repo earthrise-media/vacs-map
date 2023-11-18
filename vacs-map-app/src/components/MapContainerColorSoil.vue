@@ -1,31 +1,25 @@
 <template>
   <BaseMap>
     <template v-slot="{ map, mapReady }">
+      <RasterSource
+        :id="rasterSourceId"
+        tiles-url="https://plotine-vacs.s3.us-east-2.amazonaws.com/carbon-tiles/{z}/{x}/{y}.png"
+        :map="map"
+        :map-ready="mapReady"
+      />
+      <SoilCarbonLayer
+        id="soil-carbon"
+        :map="map"
+        :map-ready="mapReady"
+        :source-id="rasterSourceId"
+      />
       <GridSource :id="sourceId" :map="map" :mapReady="mapReady" />
       <GridOverlay
         id="grid-layer-1"
         :color-column="selectedColumn"
         :color-column-extent="selectedColumnExtent"
         :color-column-quintiles="selectedColumnQuintiles"
-        :color-diverging="selectedMetric === 'yieldratio'"
-        :radius-column="selectedColumn"
-        :radius-column-extent="selectedColumnExtent"
-        :fill="false"
-        :stroke="true"
-        :sourceId="sourceId"
-        :map="map"
-        :mapReady="mapReady"
-      />
-      <GridOverlay
-        id="grid-layer-2"
-        :color-column="comparisonColumn"
-        :color-column-extent="comparisonColumnExtent"
-        :color-column-quintiles="comparisonColumnQuintiles"
-        :color-diverging="selectedMetric === 'yieldratio'"
-        :radius-column="comparisonColumn"
-        :radius-column-extent="comparisonColumnExtent"
-        :fill="false"
-        :stroke="true"
+        :color-diverging="false"
         :sourceId="sourceId"
         :map="map"
         :mapReady="mapReady"
@@ -42,8 +36,11 @@ import { useFiltersStore } from '@/stores/filters';
 import { useCropYieldsStore } from '@/stores/cropYields';
 import GridSource from './GridSource.vue';
 import GridOverlay from './GridOverlay.vue';
+import RasterSource from './RasterSource.vue';
+import SoilCarbonLayer from './SoilCarbonLayer.vue';
 
 const sourceId = 'cropGrid';
+const rasterSourceId = 'soilCarbonSource';
 const cropYieldsStore = useCropYieldsStore();
 const filtersStore = useFiltersStore();
 
@@ -73,29 +70,6 @@ const selectedColumnExtent = computed(() => {
 const selectedColumnQuintiles = computed(() => {
   if (!selectedColumn.value) return null;
   return cropYieldsStore.getQuintiles(selectedColumn.value);
-});
-
-// Comparison column just always shows maize
-const comparisonColumn = computed(() => {
-  if (!selectedMetric.value || !selectedCrop.value || !selectedModel.value) {
-    return null;
-  }
-
-  return [
-    selectedMetric.value,
-    'maize',
-    selectedModel.value,
-  ].join('_');
-});
-
-const comparisonColumnExtent = computed(() => {
-  if (!comparisonColumn.value) return null;
-  return cropYieldsStore.getExtent(comparisonColumn.value);
-});
-
-const comparisonColumnQuintiles = computed(() => {
-  if (!comparisonColumn.value) return null;
-  return cropYieldsStore.getQuintiles(comparisonColumn.value);
 });
 </script>
 
