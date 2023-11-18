@@ -1,7 +1,7 @@
 export const topicUrlOptions = [
   {
     label: 'crop type',
-    value: '/crop-type',
+    value: '/crops',
   },
   {
     label: 'climate change',

@@ -35,6 +35,6 @@ const topic = computed(() => topicUrlOptions
 }
 
 .layout-overview-content {
-  margin: 0 var(--page-horizontal-margin);
+  height: 100%;
 }
 </style>

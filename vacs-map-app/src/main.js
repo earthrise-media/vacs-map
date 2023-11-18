@@ -7,6 +7,7 @@ import App from './App.vue';
 import LandingPage from './LandingPage.vue';
 import MapExplorer from './MapExplorer.vue';
 import ClimateChangeOverview from '@/components/pages/ClimateChangeOverview.vue';
+import CropDetail from '@/components/pages/CropDetail.vue';
 import CropTypeOverview from '@/components/pages/CropTypeOverview.vue';
 import GeographyOverview from '@/components/pages/GeographyOverview.vue';
 import QueryPlugin from '@/store-plugins/query';
@@ -16,7 +17,8 @@ const app = createApp(App)
 
 const routes = [
   { path: '/', component: LandingPage },
-  { path: '/crop-type', component: CropTypeOverview },
+  { path: '/crops', component: CropTypeOverview },
+  { path: '/crops/:slug', component: CropDetail },
   { path: '/climate-change', component: ClimateChangeOverview },
   { path: '/geography', component: GeographyOverview },
   { path: '/map-explore', component: MapExplorer },

@@ -1,12 +1,20 @@
 <template>
-  <LayoutOverview topic-label="crop type">
-    crop type
+  <LayoutOverview>
+    <div class="wrapper">
+      <CropFilters />
+      <CropCards />
+    </div>
   </LayoutOverview>
 </template>
 
 <script setup>
 import LayoutOverview from '@/components/layouts/LayoutOverview.vue';
+import CropCards from '@/components/CropCards.vue';
+import CropFilters from '@/components/CropFilters.vue';
 </script>
 
 <style scoped>
+.wrapper {
+  margin: 0 var(--page-horizontal-margin);
+}
 </style>
