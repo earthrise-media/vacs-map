@@ -17,11 +17,16 @@
     </div>
 
     <div class="scenarios">
-      <div v-for="scenario in futureScenarios" :key="scenario" class="scenario" :class="{selected: selectedModel === scenario}" @click="selectedModel = scenario">
-        <span>
-          {{ scenario }}
-        </span>
-      </div>
+      <CardWrapper 
+        v-for="scenario in futureScenarios" 
+        :key="scenario" 
+        :title="scenario"
+        :description="'this is a longer description to test how a longer description looks'"
+        :is-active="selectedModel === scenario"
+        :handle-click="() => selectedModel = scenario"
+      >
+        <DistributionPlot :scenario="scenario" />
+      </CardWrapper>
     </div>
   </div>
 </template>
@@ -30,6 +35,8 @@
 import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useFiltersStore } from '@/stores/filters';
+import DistributionPlot from './DistributionPlot.vue';
+import CardWrapper from './CardWrapper.vue';
 
 const filtersStore = useFiltersStore();
 const {
@@ -47,9 +54,10 @@ const futureScenarios = computed(() => availableModels.value.filter(d => d.start
 .sidebar {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  justify-content: space-between;
   margin-left: var(--page-horizontal-margin);
   padding-right: 2rem;
+  padding-bottom: 2rem;
   width: 400px;
 }
 
@@ -62,7 +70,7 @@ const futureScenarios = computed(() => availableModels.value.filter(d => d.start
 .crop-fingerprint {
   width: 100%;
   height: 40%;
-  border: 1px solid white;
+  border: 1px solid var(--white);
   border-radius: 0.5rem;
 }
 
@@ -72,18 +80,6 @@ const futureScenarios = computed(() => availableModels.value.filter(d => d.start
   display: flex;
   flex-direction: row;
   gap: 1rem;
-}
-
-.scenario {
-  width: 100%;
-  border: 1px solid gray;
-  border-radius: 0.5rem;
-  cursor: pointer;
-}
-
-.scenario.selected {
-  cursor: pointer;
-  border-color: white;
 }
 
 </style>
