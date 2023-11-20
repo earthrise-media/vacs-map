@@ -77,7 +77,7 @@ const mapExploreStore = useMapExploreStore();
 const { selectedMap } = storeToRefs(mapExploreStore);
 
 if (!selectedMap.value) {
-  selectedMap.value = availableMaps[0].id;
+  selectedMap.value = availableMaps[1].id;
 }
 
 const selectedMapComponent = computed(() => {
