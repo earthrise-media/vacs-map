@@ -13,7 +13,7 @@ The Vision for Adapted Crops and Soils (VACS) aims to foster more resilient food
         </button>
       </div>
       <div class="map-wrapper">
-        <MapContainerColor />
+        <MapHomepage />
       </div>
     </div>
   </LayoutOpen>
@@ -23,7 +23,7 @@ The Vision for Adapted Crops and Soils (VACS) aims to foster more resilient food
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import LayoutOpen from '@/components/layouts/LayoutOpen.vue';
-import MapContainerColor from '@/components/MapContainerColor.vue';
+import MapHomepage from './components/MapHomepage.vue';
 
 const router = useRouter();
 const navigate = () => router.push('/crops');
@@ -41,6 +41,7 @@ const navigate = () => router.push('/crops');
   display: flex;
   flex-direction: column;
   width: 55%;
+  justify-content: center;
 }
 
 .callout {
