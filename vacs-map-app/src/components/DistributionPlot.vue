@@ -23,7 +23,6 @@ import { computed, toRefs, ref, onMounted } from 'vue';
 import { useFiltersStore } from '@/stores/filters';
 import { useCropYieldsStore } from '@/stores/cropYields'; 
 import { storeToRefs } from 'pinia';
-import { divergingScheme } from '@/utils/colors';
 
 const props = defineProps({
   scenario: {
@@ -67,6 +66,16 @@ const metaExtent = computed(() => {
   return [d3.min(extents.map(d => d[0])), d3.min(extents.map(d => d[1]))];
 })
 
+const colorExtent = computed(() => {
+  // want to get extent across all scenarios and included crops so that comparisons are more useful
+  const extents = []
+  availableModels.value.forEach(s => {
+    const column = [selectedMetric.value, selectedCrop.value, s].join("_");
+    extents.push(cropYieldsStore.getExtent(column))
+  })
+  return [d3.min(extents.map(d => d[0])), d3.min(extents.map(d => d[1]))];
+})
+
 const gridCells = computed(() => {
   if (!cropYieldsData.value) return;
   return cropYieldsData.value.map((row) => {
@@ -93,8 +102,8 @@ const xScale = computed(() => {
 const getCellColor = (value) => {
   if (!value) return 'transparent';
   const scale = d3.scaleLinear()
-    .domain([metaExtent.value[0], 0, metaExtent.value[1]])
-    .range([divergingScheme.min, divergingScheme.center, divergingScheme.max])
+    .domain([colorExtent.value[0], 0, colorExtent.value[1]])
+    .range(["#FF8A00", "#D4D5A5", "#1CAC50"])
     .clamp(true);
 
   return scale(value);
