@@ -51,9 +51,9 @@ const getRasterColor = () => {
     // const interpolator = d3.interpolatePiYG;
 
     // Or define your own:
-    // const interpolator = d3.interpolateHsl("purple", "orange");
+    const interpolator = d3.interpolateHsl("hsl(60, 2%, 34%)", "red");
 
-    const interpolator = d3.interpolateInferno;
+    // const interpolator = d3.interpolateOranges;
     return interpolator(value);
   };
 
@@ -71,6 +71,7 @@ const getRasterColor = () => {
 
 const paint = {
   "raster-color": getRasterColor(),
+  "raster-opacity": 0.25,
   "raster-color-mix": [255, 0, 0, 0],
   "raster-color-range": [0, maxRasterValue],
 };
