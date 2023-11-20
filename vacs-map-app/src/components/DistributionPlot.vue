@@ -40,11 +40,14 @@ const { data: cropYieldsData } = storeToRefs(cropYieldsStore);
 const wrapperRef = ref(null);
 const width = ref(0);
 const height = ref(0);
-const margin = ref(100);
 
 useResizeObserver(wrapperRef, ([entry]) => {
   width.value = entry.contentRect.width;
   height.value = entry.contentRect.height;
+})
+
+const margin = computed(() => {
+  return height.value * .2;
 })
 
 const columnName = computed(() => {
