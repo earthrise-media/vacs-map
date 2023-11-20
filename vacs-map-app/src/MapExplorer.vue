@@ -18,6 +18,7 @@
 import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import MapContainerColor from '@/components/MapContainerColor.vue';
+import MapContainerColorAcrossScenarios from './components/MapContainerColorAcrossScenarios.vue';
 import MapContainerColorRadius from '@/components/MapContainerColorRadius.vue';
 import MapContainerNotFilled from '@/components/MapContainerNotFilled.vue';
 import MapContainerNotFilledTwoLayers from '@/components/MapContainerNotFilledTwoLayers.vue';
@@ -34,6 +35,11 @@ const availableMaps = [
     id: 'just-color',
     name: 'dynamic color',
     component: MapContainerColor,
+  },
+  {
+    id: 'color-across-scenarios',
+    name: 'color across scenarios',
+    component: MapContainerColorAcrossScenarios,
   },
   {
     id: 'color-and-radius-1',
