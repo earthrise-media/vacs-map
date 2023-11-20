@@ -93,7 +93,7 @@ const getCellColor = (value) => {
   if (!value) return 'transparent';
   const scale = d3.scaleLinear()
     .domain([metaExtent.value[0], 0, metaExtent.value[1]])
-    .range(["#FF8A00", "#D4D5A5", "#1CAC50"])
+    .range(["#FFA31A", "#424242", "#13F364"])
     .clamp(true);
 
   return scale(value);
