@@ -9,8 +9,9 @@
 #app {
   margin: 0 auto;
 
+  --black: #272727;
+  --white: #E1DCD5;
   --dark-gray: #404040;
-  --white: #ffffff;
 
   --page-horizontal-margin: 5rem;
 }

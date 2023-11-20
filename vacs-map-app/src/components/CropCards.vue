@@ -1,10 +1,14 @@
 <template>
   <div class="crop-cards">
-    <div class="crop-card" v-for="crop in filteredCrops" :key="crop">
-      <router-link :to="`/map-explore`" @click="selectedCrop = crop">
-        {{ crop }}
-      </router-link>
-    </div>
+    <CardWrapper 
+      v-for="crop in filteredCrops" 
+      :key="crop"
+      :title="crop"
+      :description="'description'"
+      :handle-click="() => navigate(crop)"
+    >
+      <div class="card-background"></div>
+    </CardWrapper>
   </div>
 </template>
 
@@ -14,6 +18,7 @@ import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useFiltersStore } from '@/stores/filters';
+import CardWrapper from './CardWrapper.vue';
 
 const router = useRouter();
 const filtersStore = useFiltersStore();
@@ -21,6 +26,11 @@ const { availableCrops, selectedCrop } = storeToRefs(filtersStore);
 
 // TODO actually filter
 const filteredCrops = computed(() => availableCrops.value);
+
+const navigate = (crop) => {
+  selectedCrop.value = crop;
+  router.push('map-explore');
+}
 
 </script>
 
@@ -31,9 +41,9 @@ const filteredCrops = computed(() => availableCrops.value);
   gap: 1rem;
 }
 
-.crop-card {
-  background: white;
-  border-radius: 10px;
-  height: 10rem;
+.card-background {
+  height: 15rem;
+  width: 100%;
+  background: var(--black);
 }
 </style>
