@@ -14,7 +14,6 @@
       </g>
     </svg>
   </div>
-  
 </template>
 
 <script setup>
@@ -36,21 +35,27 @@ const { data: gridData } = storeToRefs(gridStore);
 const { availableCrops, availableModels } = storeToRefs(filtersStore);
 
 const wrapperRef = ref(null);
+const width = ref(0);
+const height = ref(0);
 const timer = ref(null);
 const selectedCropIndex = ref(0);
-const projection = ref(geoChamberlinAfrica());
 
 useResizeObserver(wrapperRef, ([entry]) => {
-  let w = entry.contentRect.width;
-  let h = entry.contentRect.height;
-
-  projection.value.translate([w/2, h/2]);
-  projection.value.scale(w * 0.75);
-})
+  width.value = entry.contentRect.width;
+  height.value = entry.contentRect.height;
+});
 
 const selectedCrop = computed(() => availableCrops.value[selectedCropIndex.value]);
 const selectedColumn = computed(() => `yieldratio_${selectedCrop.value}_future_ssp370`);
 const selectedExtent = computed(() => cropYieldsStore.getExtent(selectedColumn.value));
+
+
+// this handles the projection, with translation and scale based on window size (responsive)
+const projection = computed(() => {
+  return geoChamberlinAfrica()
+    .translate([width.value/2, height.value/2])
+    .scale(width.value * .75);
+});
 
 const gridCells = computed(() => {
   if (!gridData.value || !cropYieldsData.value) return;
@@ -64,6 +69,7 @@ const gridCells = computed(() => {
   });
 });
 
+
 const getCellColor = (value) => {
   if (!value) return 'transparent';
 
@@ -73,7 +79,7 @@ const getCellColor = (value) => {
     .clamp(true);
   
   return scale(value);
-}
+};
 
 const updateGrid = () => {
   if (selectedCropIndex.value === availableCrops.value.length - 1) {
@@ -81,27 +87,24 @@ const updateGrid = () => {
   } else {
     selectedCropIndex.value++;
   }
-}
+};
 
 onMounted(() => {
   gridStore.load();
   cropYieldsStore.load();
 
-  let w = wrapperRef.value.clientWidth;
-  let h = wrapperRef.value.clientHeight;
-  projection.value.translate([w/2, h/2]);
-  projection.value.scale(w * 0.75);
-  updateGrid();
+  width.value = wrapperRef.value.clientWidth;
+  height.value = wrapperRef.value.clientHeight;
 
   timer.value = setInterval(() => {
     updateGrid();
-  }, 5000)
+  }, 2000)
 });
 
 
 onBeforeUnmount(() => {
   clearInterval(timer.value);
-})
+});
 
 </script>
 
@@ -119,7 +122,7 @@ svg {
 }
 
 svg .grid-cell {
-  transition: fill 2.5s ease-in-out;
+  transition: fill 1s ease-in-out;
 }
 
 </style>
