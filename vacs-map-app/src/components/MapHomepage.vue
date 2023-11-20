@@ -75,7 +75,7 @@ const getCellColor = (value) => {
 
   const scale = d3.scaleLinear()
     .domain([selectedExtent.value[0], 0, selectedExtent.value[1]])
-    .range(["#FF8A00", "#D4D5A5", "#1CAC50"])
+    .range(["#FFA31A", "#424242", "#13F364"])
     .clamp(true);
   
   return scale(value);
