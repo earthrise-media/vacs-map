@@ -3,6 +3,7 @@
 <script setup>
 import * as d3 from 'd3';
 import { computed, toRefs, watch } from 'vue';
+import { divergingScheme } from '@/utils/colors';
 
 const props = defineProps({
   id: {
@@ -213,7 +214,7 @@ const getCircleColorDiverging = (extent, center) => {
 
     // const interpolator = d3.interpolatePiYG;
 
-    const interpolator = d3.interpolateHsl("#FFA31A", "#13F364");
+    const interpolator = d3.interpolateHsl(divergingScheme.min, divergingScheme.max);
 
     return interpolator(value);
   };
@@ -226,7 +227,7 @@ const getCircleColorDiverging = (extent, center) => {
       ['linear'],
       ['get', colorColumn.value],
       min, getColor(0),
-      center, "#424242",
+      center, divergingScheme.center,
       max, getColor(1),
     ],
     'transparent',
