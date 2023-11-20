@@ -43,9 +43,9 @@ const maxRasterValue = 100;
 const getRasterColor = () => {
   const getColor = value => {
     // const interpolator = d3.interpolateBrBG;
-    // const interpolator = d3.interpolateHsl("purple", "orange");
-    // const interpolator = d3.interpolatePiYG;
-    const interpolator = d3.interpolateInferno;
+    const interpolator = d3.interpolateHsl("hsla(60, 2%, 34%, 0)", "white");
+    // const interpolator = d3.interpolateYlOrBr;
+    // const interpolator = d3.interpolateInferno;
 
     return interpolator(value);
   };
@@ -64,6 +64,7 @@ const getRasterColor = () => {
 
 const paint = {
   "raster-color": getRasterColor(),
+  "raster-opacity": 0.5,
   "raster-color-mix": [255, 0, 0, 0],
   "raster-color-range": [0, maxRasterValue],
 };
