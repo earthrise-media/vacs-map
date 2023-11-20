@@ -25,6 +25,7 @@ import { useCropYieldsStore } from '@/stores/cropYields';
 import { useGridStore } from '@/stores/grid';
 import * as d3 from 'd3';
 import { geoChamberlinAfrica } from 'd3-geo-projection';
+import { divergingScheme } from '../utils/colors';
 
 const filtersStore = useFiltersStore();
 const cropYieldsStore = useCropYieldsStore();
@@ -75,7 +76,7 @@ const getCellColor = (value) => {
 
   const scale = d3.scaleLinear()
     .domain([selectedExtent.value[0], 0, selectedExtent.value[1]])
-    .range(["#FF8A00", "#D4D5A5", "#1CAC50"])
+    .range([divergingScheme.min, divergingScheme.center, divergingScheme.max])
     .clamp(true);
   
   return scale(value);
