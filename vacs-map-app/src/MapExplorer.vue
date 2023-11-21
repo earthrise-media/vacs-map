@@ -15,25 +15,30 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import MapContainerColor from '@/components/MapContainerColor.vue'
-import MapContainerColorRadius from '@/components/MapContainerColorRadius.vue'
-import MapContainerNotFilled from '@/components/MapContainerNotFilled.vue'
-import MapContainerNotFilledTwoLayers from '@/components/MapContainerNotFilledTwoLayers.vue'
-import MapContainerColorAfricanUnion from '@/components/MapContainerColorAfricanUnion.vue'
-import MapContainerColorSoil from '@/components/MapContainerColorSoil.vue'
-import MapContainerColorSand from '@/components/MapContainerColorSand.vue'
-import { useFiltersStore } from '@/stores/filters'
-import { useMapExploreStore } from '@/stores/mapExplore'
-import LayoutOverview from './components/layouts/LayoutOverview.vue'
-import ExploreSidebar from './components/ExploreSidebar.vue'
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import MapContainerColor from '@/components/MapContainerColor.vue';
+import MapContainerColorAcrossScenarios from './components/MapContainerColorAcrossScenarios.vue';
+import MapContainerColorRadius from '@/components/MapContainerColorRadius.vue';
+import MapContainerNotFilled from '@/components/MapContainerNotFilled.vue';
+import MapContainerNotFilledTwoLayers from '@/components/MapContainerNotFilledTwoLayers.vue';
+import MapContainerColorAfricanUnion from '@/components/MapContainerColorAfricanUnion.vue';
+import MapContainerColorSoil from '@/components/MapContainerColorSoil.vue';
+import MapContainerColorSand from '@/components/MapContainerColorSand.vue';
+import { useMapExploreStore } from '@/stores/mapExplore';
+import LayoutOverview from './components/layouts/LayoutOverview.vue';
+import ExploreSidebar from './components/ExploreSidebar.vue';
 
 const availableMaps = [
   {
     id: 'just-color',
     name: 'dynamic color',
     component: MapContainerColor
+  },
+  {
+    id: 'color-across-scenarios',
+    name: 'color across scenarios',
+    component: MapContainerColorAcrossScenarios,
   },
   {
     id: 'color-and-radius-1',
@@ -71,7 +76,7 @@ const mapExploreStore = useMapExploreStore()
 const { selectedMap } = storeToRefs(mapExploreStore)
 
 if (!selectedMap.value) {
-  selectedMap.value = availableMaps[0].id
+  selectedMap.value = availableMaps[1].id;
 }
 
 const selectedMapComponent = computed(() => {
