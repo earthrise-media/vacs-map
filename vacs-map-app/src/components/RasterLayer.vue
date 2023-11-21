@@ -1,55 +1,58 @@
 <template></template>
 
 <script setup>
-import { toRefs, watch } from 'vue';
+import { toRefs, watch } from 'vue'
 
 const props = defineProps({
   id: {
     type: String,
-    default: '',
+    default: ''
   },
 
   map: {
     type: Object,
-    default: null,
+    default: null
   },
 
   mapReady: {
     type: Boolean,
-    default: false,
+    default: false
   },
 
   paint: {
     type: Object,
-    default: () => {},
+    default: () => {}
   },
 
   sourceId: {
     type: String,
-    default: '',
-  },
-});
+    default: ''
+  }
+})
 
-const { id, map, mapReady, paint, sourceId } = toRefs(props);
+const { id, map, mapReady, paint, sourceId } = toRefs(props)
 
 const addLayer = () => {
-  if (!map.value || !mapReady.value || map.value.getLayer(id.value)) return;
+  if (!map.value || !mapReady.value || map.value.getLayer(id.value)) return
 
-  map.value.addLayer({
-    id: id.value,
-    source: sourceId.value,
-    type: 'raster',
-    paint: paint.value,
-  }, 'country-label-filter');
-};
+  map.value.addLayer(
+    {
+      id: id.value,
+      source: sourceId.value,
+      type: 'raster',
+      paint: paint.value
+    },
+    'country-label-filter'
+  )
+}
 
 watch(map, () => {
-  addLayer();
-});
+  addLayer()
+})
 
 watch(mapReady, () => {
-  addLayer();
-});
+  addLayer()
+})
 </script>
 
 <style scoped></style>

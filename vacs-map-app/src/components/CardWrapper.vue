@@ -3,42 +3,40 @@
     <slot></slot>
 
     <div class="info">
-      <div class="title"> {{ title }} </div>
-      <p class="description"> {{ description }} </p>
+      <div class="title">{{ title }}</div>
+      <p class="description">{{ description }}</p>
     </div>
   </div>
 </template>
 
 <script setup>
-import { toRefs} from 'vue';
+import { toRefs } from 'vue'
 
 const props = defineProps({
   title: {
     type: String,
-    default: '',
+    default: ''
   },
 
   description: {
     type: String,
-    default: '',
+    default: ''
   },
 
   handleClick: {
     type: Function,
     default: () => {}
-  }, 
-  
+  },
+
   isActive: {
     type: Boolean,
     default: false
   }
-});
-const {title, description, handleClick} = toRefs(props);
-
+})
+const { title, description, handleClick } = toRefs(props)
 </script>
 
 <style scoped>
-
 .card-wrapper {
   --title-height: 3.5rem;
 
@@ -79,6 +77,6 @@ const {title, description, handleClick} = toRefs(props);
 }
 
 .info:hover {
-  transform: translateY(calc((100% - var(--title-height))*-1));
+  transform: translateY(calc((100% - var(--title-height)) * -1));
 }
 </style>

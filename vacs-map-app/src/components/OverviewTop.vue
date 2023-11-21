@@ -1,21 +1,19 @@
 <template>
   <div class="overview-top">
     <div class="row">
-      <div>
-        What crops have the most potential in a changing climate?
-      </div>
+      <div>What crops have the most potential in a changing climate?</div>
       <NavigationButton :to="backRoute">Go Back</NavigationButton>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { useRoute } from 'vue-router';
-import NavigationButton from '@/components/NavigationButton.vue';
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import NavigationButton from '@/components/NavigationButton.vue'
 
-const route = useRoute();
-const backRoute = computed(() => route.path === '/map-explore' ? '/crops' : '/');
+const route = useRoute()
+const backRoute = computed(() => (route.path === '/map-explore' ? '/crops' : '/'))
 </script>
 
 <style scoped>

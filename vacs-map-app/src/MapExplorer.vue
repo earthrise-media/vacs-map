@@ -15,68 +15,68 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
-import { storeToRefs } from 'pinia';
-import MapContainerColor from '@/components/MapContainerColor.vue';
-import MapContainerColorRadius from '@/components/MapContainerColorRadius.vue';
-import MapContainerNotFilled from '@/components/MapContainerNotFilled.vue';
-import MapContainerNotFilledTwoLayers from '@/components/MapContainerNotFilledTwoLayers.vue';
-import MapContainerColorAfricanUnion from '@/components/MapContainerColorAfricanUnion.vue';
-import MapContainerColorSoil from '@/components/MapContainerColorSoil.vue';
-import MapContainerColorSand from '@/components/MapContainerColorSand.vue';
-import { useFiltersStore } from '@/stores/filters';
-import { useMapExploreStore } from '@/stores/mapExplore';
-import LayoutOverview from './components/layouts/LayoutOverview.vue';
-import ExploreSidebar from './components/ExploreSidebar.vue';
+import { computed, ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import MapContainerColor from '@/components/MapContainerColor.vue'
+import MapContainerColorRadius from '@/components/MapContainerColorRadius.vue'
+import MapContainerNotFilled from '@/components/MapContainerNotFilled.vue'
+import MapContainerNotFilledTwoLayers from '@/components/MapContainerNotFilledTwoLayers.vue'
+import MapContainerColorAfricanUnion from '@/components/MapContainerColorAfricanUnion.vue'
+import MapContainerColorSoil from '@/components/MapContainerColorSoil.vue'
+import MapContainerColorSand from '@/components/MapContainerColorSand.vue'
+import { useFiltersStore } from '@/stores/filters'
+import { useMapExploreStore } from '@/stores/mapExplore'
+import LayoutOverview from './components/layouts/LayoutOverview.vue'
+import ExploreSidebar from './components/ExploreSidebar.vue'
 
 const availableMaps = [
   {
     id: 'just-color',
     name: 'dynamic color',
-    component: MapContainerColor,
+    component: MapContainerColor
   },
   {
     id: 'color-and-radius-1',
     name: 'dynamic color and radius (cropyield)',
-    component: MapContainerColorRadius,
+    component: MapContainerColorRadius
   },
   {
     id: 'not-filled',
     name: 'circles not filled',
-    component: MapContainerNotFilled,
+    component: MapContainerNotFilled
   },
   {
     id: 'not-filled-2',
     name: 'circles not filled, two layers',
-    component: MapContainerNotFilledTwoLayers,
+    component: MapContainerNotFilledTwoLayers
   },
   {
     id: 'african-union',
     name: 'circles + african union regions',
-    component: MapContainerColorAfricanUnion,
+    component: MapContainerColorAfricanUnion
   },
   {
     id: 'soil',
     name: 'circles + soil carbon',
-    component: MapContainerColorSoil,
+    component: MapContainerColorSoil
   },
   {
     id: 'sand',
     name: 'circles + sand',
-    component: MapContainerColorSand,
-  },
-];
+    component: MapContainerColorSand
+  }
+]
 
-const mapExploreStore = useMapExploreStore();
-const { selectedMap } = storeToRefs(mapExploreStore);
+const mapExploreStore = useMapExploreStore()
+const { selectedMap } = storeToRefs(mapExploreStore)
 
 if (!selectedMap.value) {
-  selectedMap.value = availableMaps[0].id;
+  selectedMap.value = availableMaps[0].id
 }
 
 const selectedMapComponent = computed(() => {
-  return availableMaps.find(({ id }) => id === selectedMap.value).component;
-});
+  return availableMaps.find(({ id }) => id === selectedMap.value).component
+})
 </script>
 
 <style scoped>
@@ -99,4 +99,3 @@ const selectedMapComponent = computed(() => {
   right: 1rem;
 }
 </style>
-

@@ -29,48 +29,40 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { storeToRefs } from 'pinia';
-import BaseMap from '@/components/BaseMap.vue';
-import { useFiltersStore } from '@/stores/filters';
-import { useCropYieldsStore } from '@/stores/cropYields';
-import GridSource from './GridSource.vue';
-import GridOverlay from './GridOverlay.vue';
-import RasterSource from './RasterSource.vue';
-import SoilCarbonLayer from './SoilCarbonLayer.vue';
+import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
+import BaseMap from '@/components/BaseMap.vue'
+import { useFiltersStore } from '@/stores/filters'
+import { useCropYieldsStore } from '@/stores/cropYields'
+import GridSource from './GridSource.vue'
+import GridOverlay from './GridOverlay.vue'
+import RasterSource from './RasterSource.vue'
+import SoilCarbonLayer from './SoilCarbonLayer.vue'
 
-const sourceId = 'cropGrid';
-const rasterSourceId = 'soilCarbonSource';
-const cropYieldsStore = useCropYieldsStore();
-const filtersStore = useFiltersStore();
+const sourceId = 'cropGrid'
+const rasterSourceId = 'soilCarbonSource'
+const cropYieldsStore = useCropYieldsStore()
+const filtersStore = useFiltersStore()
 
-const {
-  selectedCrop,
-  selectedMetric,
-  selectedModel
-} = storeToRefs(filtersStore);
+const { selectedCrop, selectedMetric, selectedModel } = storeToRefs(filtersStore)
 
 const selectedColumn = computed(() => {
   if (!selectedMetric.value || !selectedCrop.value || !selectedModel.value) {
-    return null;
+    return null
   }
 
-  return [
-    selectedMetric.value,
-    selectedCrop.value,
-    selectedModel.value,
-  ].join('_');
-});
+  return [selectedMetric.value, selectedCrop.value, selectedModel.value].join('_')
+})
 
 const selectedColumnExtent = computed(() => {
-  if (!selectedColumn.value) return null;
-  return cropYieldsStore.getExtent(selectedColumn.value);
-});
+  if (!selectedColumn.value) return null
+  return cropYieldsStore.getExtent(selectedColumn.value)
+})
 
 const selectedColumnQuintiles = computed(() => {
-  if (!selectedColumn.value) return null;
-  return cropYieldsStore.getQuintiles(selectedColumn.value);
-});
+  if (!selectedColumn.value) return null
+  return cropYieldsStore.getQuintiles(selectedColumn.value)
+})
 </script>
 
 <style scoped></style>
