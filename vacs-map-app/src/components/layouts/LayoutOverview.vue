@@ -8,26 +8,25 @@
 </template>
 
 <script setup>
-import { computed, toRefs } from 'vue';
-import OverviewTop from '@/components/OverviewTop.vue';
-import { topicUrlOptions } from '@/constants/topics';
+import { computed, toRefs } from 'vue'
+import OverviewTop from '@/components/OverviewTop.vue'
+import { topicUrlOptions } from '@/constants/topics'
 
 const props = defineProps({
   topicLabel: {
     type: String,
-    default: '',
-  },
-});
-const { topicLabel } = toRefs(props);
-const topic = computed(() => topicUrlOptions
-  .find(({ label }) => label === topicLabel.value)?.value);
+    default: ''
+  }
+})
+const { topicLabel } = toRefs(props)
+const topic = computed(() => topicUrlOptions.find(({ label }) => label === topicLabel.value)?.value)
 </script>
 
 <style scoped>
 .layout-overview {
   background: var(--dark-gray);
   color: var(--white);
-  min-height: 100vh;
+  height: 100vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -35,6 +34,9 @@ const topic = computed(() => topicUrlOptions
 }
 
 .layout-overview-content {
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: auto;
 }
 </style>
