@@ -1,55 +1,55 @@
 <template></template>
 
 <script setup>
-import { computed, onMounted, toRefs, watch } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useAfricanUnionRegionsStore } from '@/stores/africanUnionRegions';
+import { computed, onMounted, toRefs, watch } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useAfricanUnionRegionsStore } from '@/stores/africanUnionRegions'
 
 const props = defineProps({
   id: {
     type: String,
-    default: '',
+    default: ''
   },
 
   map: {
     type: Object,
-    default: null,
+    default: null
   },
 
   mapReady: {
     type: Boolean,
-    default: false,
-  },
-});
+    default: false
+  }
+})
 
-const { id, map, mapReady } = toRefs(props);
+const { id, map, mapReady } = toRefs(props)
 
-const africanUnionRegionsStore = useAfricanUnionRegionsStore();
+const africanUnionRegionsStore = useAfricanUnionRegionsStore()
 
-const { data } = storeToRefs(africanUnionRegionsStore);
+const { data } = storeToRefs(africanUnionRegionsStore)
 
 onMounted(() => {
-  africanUnionRegionsStore.load();
-});
+  africanUnionRegionsStore.load()
+})
 
 const addSource = (geoJson) => {
-  if (!map.value || !mapReady.value || map.value.getSource(id.value)) return;
+  if (!map.value || !mapReady.value || map.value.getSource(id.value)) return
 
   map.value.addSource(id.value, {
     type: 'geojson',
-    data: geoJson,
-  });
-};
+    data: geoJson
+  })
+}
 
 watch(mapReady, () => {
-  if (!data.value) return;
-  addSource(data.value);
-});
+  if (!data.value) return
+  addSource(data.value)
+})
 
 watch(data, () => {
-  if (!data.value) return;
-  addSource(data.value);
-});
+  if (!data.value) return
+  addSource(data.value)
+})
 </script>
 
 <style></style>

@@ -2,15 +2,14 @@
   <LayoutOpen>
     <div class="map-wrapper-row">
       <div class="callout">
-        <div class="callout-header">
-          What crops have the most potential in a changing climate?
-        </div>
+        <div class="callout-header">What crops have the most potential in a changing climate?</div>
         <div class="callout-content">
-The Vision for Adapted Crops and Soils (VACS) aims to foster more resilient food systems, with an initial focus on the African continent. VACS seeks to boost agricultural productivity and nutrition by developing diverse, climate-resilient crop varieties and building healthy soils. Keep reading
+          The Vision for Adapted Crops and Soils (VACS) aims to foster more resilient food systems,
+          with an initial focus on the African continent. VACS seeks to boost agricultural
+          productivity and nutrition by developing diverse, climate-resilient crop varieties and
+          building healthy soils. Keep reading
         </div>
-        <button class="go-to-topic" @click="navigate">
-          Find out
-        </button>
+        <button class="go-to-topic" @click="navigate">Find out</button>
       </div>
       <div class="map-wrapper">
         <MapHomepage />
@@ -20,13 +19,13 @@ The Vision for Adapted Crops and Soils (VACS) aims to foster more resilient food
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import LayoutOpen from '@/components/layouts/LayoutOpen.vue';
-import MapHomepage from './components/MapHomepage.vue';
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import LayoutOpen from '@/components/layouts/LayoutOpen.vue'
+import MapHomepage from './components/MapHomepage.vue'
 
-const router = useRouter();
-const navigate = () => router.push('/crops');
+const router = useRouter()
+const navigate = () => router.push('/crops')
 </script>
 
 <style scoped>
@@ -62,7 +61,7 @@ const navigate = () => router.push('/crops');
 
 .go-to-topic {
   appearance: none;
-  border: 1px solid #BFBFBF;
+  border: 1px solid #bfbfbf;
   background: none;
   border-radius: 4px;
   color: var(--white);

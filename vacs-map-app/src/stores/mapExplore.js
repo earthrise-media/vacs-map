@@ -1,7 +1,7 @@
-import { ref } from 'vue';
-import { defineStore } from 'pinia';
+import { ref } from 'vue'
+import { defineStore } from 'pinia'
 
 export const useMapExploreStore = defineStore('mapExplore', () => {
-  const selectedMap = ref('');
-  return { selectedMap };
-});
+  const selectedMap = ref('')
+  return { selectedMap }
+})
