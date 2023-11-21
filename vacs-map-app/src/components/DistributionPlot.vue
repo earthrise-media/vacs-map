@@ -23,6 +23,7 @@ import { computed, toRefs, ref, onMounted } from 'vue';
 import { useFiltersStore } from '@/stores/filters';
 import { useCropYieldsStore } from '@/stores/cropYields'; 
 import { storeToRefs } from 'pinia';
+import { divergingScheme } from '@/utils/colors';
 
 const props = defineProps({
   scenario: {
@@ -103,7 +104,7 @@ const getCellColor = (value) => {
   if (!value) return 'transparent';
   const scale = d3.scaleLinear()
     .domain([colorExtent.value[0], 0, colorExtent.value[1]])
-    .range(["#FF8A00", "#D4D5A5", "#1CAC50"])
+    .range([divergingScheme.min, divergingScheme.center, divergingScheme.max])
     .clamp(true);
 
   return scale(value);
