@@ -8,7 +8,7 @@
         :description="'description'"
         :handle-click="() => navigate(crop)"
       >
-        <img :src="`src/assets/img/minimaps/${crop}_${selectedModel}.svg`" alt="" />
+        <img :src="getUrl(crop)" alt="" />
       </CardWrapper>
     </div>
   </div>
@@ -32,6 +32,10 @@ const filteredCrops = computed(() => availableCrops.value)
 const navigate = (crop) => {
   selectedCrop.value = crop
   router.push('map-explore')
+}
+
+const getUrl = (crop) => {
+  return new URL(`../assets/img/minimaps/${crop}_${selectedModel.value}.svg`, import.meta.url).href;
 }
 </script>
 
