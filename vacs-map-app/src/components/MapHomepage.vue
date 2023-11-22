@@ -1,12 +1,18 @@
 <template>
   <div class="svg-wrapper" ref="wrapperRef">
     <svg>
+      <defs>
+        <radialGradient id="globeGradient">
+          <stop offset="30%" stop-color="#3B4650" />
+          <stop offset="95%" stop-color="#272E34" />
+        </radialGradient>
+      </defs>
       <g class="basemap">
         <circle 
           :cx="width/2"
           :cy="height/2"
-          :r="width/2 - inset"
-          :stroke="'white'"
+          :r="width/2 - 90"
+          fill="url('#globeGradient')" 
         />
 
       </g>
@@ -17,8 +23,11 @@
           :key="cell.id"
           :cx="cell.x"
           :cy="cell.y"
-          :r="2"
+          :r="1"
           :fill="getCellColor(cell.val)"
+          :stroke="getCellColor(cell.val)"
+          :stroke-width="0.75"
+          :stroke-opacity="0.5"
         />
       </g>
     </svg>
@@ -45,7 +54,7 @@ const { data: gridData } = storeToRefs(gridStore)
 const { availableCrops, availableModels } = storeToRefs(filtersStore)
 
 const wrapperRef = ref(null);
-const inset = 20;
+const inset = -20;
 const width = ref(0);
 const height = ref(0);
 const timer = ref(null);
@@ -85,8 +94,7 @@ const outline = ({type: "Sphere"});
 // this handles the projection, with translation and scale based on window size (responsive)
 const projection = computed(() => {
   return d3.geoOrthographic()
-    .scale(width.value * 0.55)
-    .rotate([-20,0])
+    .rotate([-15,-3])
     .fitExtent([[inset, inset], [width.value - inset, height.value - inset]], outline)
 })
 
@@ -145,7 +153,7 @@ onMounted(() => {
   // call update grid every x milliseconds
   timer.value = setInterval(() => {
     updateGrid()
-  }, 2000)
+  }, 1500)
 })
 
 onBeforeUnmount(() => {
@@ -169,6 +177,6 @@ svg {
 /* we can switch to using d3 for animation if we want, but css transitions/animations
   can also pretty powerful  */
 svg .grid-cell {
-  transition: fill 1s ease-in-out;
+  transition: fill 750ms ease-in-out;
 }
 </style>
