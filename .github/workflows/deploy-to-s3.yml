@@ -27,7 +27,7 @@ jobs:
       - name: Copy to S3
         working-directory: vacs-map-app
         run: |
-          aws s3 sync dist s3://stories2.theplotline.org/vacs/ --delete
+          aws s3 sync dist s3://vacs.theplotline.org/ --delete
       - name: Clear Cloudfront cache
         run: |
-          aws cloudfront create-invalidation --distribution-id $cloudfront_distribution --paths '/vacs/*'
+          aws cloudfront create-invalidation --distribution-id $cloudfront_distribution --paths '/*'

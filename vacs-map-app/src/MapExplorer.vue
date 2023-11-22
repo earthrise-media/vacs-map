@@ -23,6 +23,7 @@ import MapContainerColorRadius from '@/components/MapContainerColorRadius.vue';
 import MapContainerNotFilled from '@/components/MapContainerNotFilled.vue';
 import MapContainerNotFilledTwoLayers from '@/components/MapContainerNotFilledTwoLayers.vue';
 import MapContainerColorAfricanUnion from '@/components/MapContainerColorAfricanUnion.vue';
+import MapContainerColorSandSoil from '@/components/MapContainerColorSandSoil.vue';
 import MapContainerColorSoil from '@/components/MapContainerColorSoil.vue';
 import MapContainerColorSand from '@/components/MapContainerColorSand.vue';
 import { useMapExploreStore } from '@/stores/mapExplore';
@@ -59,6 +60,11 @@ const availableMaps = [
     id: 'african-union',
     name: 'circles + african union regions',
     component: MapContainerColorAfricanUnion
+  },
+  {
+    id: 'sand-soil',
+    name: 'circles + sand + soil carbon',
+    component: MapContainerColorSandSoil
   },
   {
     id: 'soil',
