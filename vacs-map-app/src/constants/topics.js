@@ -1,14 +1,14 @@
 export const topicUrlOptions = [
   {
     label: 'crop type',
-    value: '/crops',
+    value: '/crops'
   },
   {
     label: 'climate change',
-    value: '/climate-change',
+    value: '/climate-change'
   },
   {
     label: 'geography',
-    value: '/geography',
-  },
-];
+    value: '/geography'
+  }
+]

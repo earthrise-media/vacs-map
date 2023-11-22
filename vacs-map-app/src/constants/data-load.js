@@ -1,3 +1,3 @@
 export const getDataUrl = (path) => {
-  return `data/${path}`;
-};
+  return `data/${path}`
+}

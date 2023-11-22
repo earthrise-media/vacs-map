@@ -35,68 +35,56 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { storeToRefs } from 'pinia';
-import BaseMap from '@/components/BaseMap.vue';
-import { useFiltersStore } from '@/stores/filters';
-import { useCropYieldsStore } from '@/stores/cropYields';
-import GridSource from './GridSource.vue';
-import GridOverlay from './GridOverlay.vue';
+import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
+import BaseMap from '@/components/BaseMap.vue'
+import { useFiltersStore } from '@/stores/filters'
+import { useCropYieldsStore } from '@/stores/cropYields'
+import GridSource from './GridSource.vue'
+import GridOverlay from './GridOverlay.vue'
 
-const sourceId = 'cropGrid';
-const cropYieldsStore = useCropYieldsStore();
-const filtersStore = useFiltersStore();
+const sourceId = 'cropGrid'
+const cropYieldsStore = useCropYieldsStore()
+const filtersStore = useFiltersStore()
 
-const {
-  selectedCrop,
-  selectedMetric,
-  selectedModel
-} = storeToRefs(filtersStore);
+const { selectedCrop, selectedMetric, selectedModel } = storeToRefs(filtersStore)
 
 const selectedColumn = computed(() => {
   if (!selectedMetric.value || !selectedCrop.value || !selectedModel.value) {
-    return null;
+    return null
   }
 
-  return [
-    selectedMetric.value,
-    selectedCrop.value,
-    selectedModel.value,
-  ].join('_');
-});
+  return [selectedMetric.value, selectedCrop.value, selectedModel.value].join('_')
+})
 
 const selectedColumnExtent = computed(() => {
-  if (!selectedColumn.value) return null;
-  return cropYieldsStore.getExtent(selectedColumn.value);
-});
+  if (!selectedColumn.value) return null
+  return cropYieldsStore.getExtent(selectedColumn.value)
+})
 
 const selectedColumnQuintiles = computed(() => {
-  if (!selectedColumn.value) return null;
-  return cropYieldsStore.getQuintiles(selectedColumn.value);
-});
+  if (!selectedColumn.value) return null
+  return cropYieldsStore.getQuintiles(selectedColumn.value)
+})
 
 // Comparison column just always shows maize
 const comparisonColumn = computed(() => {
   if (!selectedMetric.value || !selectedCrop.value || !selectedModel.value) {
-    return null;
+    return null
   }
 
-  return [
-    selectedMetric.value,
-    'maize',
-    selectedModel.value,
-  ].join('_');
-});
+  return [selectedMetric.value, 'maize', selectedModel.value].join('_')
+})
 
 const comparisonColumnExtent = computed(() => {
-  if (!comparisonColumn.value) return null;
-  return cropYieldsStore.getExtent(comparisonColumn.value);
-});
+  if (!comparisonColumn.value) return null
+  return cropYieldsStore.getExtent(comparisonColumn.value)
+})
 
 const comparisonColumnQuintiles = computed(() => {
-  if (!comparisonColumn.value) return null;
-  return cropYieldsStore.getQuintiles(comparisonColumn.value);
-});
+  if (!comparisonColumn.value) return null
+  return cropYieldsStore.getQuintiles(comparisonColumn.value)
+})
 </script>
 
 <style scoped></style>
