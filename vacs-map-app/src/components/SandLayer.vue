@@ -31,7 +31,7 @@ const props = defineProps({
 
 const { id, map, mapReady, sourceId } = toRefs(props)
 
-const minRasterValue = 0
+const minRasterValue = 50
 const maxRasterValue = 100
 
 const getRasterColor = () => {
@@ -41,11 +41,11 @@ const getRasterColor = () => {
     //
     // Like this:
     //
-    // const interpolator = d3.interpolateBrBG;
+    // const interpolator = d3.interpolateRainbow;
     // const interpolator = d3.interpolatePiYG;
 
     // Or define your own:
-    const interpolator = d3.interpolateHsl("hsl(60, 2%, 34%)", "red");
+    const interpolator = d3.interpolateHsl("transparent", "orange");
 
     // const interpolator = d3.interpolateInferno
     return interpolator(value)
