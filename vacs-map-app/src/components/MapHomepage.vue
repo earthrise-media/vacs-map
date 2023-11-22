@@ -39,6 +39,8 @@ const wrapperRef = ref(null);
 const width = ref(0);
 const height = ref(0);
 const timer = ref(null);
+
+// these variables control what crop/scenario we are currently looking at
 const selectedCropIndex = ref(0);
 const selectedScenarioIndex = ref(0);
 const switchCrop = ref(false);
@@ -100,7 +102,10 @@ const getCellColor = (value) => {
   return scale(value)
 }
 
+// this is where the page state is changing, cycling through crops/scenarios
+// the timing of this update is below in onMounted()
 const updateGrid = () => {
+  // if we've gotten through all scenarios - increment selected crop
   if (switchCrop.value) {
     if (selectedCropIndex.value === availableCrops.value.length - 1) {
       selectedCropIndex.value = 0;
@@ -108,7 +113,7 @@ const updateGrid = () => {
       selectedCropIndex.value++;
     }
     switchCrop.value = false;
-  } else {
+  } else { //increment scenario
     if (selectedScenarioIndex.value === futureScenarios.value.length - 1) {
       selectedScenarioIndex.value = 0;
     } else {
@@ -125,6 +130,7 @@ onMounted(() => {
   width.value = wrapperRef.value.clientWidth
   height.value = wrapperRef.value.clientHeight
 
+  // call update grid every x milliseconds
   timer.value = setInterval(() => {
     updateGrid()
   }, 2000)
@@ -147,6 +153,9 @@ svg {
   height: 100%;
 }
 
+/* this css transition is what is causing the animation between fill colors right now */
+/* we can switch to using d3 for animation if we want, but css transitions/animations
+  can also pretty powerful  */
 svg .grid-cell {
   transition: fill 1s ease-in-out;
 }
