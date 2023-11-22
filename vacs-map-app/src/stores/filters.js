@@ -44,7 +44,7 @@ export const useFiltersStore = defineStore('filters', () => {
       new Set(
         Object.keys(firstRow)
           .filter((k) => k !== 'id')
-          .map((k) => k.split('_').slice(-2).join('_'))
+          .map((k) => k.split('_').slice(2).join('_'))
       )
     ).sort()
     selectedModel.value = availableModels.value[0]
