@@ -133,7 +133,7 @@ onMounted(() => {
   // call update grid every x milliseconds
   timer.value = setInterval(() => {
     updateGrid()
-  }, 2000)
+  }, 1500)
 })
 
 onBeforeUnmount(() => {

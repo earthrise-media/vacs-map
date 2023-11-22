@@ -42,7 +42,7 @@ const addLayer = () => {
       type: 'raster',
       paint: paint.value
     },
-    'country-label-filter'
+    'settlement-subdivision-label'
   )
 }
 

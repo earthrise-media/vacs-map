@@ -19,7 +19,9 @@ const initializeMap = () => {
   let mapOptions = {
     container: 'baseMapContainer',
     style: MAPBOX_STYLE,
-    bounds: INITIAL_MAP_BOUNDS
+    bounds: INITIAL_MAP_BOUNDS,
+    minZoom: 2,
+    maxzoom: 12
   }
 
   map.value = new mapboxgl.Map(mapOptions)
