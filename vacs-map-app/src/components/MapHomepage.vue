@@ -1,6 +1,15 @@
 <template>
   <div class="svg-wrapper" ref="wrapperRef">
     <svg>
+      <g class="basemap">
+        <circle 
+          :cx="width/2"
+          :cy="height/2"
+          :r="width/2 - inset"
+          :stroke="'white'"
+        />
+
+      </g>
       <g class="grid-cells">
         <circle
           v-for="cell in gridCells"
@@ -36,6 +45,7 @@ const { data: gridData } = storeToRefs(gridStore)
 const { availableCrops, availableModels } = storeToRefs(filtersStore)
 
 const wrapperRef = ref(null);
+const inset = 20;
 const width = ref(0);
 const height = ref(0);
 const timer = ref(null);
@@ -70,12 +80,14 @@ const selectedExtent = computed(() => {
   ];
 })
   
+const outline = ({type: "Sphere"});
 
 // this handles the projection, with translation and scale based on window size (responsive)
 const projection = computed(() => {
-  return geoChamberlinAfrica()
-    .translate([width.value / 2, height.value / 2])
-    .scale(width.value * 0.75)
+  return d3.geoOrthographic()
+    .scale(width.value * 0.55)
+    .rotate([-20,0])
+    .fitExtent([[inset, inset], [width.value - inset, height.value - inset]], outline)
 })
 
 const gridCells = computed(() => {
