@@ -114,11 +114,11 @@ const generateMapSvg = (crop, model, data, world, Africa, AfricanCountries, Afri
 
   const columnName = `yieldratio_${crop}_${model}`;
 
-  const background = '#AAA49B';
-  const land = "#E1DCD5";
+  const background = '#585855';
+  const land = "#444444";
   const borders = background;
   const shore = background;
-  const africanCountries = "#585855";
+  const africanCountries = "#262626";
 
   const projection = geoChamberlinAfrica()
     .fitExtent(
