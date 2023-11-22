@@ -45,14 +45,14 @@ const getData = () => {
       const [_, crop, timeframe, scenario] = k.split('_');
       if (timeframe === 'historical') return;
 
-      const historicalKey = ['yield', crop, 'historical_ssp370'].join('_');
+      const historicalKey = ['yield', crop, 'historical'].join('_');
 
       if (!yieldKeys.includes(historicalKey)) return;
 
       const yieldRatioKey = ['yieldratio', crop, timeframe, scenario].join('_');
 
       let yieldRatioValue = null;
-      if (d[k] !== null && d[historicalKey] !== null) {
+      if (d[k] !== null && d[historicalKey] !== null && d[historicalKey]) {
         yieldRatioValue = (d[k] - d[historicalKey]) / d[historicalKey];
       }
       rowWithYields[yieldRatioKey] = yieldRatioValue;
