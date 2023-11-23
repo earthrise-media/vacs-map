@@ -1,6 +1,7 @@
 import { computed, ref, watch } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 import { useCropYieldsStore } from '@/stores/cropYields'
+import { useCropInformationStore } from './cropInformation'
 
 export const useFiltersStore = defineStore('filters', () => {
   const availableCrops = ref([])
@@ -11,6 +12,13 @@ export const useFiltersStore = defineStore('filters', () => {
 
   const availableModels = ref([])
   const selectedModel = ref('')
+
+  const availableCropGroups = ref([])
+  const selectedCropGroup = ref('')
+
+  const cropSortByOptions = ref([])
+  const cropSortBy = ref('')
+  const cropSortOrder = ref('descending')
 
   const cropYieldsStore = useCropYieldsStore()
   const { data: cropData } = storeToRefs(cropYieldsStore)
@@ -50,6 +58,23 @@ export const useFiltersStore = defineStore('filters', () => {
     selectedModel.value = availableModels.value[0]
   })
 
+  const cropInformationStore = useCropInformationStore()
+  const { data: cropInfo } = storeToRefs(cropInformationStore)
+
+  watch(cropInfo, () => {
+
+    availableCropGroups.value = Array.from(
+      new Set(cropInfo.value?.map(d => d.crop_group))
+    );
+
+    cropSortByOptions.value = Array.from(Object.keys(
+      cropInfo.value?.[0].indicators?.nutritional
+    ));
+
+    cropSortBy.value = cropSortByOptions.value[0];
+
+  })
+
   return {
     availableCrops,
     selectedCrop,
@@ -58,6 +83,13 @@ export const useFiltersStore = defineStore('filters', () => {
     selectedMetric,
 
     availableModels,
-    selectedModel
+    selectedModel,
+
+    availableCropGroups,
+    selectedCropGroup,
+
+    cropSortByOptions,
+    cropSortBy,
+    cropSortOrder
   }
 })
