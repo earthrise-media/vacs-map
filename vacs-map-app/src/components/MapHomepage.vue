@@ -11,7 +11,7 @@
         <circle 
           :cx="width/2"
           :cy="height/2"
-          :r="width/2 - 90"
+          :r="width/2 - 70"
           fill="url('#globeGradient')" 
         />
 
