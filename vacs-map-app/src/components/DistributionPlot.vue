@@ -8,8 +8,8 @@
         :x2="xScale(1)"
         :y1="yScale(cell.val)"
         :y2="yScale(cell.val)"
-        :stroke="getCellColor(cell.val)"
-        stroke-width="0.05"
+        :stroke="getCellColor(cell.id, cell.val)"
+        :stroke-width="hoveredId === cell.id ? 1 : 0.05"
         stroke-opacity="1"
       />
     </svg>
@@ -22,6 +22,7 @@ import { useResizeObserver } from '@vueuse/core'
 import { computed, toRefs, ref, onMounted } from 'vue'
 import { useFiltersStore } from '@/stores/filters'
 import { useCropYieldsStore } from '@/stores/cropYields'
+import { useMapExploreStore } from '../stores/mapExplore'
 import { storeToRefs } from 'pinia'
 import { divergingScheme } from '@/utils/colors'
 
@@ -33,10 +34,12 @@ const props = defineProps({
 })
 const { scenario } = toRefs(props)
 
+const mapExploreStore = useMapExploreStore()
 const cropYieldsStore = useCropYieldsStore()
 const filtersStore = useFiltersStore()
 const { selectedMetric, selectedCrop, availableModels, availableCrops } = storeToRefs(filtersStore)
 const { data: cropYieldsData } = storeToRefs(cropYieldsStore)
+const { hoveredId } = storeToRefs(mapExploreStore)
 
 const wrapperRef = ref(null)
 const width = ref(0)
@@ -99,8 +102,9 @@ const xScale = computed(() => {
   return d3.scaleLinear().domain([0, 1]).range([0, width.value])
 })
 
-const getCellColor = (value) => {
+const getCellColor = (cellId, value) => {
   if (!value) return 'transparent';
+  if (hoveredId.value === cellId) return 'white';
   const scale = d3.scaleLinear()
     .domain([colorExtent.value[0], 0, colorExtent.value[1]])
     .range([divergingScheme.min, divergingScheme.center, divergingScheme.max])
@@ -119,11 +123,11 @@ onMounted(() => {
 .svg-wrapper {
   height: 100%;
   width: 100%;
-  padding: 1rem;
 }
 
 svg {
   width: 100%;
   height: 100%;
+  transition: all 0.25 linear;
 }
 </style>
