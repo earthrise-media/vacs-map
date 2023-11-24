@@ -1,25 +1,13 @@
 <template>
-  <div class="svg-wrapper" ref="wrapperRef">
-    <svg>
-      <line
-        v-for="cell in gridCells"
-        :key="cell.id"
-        :x1="xScale(0)"
-        :x2="xScale(1)"
-        :y1="yScale(cell.val)"
-        :y2="yScale(cell.val)"
-        :stroke="getCellColor(cell.val)"
-        stroke-width="0.05"
-        stroke-opacity="1"
-      />
-    </svg>
+  <div class="chart-wrapper" ref="wrapperRef">
+    <canvas ref="canvasRef"/>
   </div>
 </template>
 
 <script setup>
 import * as d3 from 'd3'
 import { useResizeObserver } from '@vueuse/core'
-import { computed, toRefs, ref, onMounted } from 'vue'
+import { computed, toRefs, ref, onMounted, watch } from 'vue'
 import { useFiltersStore } from '@/stores/filters'
 import { useCropYieldsStore } from '@/stores/cropYields'
 import { storeToRefs } from 'pinia'
@@ -38,6 +26,8 @@ const filtersStore = useFiltersStore()
 const { selectedMetric, selectedCrop, availableModels, availableCrops } = storeToRefs(filtersStore)
 const { data: cropYieldsData } = storeToRefs(cropYieldsStore)
 
+const canvasRef = ref(null);
+const context = ref(null);
 const wrapperRef = ref(null)
 const width = ref(0)
 const height = ref(0)
@@ -45,6 +35,10 @@ const height = ref(0)
 useResizeObserver(wrapperRef, ([entry]) => {
   width.value = entry.contentRect.width
   height.value = entry.contentRect.height
+
+  canvasRef.value.width = width.value;
+  canvasRef.value.height = height.value;
+  draw();
 })
 
 const margin = computed(() => {
@@ -80,9 +74,12 @@ const colorExtent = computed(() => {
 const gridCells = computed(() => {
   if (!cropYieldsData.value) return
   return cropYieldsData.value.map((row) => {
+    const val = row[columnName.value];
     return {
       id: row.id,
-      val: row[columnName.value]
+      val,
+      y: yScale.value(val),
+      fill: getCellColor(val)
     }
   })
 })
@@ -95,9 +92,9 @@ const yScale = computed(() => {
   // .clamp(true);
 })
 
-const xScale = computed(() => {
-  return d3.scaleLinear().domain([0, 1]).range([0, width.value])
-})
+// const xScale = computed(() => {
+//   return d3.scaleLinear().domain([0, 1]).range([0, width.value])
+// })
 
 const getCellColor = (value) => {
   if (!value) return 'transparent';
@@ -109,21 +106,41 @@ const getCellColor = (value) => {
   return scale(value)
 }
 
+const draw = () => {
+  if (!context.value) return;
+
+  context.value.save();
+  //clear old canvas
+  context.value.clearRect(0, 0, width.value, height.value);
+
+  //draw grid dots
+  gridCells.value?.forEach(cell => {
+    context.value.fillStyle = cell.fill;
+    context.value.fillRect(0, cell.y, width.value, 0.1);
+  })
+  context.value.restore();
+}
+
 onMounted(() => {
   width.value = wrapperRef.value.clientWidth
   height.value = wrapperRef.value.clientHeight
+
+  canvasRef.value.width = width.value
+  canvasRef.value.height = height.value
+
+  context.value = canvasRef.value?.getContext('2d')
+
+  draw();
+})
+
+watch(selectedCrop, () => {
+  draw();
 })
 </script>
 
 <style scoped>
-.svg-wrapper {
+.chart-wrapper {
   height: 100%;
   width: 100%;
-  padding: 1rem;
-}
-
-svg {
-  width: 100%;
-  height: 100%;
 }
 </style>
