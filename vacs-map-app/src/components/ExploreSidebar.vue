@@ -14,7 +14,7 @@
         </optgroup>
       </select>
 
-      <span> {{ selectedCropInfo.description }}</span>
+      <span> {{ selectedCropInfo?.description }}</span>
     </div>
 
     <div class="crop-fingerprint">crop fingerprint</div>
@@ -50,11 +50,11 @@ const { data: cropInformation } = storeToRefs(cropInformationStore)
 const futureScenarios = computed(() => availableModels.value.filter((d) => d.startsWith('future')))
 
 const selectedCropInfo = computed(() => {
-  return cropInformation.value.find(d => d.id === selectedCrop.value);
+  return cropInformation?.value?.find(d => d.id === selectedCrop.value);
 })
 
 const getCropsByGroup = (group) => {
-  return cropInformation.value.filter(crop => crop.crop_group === group);
+  return cropInformation?.value?.filter(crop => crop.crop_group === group);
 }
 
 

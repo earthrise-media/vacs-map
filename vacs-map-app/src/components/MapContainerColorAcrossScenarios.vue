@@ -68,7 +68,7 @@ const columns = computed(() => {
 });
 
 const selectedExtent = computed(() => {
-  if (!columns.value.length) return null;
+  if (!columns.value?.length) return null;
 
   const extents = columns.value.map(c => cropYieldsStore.getExtent(c));
 
