@@ -2,10 +2,19 @@
   <div class="sidebar">
     <div class="crop-selection">
       <select v-model="selectedCrop" class="crop-picker">
-        <option v-for="crop in availableCrops" :key="crop" :value="crop">{{ crop }}</option>
+        <optgroup v-for="group in availableCropGroups" :key="group" :label="group">
+
+          <option 
+            v-for="crop in getCropsByGroup(group)" 
+            :key="crop.id" 
+            :value="crop.id"
+          >
+            {{ crop.label }}
+          </option>
+        </optgroup>
       </select>
 
-      <span> a description of {{ selectedCrop }}</span>
+      <span> {{ selectedCropInfo?.description }}</span>
     </div>
 
     <div class="crop-fingerprint">crop fingerprint</div>
@@ -29,13 +38,26 @@
 import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useFiltersStore } from '@/stores/filters'
+import { useCropInformationStore } from '../stores/cropInformation'
 import DistributionPlot from './DistributionPlot.vue'
 import CardWrapper from './CardWrapper.vue'
 
 const filtersStore = useFiltersStore()
-const { availableCrops, selectedCrop, availableModels, selectedModel } = storeToRefs(filtersStore)
+const cropInformationStore = useCropInformationStore()
+const { availableCrops, selectedCrop, availableModels, selectedModel, availableCropGroups } = storeToRefs(filtersStore)
+const { data: cropInformation } = storeToRefs(cropInformationStore)
 
 const futureScenarios = computed(() => availableModels.value.filter((d) => d.startsWith('future')))
+
+const selectedCropInfo = computed(() => {
+  return cropInformation?.value?.find(d => d.id === selectedCrop.value);
+})
+
+const getCropsByGroup = (group) => {
+  return cropInformation?.value?.filter(crop => crop.crop_group === group);
+}
+
+
 </script>
 
 <style scoped>
