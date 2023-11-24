@@ -8,11 +8,14 @@
 import { onMounted } from 'vue'
 import { RouterView } from 'vue-router'
 import { useCropYieldsStore } from '@/stores/cropYields'
+import { useCropInformationStore } from './stores/cropInformation';
 
 const cropYieldsStore = useCropYieldsStore()
+const cropInformationStore = useCropInformationStore();
 
 onMounted(() => {
-  cropYieldsStore.load()
+  cropYieldsStore.load();
+  cropInformationStore.load();
 })
 </script>
 

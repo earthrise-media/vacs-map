@@ -68,7 +68,7 @@ const columns = computed(() => {
 });
 
 const selectedExtent = computed(() => {
-  if (!columns.value.length) return null;
+  if (!columns.value?.length) return null;
 
   const extents = columns.value.map(c => cropYieldsStore.getExtent(c));
 
@@ -77,7 +77,6 @@ const selectedExtent = computed(() => {
     d3.max(extents, extent => d3.max(extent))
   ];
 });
-
 
 const selectedColumnQuintiles = computed(() => {
   if (!selectedColumn.value) return null;
