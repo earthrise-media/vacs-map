@@ -106,7 +106,12 @@ const addLayer = () => {
           1
         ],
         'circle-color': getCircleFillColor(),
-        'circle-blur': 0.5
+        'circle-blur': [
+          'case',
+          ['boolean', ['feature-state', 'hovered'], false],
+          0,
+          0.5
+        ],
       }
     },
     'country-label-filter'
