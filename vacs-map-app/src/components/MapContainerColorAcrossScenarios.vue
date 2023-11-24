@@ -78,7 +78,6 @@ const selectedExtent = computed(() => {
   ];
 });
 
-
 const selectedColumnQuintiles = computed(() => {
   if (!selectedColumn.value) return null;
   return cropYieldsStore.getQuintiles(selectedColumn.value);

@@ -42,7 +42,6 @@ import { useFiltersStore } from '@/stores/filters'
 import { useCropYieldsStore } from '@/stores/cropYields'
 import { useGridStore } from '@/stores/grid'
 import * as d3 from 'd3'
-import { geoChamberlinAfrica } from 'd3-geo-projection'
 import { divergingScheme } from '../utils/colors'
 
 const filtersStore = useFiltersStore()
@@ -177,6 +176,6 @@ svg {
 /* we can switch to using d3 for animation if we want, but css transitions/animations
   can also pretty powerful  */
 svg .grid-cell {
-  transition: fill 750ms ease-in-out;
+  transition: fill 750ms linear;
 }
 </style>

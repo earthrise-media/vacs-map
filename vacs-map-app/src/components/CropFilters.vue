@@ -103,6 +103,10 @@ const futureScenarios = computed(() => {
   margin-left: auto;
 }
 
+.sort-by select {
+  cursor: pointer;
+}
+
 .sort-order {
   display: flex;
   gap: 0.5rem;
@@ -111,5 +115,9 @@ const futureScenarios = computed(() => {
 .sort-order-option {
   display: flex;
   gap: 0.25rem;
+}
+
+.sort-order label, .sort-order input {
+  cursor: pointer;
 }
 </style>
