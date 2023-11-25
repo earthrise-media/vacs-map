@@ -17,7 +17,9 @@
       <span> {{ selectedCropInfo?.description }}</span>
     </div>
 
-    <div class="crop-fingerprint">crop fingerprint</div>
+    <div class="crop-fingerprint">
+      <CropFingerprint :crop-id="selectedCrop" />
+    </div>
 
     <div class="scenarios">
       <CardWrapper
@@ -40,6 +42,7 @@ import { storeToRefs } from 'pinia'
 import { useFiltersStore } from '@/stores/filters'
 import { useCropInformationStore } from '../stores/cropInformation'
 import DistributionPlot from './DistributionPlot.vue'
+import CropFingerprint from './CropFingerprint.vue'
 import CardWrapper from './CardWrapper.vue'
 
 const filtersStore = useFiltersStore()
@@ -80,8 +83,6 @@ const getCropsByGroup = (group) => {
 .crop-fingerprint {
   width: 100%;
   height: 40%;
-  border: 1px solid var(--white);
-  border-radius: 0.5rem;
 }
 
 .scenarios {
