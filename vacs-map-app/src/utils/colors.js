@@ -7,5 +7,5 @@ export const divergingScheme = {
 export const fingerprintScheme = {
   nutritional: '#CD4A51',
   genetic: '#33C4D4',
-  biophysical: '#BB86FC',
+  biophysical: '#BB86FC'
 }

@@ -17,71 +17,58 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { storeToRefs } from 'pinia';
-import BaseMap from '@/components/BaseMap.vue';
-import { useFiltersStore } from '@/stores/filters';
-import { useCropYieldsStore } from '@/stores/cropYields';
-import GridSource from './GridSource.vue';
-import GridOverlay from './GridOverlay.vue';
-import * as d3 from 'd3';
+import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
+import BaseMap from '@/components/BaseMap.vue'
+import { useFiltersStore } from '@/stores/filters'
+import { useCropYieldsStore } from '@/stores/cropYields'
+import GridSource from './GridSource.vue'
+import GridOverlay from './GridOverlay.vue'
+import * as d3 from 'd3'
 
-const sourceId = 'cropGrid';
-const cropYieldsStore = useCropYieldsStore();
-const filtersStore = useFiltersStore();
+const sourceId = 'cropGrid'
+const cropYieldsStore = useCropYieldsStore()
+const filtersStore = useFiltersStore()
 
-const {
-  selectedCrop,
-  selectedMetric,
-  selectedModel,
-  availableModels
-} = storeToRefs(filtersStore);
-
+const { selectedCrop, selectedMetric, selectedModel, availableModels } = storeToRefs(filtersStore)
 
 const selectedColumn = computed(() => {
   if (!selectedMetric.value || !selectedCrop.value || !selectedModel.value) {
-    return null;
+    return null
   }
 
-  return [
-    selectedMetric.value,
-    selectedCrop.value,
-    selectedModel.value,
-  ].join('_');
-});
+  return [selectedMetric.value, selectedCrop.value, selectedModel.value].join('_')
+})
 
 // to get extent across scenarios
 const scenarios = computed(() => {
   if (selectedMetric.value === 'yieldratio') {
-    return availableModels.value.filter(d => d.startsWith('future'))
+    return availableModels.value.filter((d) => d.startsWith('future'))
   } else {
-    return availableModels.value;
+    return availableModels.value
   }
-});
+})
 
 // to get extent across scenarios
 const columns = computed(() => {
   if (!selectedMetric.value || !selectedCrop.value || !scenarios.value.length) {
-    return null;
+    return null
   }
-  return scenarios.value.map(s => [selectedMetric.value, selectedCrop.value, s].join('_'));
-});
+  return scenarios.value.map((s) => [selectedMetric.value, selectedCrop.value, s].join('_'))
+})
 
 const selectedExtent = computed(() => {
-  if (!columns.value?.length) return null;
+  if (!columns.value?.length) return null
 
-  const extents = columns.value.map(c => cropYieldsStore.getExtent(c));
+  const extents = columns.value.map((c) => cropYieldsStore.getExtent(c))
 
-  return [
-    d3.min(extents, extent => d3.min(extent)),
-    d3.max(extents, extent => d3.max(extent))
-  ];
-});
+  return [d3.min(extents, (extent) => d3.min(extent)), d3.max(extents, (extent) => d3.max(extent))]
+})
 
 const selectedColumnQuintiles = computed(() => {
-  if (!selectedColumn.value) return null;
-  return cropYieldsStore.getQuintiles(selectedColumn.value);
-});
+  if (!selectedColumn.value) return null
+  return cropYieldsStore.getQuintiles(selectedColumn.value)
+})
 </script>
 
 <style scoped></style>

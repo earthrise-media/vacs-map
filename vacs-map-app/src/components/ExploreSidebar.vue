@@ -3,12 +3,7 @@
     <div class="crop-selection">
       <select v-model="selectedCrop" class="crop-picker">
         <optgroup v-for="group in availableCropGroups" :key="group" :label="group">
-
-          <option 
-            v-for="crop in getCropsByGroup(group)" 
-            :key="crop.id" 
-            :value="crop.id"
-          >
+          <option v-for="crop in getCropsByGroup(group)" :key="crop.id" :value="crop.id">
             {{ crop.label }}
           </option>
         </optgroup>
@@ -47,20 +42,19 @@ import CardWrapper from './CardWrapper.vue'
 
 const filtersStore = useFiltersStore()
 const cropInformationStore = useCropInformationStore()
-const { availableCrops, selectedCrop, availableModels, selectedModel, availableCropGroups } = storeToRefs(filtersStore)
+const { availableCrops, selectedCrop, availableModels, selectedModel, availableCropGroups } =
+  storeToRefs(filtersStore)
 const { data: cropInformation } = storeToRefs(cropInformationStore)
 
 const futureScenarios = computed(() => availableModels.value.filter((d) => d.startsWith('future')))
 
 const selectedCropInfo = computed(() => {
-  return cropInformation?.value?.find(d => d.id === selectedCrop.value);
+  return cropInformation?.value?.find((d) => d.id === selectedCrop.value)
 })
 
 const getCropsByGroup = (group) => {
-  return cropInformation?.value?.filter(crop => crop.crop_group === group);
+  return cropInformation?.value?.filter((crop) => crop.crop_group === group)
 }
-
-
 </script>
 
 <style scoped>

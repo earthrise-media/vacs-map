@@ -2,9 +2,9 @@
   <div class="fingerprint-wrapper">
     <div class="svg-wrapper" ref="wrapperRef">
       <svg>
-        <g class="chart" :transform="`translate(${width/2}, ${height/2})`">
+        <g class="chart" :transform="`translate(${width / 2}, ${height / 2})`">
           <g class="selected-crop-plots">
-            <path 
+            <path
               v-for="indicator in selectedIndicators"
               :key="indicator.key"
               :fill="fingerprintScheme[indicator.category]"
@@ -19,28 +19,20 @@
           </g>
 
           <g class="chart-overlay">
-            <g 
-              class="axes"
-              fill="none"
-              stroke="#17191b"
-              >
-              <circle 
-                v-for="d in d3.range(11)" 
-                :key="d"
-                :r="y(d)"
-              />
+            <g class="axes" fill="none" stroke="#17191b">
+              <circle v-for="d in d3.range(11)" :key="d" :r="y(d)" />
 
-              <line 
-                v-for="(metric) in indicatorMetrics"
+              <line
+                v-for="metric in indicatorMetrics"
                 :key="metric"
-                :transform="`rotate(${xDegrees(metric) + xDegrees.bandwidth()/2})`"
+                :transform="`rotate(${xDegrees(metric) + xDegrees.bandwidth() / 2})`"
                 :x1="0"
                 :x2="y(10)"
               />
             </g>
 
             <g v-if="showBenchmark">
-              <path 
+              <path
                 v-for="indicator in benchmarkIndicators"
                 :key="indicator.key"
                 fill="none"
@@ -62,26 +54,25 @@
         {{ hovered ? hovered : 'no metric selected' }}
       </div>
       <div class="category-labels">
-        <span 
-          v-for="cat in indicatorCategories" 
+        <span
+          v-for="cat in indicatorCategories"
           :key="cat"
-          :style="{color: fingerprintScheme[cat]}"
-          >
+          :style="{ color: fingerprintScheme[cat] }"
+        >
           {{ cat }}
         </span>
       </div>
     </div>
   </div>
-
 </template>
 
 <script setup>
 import * as d3 from 'd3'
 import { useResizeObserver } from '@vueuse/core'
 import { computed, toRefs, ref, onMounted } from 'vue'
-import { useCropInformationStore } from '../stores/cropInformation';
-import { storeToRefs } from 'pinia';
-import { fingerprintScheme } from '../utils/colors';
+import { useCropInformationStore } from '../stores/cropInformation'
+import { storeToRefs } from 'pinia'
+import { fingerprintScheme } from '../utils/colors'
 
 const props = defineProps({
   cropId: {
@@ -90,7 +81,7 @@ const props = defineProps({
   }
 })
 const { cropId } = toRefs(props)
-const hovered = ref(null);
+const hovered = ref(null)
 
 const wrapperRef = ref(null)
 const width = ref(0)
@@ -101,38 +92,38 @@ useResizeObserver(wrapperRef, ([entry]) => {
   height.value = entry.contentRect.height
 })
 
-const cropInformationStore = useCropInformationStore();
-const { data: cropInformation } = storeToRefs(cropInformationStore);
+const cropInformationStore = useCropInformationStore()
+const { data: cropInformation } = storeToRefs(cropInformationStore)
 
 const selectedCropObject = computed(() => {
-  if (!cropInformation.value) return null;
-  return cropInformation.value.find(d => d.id === cropId.value);
+  if (!cropInformation.value) return null
+  return cropInformation.value.find((d) => d.id === cropId.value)
 })
 
 const selectedIndicators = computed(() => {
-  return getIndicators(selectedCropObject.value);
+  return getIndicators(selectedCropObject.value)
 })
 
 const benchmarkCropObject = computed(() => {
-  if (!cropInformation.value) return null;
-  return cropInformation.value.find(d => 
-    d.crop_group === selectedCropObject.value.crop_group && d.benchmark
-  );
+  if (!cropInformation.value) return null
+  return cropInformation.value.find(
+    (d) => d.crop_group === selectedCropObject.value.crop_group && d.benchmark
+  )
 })
 
 const benchmarkIndicators = computed(() => {
-  return getIndicators(benchmarkCropObject.value);
+  return getIndicators(benchmarkCropObject.value)
 })
 
 const showBenchmark = computed(() => {
-  return benchmarkCropObject.value !== selectedCropObject.value;
+  return benchmarkCropObject.value !== selectedCropObject.value
 })
 
 const getIndicators = (crop) => {
-  if (!crop) return [];
-  const arr = [];
-  Object.entries(crop.indicators).forEach(cat => {
-    const category = cat[0];
+  if (!crop) return []
+  const arr = []
+  Object.entries(crop.indicators).forEach((cat) => {
+    const category = cat[0]
     Object.entries(cat[1]).forEach(([k, v]) => {
       arr.push({
         key: k,
@@ -140,52 +131,48 @@ const getIndicators = (crop) => {
         category
       })
     })
-  });
-  return arr;
-};
+  })
+  return arr
+}
 
 const indicatorCategories = computed(() => {
-  return Object.keys(selectedCropObject.value.indicators);
+  return Object.keys(selectedCropObject.value.indicators)
 })
 
 const indicatorMetrics = computed(() => {
-  return selectedIndicators.value.map(d => d.key);
+  return selectedIndicators.value.map((d) => d.key)
 })
 
 const radius = computed(() => {
-  return Math.min(width.value, height.value) / 2;
+  return Math.min(width.value, height.value) / 2
 })
 
 const x = computed(() => {
-  return d3.scaleBand()
+  return d3
+    .scaleBand()
     .domain(indicatorMetrics.value)
     .range([0, Math.PI * 2])
 })
 
 const xDegrees = computed(() => {
-  return d3.scaleBand()
-    .domain(indicatorMetrics.value)
-    .range([0, 360])
+  return d3.scaleBand().domain(indicatorMetrics.value).range([0, 360])
 })
 
 const y = computed(() => {
-  return d3.scaleLinear()
-    .domain([0, 10])
-    .range([0, radius.value])
+  return d3.scaleLinear().domain([0, 10]).range([0, radius.value])
 })
 
 const arc = computed(() => {
-  return d3.arc()
+  return d3
+    .arc()
     .innerRadius(y.value(0))
-    .outerRadius(d => y.value(d.value))
-    .startAngle(d => x.value(d.key))
-    .endAngle(d => x.value(d.key) + x.value.bandwidth())
+    .outerRadius((d) => y.value(d.value))
+    .startAngle((d) => x.value(d.key))
+    .endAngle((d) => x.value(d.key) + x.value.bandwidth())
 })
-
 </script>
 
 <style scoped>
-
 .fingerprint-wrapper {
   height: 100%;
   width: 100%;

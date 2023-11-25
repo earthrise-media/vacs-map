@@ -62,17 +62,11 @@ export const useFiltersStore = defineStore('filters', () => {
   const { data: cropInfo } = storeToRefs(cropInformationStore)
 
   watch(cropInfo, () => {
+    availableCropGroups.value = Array.from(new Set(cropInfo.value?.map((d) => d.crop_group)))
 
-    availableCropGroups.value = Array.from(
-      new Set(cropInfo.value?.map(d => d.crop_group))
-    );
+    cropSortByOptions.value = Array.from(Object.keys(cropInfo.value?.[0].indicators?.nutritional))
 
-    cropSortByOptions.value = Array.from(Object.keys(
-      cropInfo.value?.[0].indicators?.nutritional
-    ));
-
-    cropSortBy.value = cropSortByOptions.value[0];
-
+    cropSortBy.value = cropSortByOptions.value[0]
   })
 
   return {
