@@ -3,7 +3,11 @@
     <div class="map-wrapper-row">
       <ExploreSidebar />
       <div class="map-wrapper">
-        <component :is="selectedMapComponent" />
+        <component :is="selectedMapComponent">
+          <template v-slot="{ map, mapReady }">
+            <RegionPicker :map="map" :map-ready="mapReady" />
+          </template>
+        </component>
         <div class="map-overlay">
           <select v-model="selectedMap">
             <option v-for="map in availableMaps" :value="map.id">{{ map.name }}</option>
@@ -30,6 +34,7 @@ import MapContainerColorPopulation from '@/components/MapContainerColorPopulatio
 import { useMapExploreStore } from '@/stores/mapExplore'
 import LayoutOverview from './components/layouts/LayoutOverview.vue'
 import ExploreSidebar from './components/ExploreSidebar.vue'
+import RegionPicker from './components/RegionPicker.vue'
 
 const availableMaps = [
   {
@@ -114,5 +119,16 @@ const selectedMapComponent = computed(() => {
   position: absolute;
   top: 5rem;
   right: 1rem;
+}
+</style>
+
+<style>
+.region-picker {
+  position: absolute;
+  bottom: 2.5rem;
+  right: 2.5rem;
+  z-index: 1000;
+  width: 8rem;
+  height: 10rem;
 }
 </style>

@@ -14,6 +14,7 @@
         :map="map"
         :mapReady="mapReady"
       />
+      <slot :map="map" :map-ready="mapReady"></slot>
     </template>
   </BaseMap>
 </template>
