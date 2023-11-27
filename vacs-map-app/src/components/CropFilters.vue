@@ -14,7 +14,7 @@
     </div>
 
     <div class="crop-groups">
-      <div 
+      <div
         :class="{
           selected: selectedCropGroup === ''
         }"
@@ -37,21 +37,17 @@
     <div class="sort-by">
       <div class="sort-order">
         <div class="sort-order-option">
-          <input type="radio" v-model="cropSortOrder" id="descending" value="descending">
+          <input type="radio" v-model="cropSortOrder" id="descending" value="descending" />
           <label for="descending">High to low</label>
         </div>
         <div class="sort-order-option">
-          <input type="radio" v-model="cropSortOrder" id="ascending" value="ascending">
+          <input type="radio" v-model="cropSortOrder" id="ascending" value="ascending" />
           <label for="ascending">Low to high</label>
         </div>
       </div>
 
       <select v-model="cropSortBy">
-        <option 
-          v-for="option in cropSortByOptions" 
-          :key="option"
-          :value="option"
-        >
+        <option v-for="option in cropSortByOptions" :key="option" :value="option">
           {{ option }}
         </option>
       </select>
@@ -64,16 +60,16 @@ import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useFiltersStore } from '@/stores/filters'
 
-const filtersStore = useFiltersStore();
-const { 
-  availableModels, 
-  selectedModel, 
-  availableCropGroups, 
+const filtersStore = useFiltersStore()
+const {
+  availableModels,
+  selectedModel,
+  availableCropGroups,
   selectedCropGroup,
   cropSortByOptions,
   cropSortBy,
-  cropSortOrder,
-} = storeToRefs(filtersStore);
+  cropSortOrder
+} = storeToRefs(filtersStore)
 
 const futureScenarios = computed(() => {
   return availableModels.value.filter((d) => d.startsWith('future'))
@@ -86,7 +82,8 @@ const futureScenarios = computed(() => {
   gap: 2rem;
 }
 
-.scenarios, .crop-groups {
+.scenarios,
+.crop-groups {
   display: flex;
   flex-direction: row;
   gap: 1rem;
@@ -117,7 +114,8 @@ const futureScenarios = computed(() => {
   gap: 0.25rem;
 }
 
-.sort-order label, .sort-order input {
+.sort-order label,
+.sort-order input {
   cursor: pointer;
 }
 </style>

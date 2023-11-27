@@ -14,7 +14,7 @@
         :color-column="selectedColumn"
         :color-column-extent="selectedColumnExtent"
         :color-column-quintiles="selectedColumnQuintiles"
-        :color-diverging="selectedMetric === 'yieldratio'"
+        :color-diverging="true"
         :sourceId="sourceId"
         :map="map"
         :mapReady="mapReady"

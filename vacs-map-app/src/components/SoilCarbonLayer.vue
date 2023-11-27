@@ -37,7 +37,7 @@ const maxRasterValue = 100
 const getRasterColor = () => {
   const getColor = (value) => {
     // const interpolator = d3.interpolateBrBG;
-    const interpolator = d3.interpolateHsl("hsla(143, 52%, 13%, 0)", "#6DACA4");
+    const interpolator = d3.interpolateHsl('hsla(143, 52%, 13%, 0)', '#6DACA4')
     // const interpolator = d3.interpolatePiYG;
     // const interpolator = d3.interpolateCubehelixDefault
 

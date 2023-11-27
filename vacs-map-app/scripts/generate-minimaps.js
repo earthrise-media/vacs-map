@@ -114,8 +114,8 @@ const generateMapSvg = (crop, model, data, world, Africa, AfricanCountries, Afri
 
   const columnName = `yieldratio_${crop}_${model}`;
 
-  const background = '#585855';
-  const land = "#444444";
+  const background = '#3B4650';
+  const land = "#343434";
   const borders = background;
   const shore = background;
   const africanCountries = "#262626";

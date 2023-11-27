@@ -114,7 +114,7 @@ const addLayer = () => {
         ],
       }
     },
-    'country-label-filter'
+    'settlement-subdivision-label'
   )
 
   updateLayer()
@@ -185,7 +185,7 @@ const getCircleColorQuintiles = (quintiles) => {
 
 const getCircleRadius = () => {
   if (!radiusColumn.value || !radiusColumnExtent.value) {
-    return ['interpolate', ['linear'], ['zoom'], 1, 1, 3, 3, 5, 7, 9, 25]
+    return ['interpolate', ['linear'], ['zoom'], 1, 1, 3, 3, 5, 10, 9, 30]
   } else {
     const [min, max] = radiusColumnExtent.value
     const inputs = [min, min + (max - min) / 2, max]
