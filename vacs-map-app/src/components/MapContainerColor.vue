@@ -7,7 +7,12 @@
         :map="map"
         :map-ready="mapReady"
       />
-      <PopulationLayer id="population" :map="map" :map-ready="mapReady" :source-id="rasterSourceId" />
+      <PopulationLayer
+        id="population"
+        :map="map"
+        :map-ready="mapReady"
+        :source-id="rasterSourceId"
+      />
       <GridSource :id="sourceId" :map="map" :mapReady="mapReady" />
       <GridOverlay
         id="grid-layer-1"

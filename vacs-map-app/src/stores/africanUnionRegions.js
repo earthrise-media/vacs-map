@@ -26,7 +26,7 @@ export const useAfricanUnionRegionsStore = defineStore('africanUnionRegions', ()
     }
 
     data.value = Object.freeze(geojson)
-    loading.value = false;
+    loading.value = false
   }
 
   const loadBboxes = async () => {
@@ -37,7 +37,7 @@ export const useAfricanUnionRegionsStore = defineStore('africanUnionRegions', ()
     const geojson = await response.json()
 
     bboxes.value = Object.freeze(geojson)
-    loadingBboxes.value = false;
+    loadingBboxes.value = false
   }
 
   return {
@@ -46,6 +46,6 @@ export const useAfricanUnionRegionsStore = defineStore('africanUnionRegions', ()
     load,
     bboxes,
     loadingBboxes,
-    loadBboxes,
+    loadBboxes
   }
 })

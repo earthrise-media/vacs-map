@@ -13,13 +13,13 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, toRefs } from 'vue';
+import { computed, onMounted, ref, toRefs } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
-import * as d3 from 'd3';
-import bbox from '@turf/bbox';
-import rewind from '@turf/rewind';
-import { useAfricanUnionRegionsStore } from '@/stores/africanUnionRegions';
+import * as d3 from 'd3'
+import bbox from '@turf/bbox'
+import rewind from '@turf/rewind'
+import { useAfricanUnionRegionsStore } from '@/stores/africanUnionRegions'
 
 const props = defineProps({
   map: {
@@ -30,12 +30,12 @@ const props = defineProps({
   mapReady: {
     type: Boolean,
     default: false
-  },
+  }
 })
 
 const { map, mapReady } = toRefs(props)
 
-const africanUnionRegionsStore = useAfricanUnionRegionsStore();
+const africanUnionRegionsStore = useAfricanUnionRegionsStore()
 const { bboxes } = storeToRefs(africanUnionRegionsStore)
 
 const wrapperRef = ref(null)
@@ -46,18 +46,18 @@ const fixedBboxes = computed(() => {
   // NB: Rewind because of D3's winding order handling
   return {
     type: 'FeatureCollection',
-    features: bboxes.value?.features?.map(f => ({
-      ...f,
-      geometry: rewind(f.geometry, { reverse: true }),
-    })) ?? [],
-  };
-});
+    features:
+      bboxes.value?.features?.map((f) => ({
+        ...f,
+        geometry: rewind(f.geometry, { reverse: true })
+      })) ?? []
+  }
+})
 
 const geoGenerator = computed(() => {
-  const v = d3.geoNaturalEarth1()
-    .fitSize([width.value, height.value], fixedBboxes.value);
-  return d3.geoPath(v);
-});
+  const v = d3.geoNaturalEarth1().fitSize([width.value, height.value], fixedBboxes.value)
+  return d3.geoPath(v)
+})
 
 useResizeObserver(wrapperRef, ([entry]) => {
   width.value = entry.contentRect.width
@@ -69,29 +69,31 @@ onMounted(() => {
 })
 
 const paths = computed(() => {
-  return fixedBboxes.value?.features?.map(f => {
-    return {
-      d: geoGenerator.value(f),
-      id: f.properties.AU_region,
-      geometry: f.geometry,
-    };
-  }) ?? [];
-});
+  return (
+    fixedBboxes.value?.features?.map((f) => {
+      return {
+        d: geoGenerator.value(f),
+        id: f.properties.AU_region,
+        geometry: f.geometry
+      }
+    }) ?? []
+  )
+})
 
-const handleClick = geometry => {
+const handleClick = (geometry) => {
   if (map.value && geometry) {
-    map.value.fitBounds(bbox(geometry));
+    map.value.fitBounds(bbox(geometry))
   }
-};
+}
 </script>
 
 <style scoped>
 .bbox-path {
-  fill: rgba(251, 189, 5, 0.70);;
+  fill: rgba(251, 189, 5, 0.7);
   fill-opacity: 0.8;
 }
 
 .bbox-path:hover {
-  fill: rgba(255, 109, 1, 0.70);;
+  fill: rgba(255, 109, 1, 0.7);
 }
 </style>
