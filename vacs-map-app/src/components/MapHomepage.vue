@@ -32,9 +32,9 @@ const height = ref(0);
 const timer = ref(null);
 
 // these variables control what crop/scenario we are currently looking at
-const selectedCropIndex = ref(0);
-const selectedScenarioIndex = ref(0);
-const switchCrop = ref(false);
+const selectedCropIndex = ref(0)
+const selectedScenarioIndex = ref(0)
+const switchCrop = ref(false)
 
 useResizeObserver(wrapperRef, ([entry]) => {
   width.value = entry.contentRect.width;
@@ -45,27 +45,24 @@ useResizeObserver(wrapperRef, ([entry]) => {
   draw();
 });
 
-const futureScenarios = computed(() => availableModels.value.filter(d => d.startsWith('future')));
+const futureScenarios = computed(() => availableModels.value.filter((d) => d.startsWith('future')))
 
-const selectedCrop = computed(() => availableCrops.value[selectedCropIndex.value]);
-const selectedScenario = computed(() => futureScenarios.value[selectedScenarioIndex.value]);
-const selectedColumn = computed(() => `yieldratio_${selectedCrop.value}_${selectedScenario.value}`);
+const selectedCrop = computed(() => availableCrops.value[selectedCropIndex.value])
+const selectedScenario = computed(() => futureScenarios.value[selectedScenarioIndex.value])
+const selectedColumn = computed(() => `yieldratio_${selectedCrop.value}_${selectedScenario.value}`)
 
 const scenarioColumns = computed(() => {
-  return availableModels.value.filter(d => d.startsWith('future')).map(
-    d => `yieldratio_${selectedCrop.value}_${d}`
-  )
+  return availableModels.value
+    .filter((d) => d.startsWith('future'))
+    .map((d) => `yieldratio_${selectedCrop.value}_${d}`)
 })
 
 const selectedExtent = computed(() => {
-  const extents = scenarioColumns.value.map(d => cropYieldsStore.getExtent(d))
-  return [
-    d3.min(extents, extent => d3.min(extent)),
-    d3.max(extents, extent => d3.max(extent))
-  ];
+  const extents = scenarioColumns.value.map((d) => cropYieldsStore.getExtent(d))
+  return [d3.min(extents, (extent) => d3.min(extent)), d3.max(extents, (extent) => d3.max(extent))]
 })
-  
-const outline = ({type: "Sphere"});
+
+const outline = { type: 'Sphere' }
 
 // this handles the projection, with translation and scale based on window size (responsive)
 const projection = computed(() => {
@@ -107,18 +104,19 @@ const updateGrid = () => {
   // if we've gotten through all scenarios - increment selected crop
   if (switchCrop.value) {
     if (selectedCropIndex.value === availableCrops.value.length - 1) {
-      selectedCropIndex.value = 0;
+      selectedCropIndex.value = 0
     } else {
-      selectedCropIndex.value++;
+      selectedCropIndex.value++
     }
-    switchCrop.value = false;
-  } else { //increment scenario
+    switchCrop.value = false
+  } else {
+    //increment scenario
     if (selectedScenarioIndex.value === futureScenarios.value.length - 1) {
-      selectedScenarioIndex.value = 0;
+      selectedScenarioIndex.value = 0
     } else {
-      selectedScenarioIndex.value++;
+      selectedScenarioIndex.value++
     }
-    switchCrop.value = true;
+    switchCrop.value = true
   }
   draw();
 }
