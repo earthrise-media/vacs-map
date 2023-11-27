@@ -70,11 +70,11 @@ const metaExtent = computed(() => {
 const colorExtent = computed(() => {
   // want to get extent across all scenarios and included crops so that comparisons are more useful
   const extents = []
-  availableModels.value.forEach(s => {
-    const column = [selectedMetric.value, selectedCrop.value, s].join("_");
+  availableModels.value.forEach((s) => {
+    const column = [selectedMetric.value, selectedCrop.value, s].join('_')
     extents.push(cropYieldsStore.getExtent(column))
   })
-  return [d3.min(extents.map(d => d[0])), d3.min(extents.map(d => d[1]))];
+  return [d3.min(extents.map((d) => d[0])), d3.min(extents.map((d) => d[1]))]
 })
 
 const gridCells = computed(() => {
@@ -100,8 +100,9 @@ const xScale = computed(() => {
 })
 
 const getCellColor = (value) => {
-  if (!value) return 'transparent';
-  const scale = d3.scaleLinear()
+  if (!value) return 'transparent'
+  const scale = d3
+    .scaleLinear()
     .domain([colorExtent.value[0], 0, colorExtent.value[1]])
     .range([divergingScheme.min, divergingScheme.center, divergingScheme.max])
     .clamp(true)

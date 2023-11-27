@@ -45,7 +45,7 @@ const getRasterColor = () => {
     // const interpolator = d3.interpolatePiYG;
 
     // Or define your own:
-    const interpolator = d3.interpolateHsl("transparent", "orange");
+    const interpolator = d3.interpolateHsl('transparent', 'orange')
 
     // const interpolator = d3.interpolateInferno
     return interpolator(value)
