@@ -41,28 +41,13 @@ useResizeObserver(wrapperRef, ([entry]) => {
   draw();
 })
 
-const margin = computed(() => {
-  return height.value * 0.2
-})
 
 const columnName = computed(() => {
   return [selectedMetric.value, selectedCrop.value, scenario.value].join('_')
 })
 
-const metaExtent = computed(() => {
-  // want to get extent across all scenarios and included crops so that comparisons are more useful
-  const extents = []
-  availableModels.value.forEach((s) => {
-    availableCrops.value.forEach((c) => {
-      const column = [selectedMetric.value, c, s].join('_')
-      extents.push(cropYieldsStore.getExtent(column))
-    })
-  })
-  return [d3.min(extents.map((d) => d[0])), d3.min(extents.map((d) => d[1]))]
-})
-
-const colorExtent = computed(() => {
-  // want to get extent across all scenarios and included crops so that comparisons are more useful
+const cropExtent = computed(() => {
+  // want to get extent across all scenarios for selected crop
   const extents = []
   availableModels.value.forEach((s) => {
     const column = [selectedMetric.value, selectedCrop.value, s].join('_')
@@ -78,33 +63,77 @@ const gridCells = computed(() => {
     return {
       id: row.id,
       val,
-      y: yScale.value(val),
+      x: xScale.value(val),
       fill: getCellColor(val)
     }
-  })
+  }).filter(d => !!d.val)
 })
 
-const yScale = computed(() => {
+const xScale = computed(() => {
   return d3
     .scaleLinear()
-    .domain(metaExtent.value)
-    .range([height.value - margin.value, margin.value])
-  // .clamp(true);
+    // keep 0 values centered on spectrum
+    .domain([cropExtent.value[0], 0, cropExtent.value[1]])
+    .range([0, width.value/2, width.value])
+    // .clamp(true);
 })
-
-// const xScale = computed(() => {
-//   return d3.scaleLinear().domain([0, 1]).range([0, width.value])
-// })
 
 const getCellColor = (value) => {
   if (!value) return 'transparent'
   const scale = d3
     .scaleLinear()
-    .domain([colorExtent.value[0], 0, colorExtent.value[1]])
+    .domain([cropExtent.value[0], 0, cropExtent.value[1]])
     .range([divergingScheme.min, divergingScheme.center, divergingScheme.max])
     .clamp(true)
 
   return scale(value)
+}
+
+// from D3 beeswarm example
+const dodge = (data, {radius = 1, x = d => d} = {}) => {
+  const radius2 = radius ** 2;
+  const circles = data.map(d => ({x: x(d), data: d})).sort((a, b) => a.x - b.x);
+  const epsilon = 1e-3;
+  let head = null, tail = null;
+
+  // Returns true if circle ⟨x,y⟩ intersects with any circle in the queue.
+  function intersects(x, y) {
+    let a = head;
+    while (a) {
+      if (radius2 - epsilon > (a.x - x) ** 2 + (a.y - y) ** 2) {
+        return true;
+      }
+      a = a.next;
+    }
+    return false;
+  }
+
+  // Place each circle sequentially.
+  for (const b of circles) {
+
+    // Remove circles from the queue that can’t intersect the new circle b.
+    while (head && head.x < b.x - radius2) head = head.next;
+
+    // Choose the minimum non-intersecting tangent.
+    if (intersects(b.x, b.y = 0)) {
+      let a = head;
+      b.y = Infinity;
+      do {
+        let y1 = a.y + Math.sqrt(radius2 - (a.x - b.x) ** 2);
+        let y2 = a.y - Math.sqrt(radius2 - (a.x - b.x) ** 2);
+        if (Math.abs(y1) < Math.abs(b.y) && !intersects(b.x, y1)) b.y = y1;
+        if (Math.abs(y2) < Math.abs(b.y) && !intersects(b.x, y2)) b.y = y2;
+        a = a.next;
+      } while (a);
+    }
+
+    // Add b to the queue.
+    b.next = null;
+    if (head === null) head = tail = b;
+    else tail = tail.next = b;
+  }
+
+  return circles;
 }
 
 const draw = () => {
@@ -114,11 +143,20 @@ const draw = () => {
   //clear old canvas
   context.value.clearRect(0, 0, width.value, height.value);
 
-  //draw grid dots
   gridCells.value?.forEach(cell => {
     context.value.fillStyle = cell.fill;
-    context.value.fillRect(0, cell.y, width.value, 0.1);
+    context.value.fillRect(cell.x, 0, 0.1, height.value);
   })
+
+  // draw dots as swarm plot -- seems too slow
+  // const grid = dodge(gridCells.value, {radius: 1, x: d => d.x});
+
+  // //draw grid dots
+  // grid.forEach(cell => {
+  //   context.value.fillStyle = cell.data.fill;
+  //   context.value.fillRect(cell.x, height.value*.3 + cell.y, 2, 2);
+  // })
+
   context.value.restore();
 }
 
