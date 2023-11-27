@@ -61,7 +61,7 @@ const getCropsByGroup = (group) => {
 .sidebar {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 1rem;
   margin-left: var(--page-horizontal-margin);
   padding-right: 2rem;
   padding-bottom: 2rem;
