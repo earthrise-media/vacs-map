@@ -61,7 +61,7 @@ const getUrl = (crop) => {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  padding-bottom: 2rem;
+  padding: 2px 2px 2rem 2px;
 }
 .crop-cards {
   display: grid;

@@ -43,7 +43,7 @@ const { title, description, handleClick } = toRefs(props)
   position: relative;
   overflow-y: hidden;
 
-  border: 1px solid transparent;
+  box-shadow: 0 0 0 1px var(--gray);
   border-radius: 1rem;
 
   cursor: pointer;
@@ -57,15 +57,17 @@ const { title, description, handleClick } = toRefs(props)
   transition: all 0.5s ease;
   position: absolute;
   top: calc(100% - var(--title-height));
-  padding: 0 1rem;
+  padding: 0.75rem;
+  padding-top: 0;
   display: flex;
   flex-direction: column;
   width: 100%;
-  background: var(--white);
+  background: var(--white-80);
   color: var(--black);
 }
 
 .title {
+  font-family: var(--font-family-header);
   height: var(--title-height);
   font-size: 1.5rem;
   text-transform: capitalize;
@@ -78,5 +80,9 @@ const { title, description, handleClick } = toRefs(props)
 
 .info:hover {
   transform: translateY(calc((100% - var(--title-height)) * -1));
+}
+
+.card-wrapper:hover {
+  box-shadow: 0 0 0 2px var(--ui-blue);
 }
 </style>

@@ -3,6 +3,8 @@
 :root {
   --black: #17191b;
   --white: #e1dcd5;
+  --white-80: rgba(225, 220, 213, 0.80);
+  --gray: #7E899C;
   --dark-gray: #3E3D45;
   --dark-gray-hover: #34323F;
   --ui-blue: #8CA4CB;
