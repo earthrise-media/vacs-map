@@ -32,7 +32,7 @@ const props = defineProps({
 const { id, map, mapReady, sourceId } = toRefs(props)
 
 const minRasterValue = 0
-const maxRasterValue = 1000
+const maxRasterValue = 20
 
 const getRasterColor = () => {
   const getColor = (value) => {
@@ -41,11 +41,12 @@ const getRasterColor = () => {
     //
     // Like this:
     //
-    const interpolator = d3.interpolateSinebow;
-    // const interpolator = d3.interpolateCividis;
+    // const interpolator = d3.interpolateSinebow;
+    // const interpolator = d3.interpolateCubehelixDefault
+;
 
     // Or define your own:
-    // const interpolator = d3.interpolateHsl("hsla(61, 49%, 48%, 0.2)", "transparent");
+    const interpolator = d3.interpolateHsl("transparent", "palegoldenrod");
 
     // const interpolator = d3.interpolateInferno
     return interpolator(value)
@@ -61,7 +62,7 @@ const getRasterColor = () => {
 
 const paint = {
   'raster-color': getRasterColor(),
-  'raster-opacity': 0.25,
+  'raster-opacity': 0.45,
   'raster-color-mix': [255, 0, 0, 0],
   'raster-color-range': [0, maxRasterValue]
 }

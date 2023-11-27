@@ -8,7 +8,7 @@
         :map-ready="mapReady"
       />
       <PopulationLayer id="population" :map="map" :map-ready="mapReady" :source-id="rasterSourceId" />
-      <!-- <GridSource :id="sourceId" :map="map" :mapReady="mapReady" />
+      <GridSource :id="sourceId" :map="map" :mapReady="mapReady" />
       <GridOverlay
         id="grid-layer-1"
         :color-column="selectedColumn"
@@ -18,7 +18,7 @@
         :sourceId="sourceId"
         :map="map"
         :mapReady="mapReady"
-      /> -->
+      />
     </template>
   </BaseMap>
 </template>
