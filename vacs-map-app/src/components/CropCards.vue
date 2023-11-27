@@ -24,31 +24,26 @@ import { useFiltersStore } from '@/stores/filters'
 import { useCropInformationStore } from '../stores/cropInformation'
 import CardWrapper from './CardWrapper.vue'
 
-const router = useRouter();
-const filtersStore = useFiltersStore();
-const cropInformationStore = useCropInformationStore();
-const {  
-  selectedCrop, 
-  selectedModel,
-  selectedCropGroup,
-  cropSortBy,
-  cropSortOrder,
-} = storeToRefs(filtersStore)
-const { data: cropInformation } = storeToRefs(cropInformationStore);
+const router = useRouter()
+const filtersStore = useFiltersStore()
+const cropInformationStore = useCropInformationStore()
+const { selectedCrop, selectedModel, selectedCropGroup, cropSortBy, cropSortOrder } =
+  storeToRefs(filtersStore)
+const { data: cropInformation } = storeToRefs(cropInformationStore)
 
 const filteredCrops = computed(() => {
-  if (!selectedCropGroup.value) return cropInformation.value;
-  return cropInformation.value.filter(d => d.crop_group === selectedCropGroup.value);
+  if (!selectedCropGroup.value) return cropInformation.value
+  return cropInformation.value.filter((d) => d.crop_group === selectedCropGroup.value)
 })
 
 const sortedCrops = computed(() => {
-  if (!cropSortBy.value) return filteredCrops.value;
-  return [...filteredCrops.value].sort(
-    (a, b) => d3[cropSortOrder.value](
-      a.indicators.nutritional[cropSortBy.value], 
+  if (!cropSortBy.value) return filteredCrops.value
+  return [...filteredCrops.value].sort((a, b) =>
+    d3[cropSortOrder.value](
+      a.indicators.nutritional[cropSortBy.value],
       b.indicators.nutritional[cropSortBy.value]
     )
-  );
+  )
 })
 
 const navigate = (crop) => {
@@ -57,7 +52,7 @@ const navigate = (crop) => {
 }
 
 const getUrl = (crop) => {
-  return new URL(`../assets/img/minimaps/${crop}_${selectedModel.value}.svg`, import.meta.url).href;
+  return new URL(`../assets/img/minimaps/${crop}_${selectedModel.value}.svg`, import.meta.url).href
 }
 </script>
 
