@@ -1,30 +1,6 @@
 <template>
-  <div class="svg-wrapper" ref="wrapperRef">
-    <svg>
-      <defs>
-        <radialGradient id="globeGradient">
-          <stop offset="30%" stop-color="#3B4650" />
-          <stop offset="95%" stop-color="#272E34" />
-        </radialGradient>
-      </defs>
-      <g class="basemap">
-        <circle :cx="width / 2" :cy="height / 2" :r="width / 2 - 70" fill="url('#globeGradient')" />
-      </g>
-      <g class="grid-cells">
-        <circle
-          v-for="cell in gridCells"
-          class="grid-cell"
-          :key="cell.id"
-          :cx="cell.x"
-          :cy="cell.y"
-          :r="1"
-          :fill="getCellColor(cell.val)"
-          :stroke="getCellColor(cell.val)"
-          :stroke-width="0.75"
-          :stroke-opacity="0.5"
-        />
-      </g>
-    </svg>
+  <div class="chart-wrapper" ref="wrapperRef">
+    <canvas ref="canvasRef"/>
   </div>
 </template>
 
@@ -46,11 +22,14 @@ const { data: cropYieldsData } = storeToRefs(cropYieldsStore)
 const { data: gridData } = storeToRefs(gridStore)
 const { availableCrops, availableModels } = storeToRefs(filtersStore)
 
-const wrapperRef = ref(null)
-const inset = -20
-const width = ref(0)
-const height = ref(0)
-const timer = ref(null)
+const wrapperRef = ref(null);
+const canvasRef = ref(null);
+const context = ref(null);
+
+const inset = -20;
+const width = ref(0);
+const height = ref(0);
+const timer = ref(null);
 
 // these variables control what crop/scenario we are currently looking at
 const selectedCropIndex = ref(0)
@@ -58,9 +37,13 @@ const selectedScenarioIndex = ref(0)
 const switchCrop = ref(false)
 
 useResizeObserver(wrapperRef, ([entry]) => {
-  width.value = entry.contentRect.width
-  height.value = entry.contentRect.height
-})
+  width.value = entry.contentRect.width;
+  height.value = entry.contentRect.height;
+
+  canvasRef.value.width = width.value;
+  canvasRef.value.height = height.value;
+  draw();
+});
 
 const futureScenarios = computed(() => availableModels.value.filter((d) => d.startsWith('future')))
 
@@ -83,26 +66,22 @@ const outline = { type: 'Sphere' }
 
 // this handles the projection, with translation and scale based on window size (responsive)
 const projection = computed(() => {
-  return d3
-    .geoOrthographic()
-    .rotate([-15, -3])
-    .fitExtent(
-      [
-        [inset, inset],
-        [width.value - inset, height.value - inset]
-      ],
-      outline
-    )
+  return d3.geoOrthographic()
+    .rotate([-18,-3])
+    .fitExtent([[inset, inset], [width.value - inset, height.value - inset]], outline)
 })
+
 
 const gridCells = computed(() => {
   if (!gridData.value || !cropYieldsData.value) return
   return gridData.value.map((cell, i) => {
+    const val = cropYieldsData.value[i][selectedColumn.value];
     return {
       id: cell.id,
-      val: cropYieldsData.value[i][selectedColumn.value],
+      val,
       x: projection.value([cell.X, cell.Y])[0],
-      y: projection.value([cell.X, cell.Y])[1]
+      y: projection.value([cell.X, cell.Y])[1],
+      fill: getCellColor(val)
     }
   })
 })
@@ -139,6 +118,43 @@ const updateGrid = () => {
     }
     switchCrop.value = true
   }
+  draw();
+}
+
+const draw = () => {
+  if (!context.value) return;
+
+  context.value.save();
+  //clear old canvas
+  context.value.clearRect(0, 0, width.value, height.value);
+
+  //draw 'globe'
+  const radius = Math.min(width.value, height.value)/2 - 90;
+  const gradient = context.value.createRadialGradient(
+    width.value/2, height.value/2, 0,
+    width.value/2, height.value/2, radius
+  );
+  gradient.addColorStop(0.05, '#3B4650');
+  gradient.addColorStop(0.99, '#272E34');
+  gradient.addColorStop(1, '#17191b');
+
+  context.value.fillStyle = gradient;
+  context.value.fillRect(
+    width.value/2 - radius, 
+    height.value/2 - radius,
+    2*radius,
+    2*radius
+  );
+
+  //draw grid dots
+  const cellRadius = 1;
+  gridCells.value?.forEach(cell => {
+    context.value.beginPath();
+    context.value.arc(cell.x, cell.y, cellRadius, 0, Math.PI * 2, false);
+    context.value.fillStyle = cell.fill;
+    context.value.fill();
+  })
+  context.value.restore();
 }
 
 onMounted(() => {
@@ -147,6 +163,13 @@ onMounted(() => {
 
   width.value = wrapperRef.value.clientWidth
   height.value = wrapperRef.value.clientHeight
+
+  canvasRef.value.width = width.value;
+  canvasRef.value.height = height.value;
+
+  context.value = canvasRef.value?.getContext('2d')
+
+  draw();
 
   // call update grid every x milliseconds
   timer.value = setInterval(() => {
@@ -160,21 +183,10 @@ onBeforeUnmount(() => {
 </script>
 
 <style>
-.svg-wrapper {
+.chart-wrapper {
   display: flex;
   width: 100%;
   height: 100%;
 }
 
-svg {
-  width: 100%;
-  height: 100%;
-}
-
-/* this css transition is what is causing the animation between fill colors right now */
-/* we can switch to using d3 for animation if we want, but css transitions/animations
-  can also pretty powerful  */
-svg .grid-cell {
-  transition: fill 750ms linear;
-}
 </style>

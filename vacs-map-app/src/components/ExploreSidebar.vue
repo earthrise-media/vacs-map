@@ -83,7 +83,7 @@ const getCropsByGroup = (group) => {
   width: 100%;
   height: 40%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 1rem;
 }
 </style>
