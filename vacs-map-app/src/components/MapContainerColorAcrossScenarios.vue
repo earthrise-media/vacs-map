@@ -1,6 +1,13 @@
 <template>
   <BaseMap>
     <template v-slot="{ map, mapReady }">
+      <RasterSource
+        :id="rasterSourceId"
+        tiles-url="https://plotine-vacs.s3.us-east-2.amazonaws.com/population-tiles/{z}/{x}/{y}.png"
+        :map="map"
+        :map-ready="mapReady"
+      />
+      <PopulationLayer id="population" :map="map" :map-ready="mapReady" :source-id="rasterSourceId" />
       <GridSource :id="sourceId" :map="map" :mapReady="mapReady" />
       <GridOverlay
         id="grid-layer-1"
@@ -24,9 +31,12 @@ import { useFiltersStore } from '@/stores/filters'
 import { useCropYieldsStore } from '@/stores/cropYields'
 import GridSource from './GridSource.vue'
 import GridOverlay from './GridOverlay.vue'
+import RasterSource from './RasterSource.vue'
+import PopulationLayer from './PopulationLayer.vue'
 import * as d3 from 'd3'
 
 const sourceId = 'cropGrid'
+const rasterSourceId = 'populationSource'
 const cropYieldsStore = useCropYieldsStore()
 const filtersStore = useFiltersStore()
 

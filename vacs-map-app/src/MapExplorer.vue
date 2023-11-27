@@ -26,6 +26,7 @@ import MapContainerColorAfricanUnion from '@/components/MapContainerColorAfrican
 import MapContainerColorSandSoil from '@/components/MapContainerColorSandSoil.vue'
 import MapContainerColorSoil from '@/components/MapContainerColorSoil.vue'
 import MapContainerColorSand from '@/components/MapContainerColorSand.vue'
+import MapContainerColorPopulation from '@/components/MapContainerColorPopulation.vue';
 import { useMapExploreStore } from '@/stores/mapExplore'
 import LayoutOverview from './components/layouts/LayoutOverview.vue'
 import ExploreSidebar from './components/ExploreSidebar.vue'
@@ -75,7 +76,12 @@ const availableMaps = [
     id: 'sand',
     name: 'circles + sand',
     component: MapContainerColorSand
-  }
+  },
+  {
+    id: 'population',
+    name: 'circles + population',
+    component: MapContainerColorPopulation
+  },
 ]
 
 const mapExploreStore = useMapExploreStore()
