@@ -10,10 +10,10 @@
               :fill="fingerprintScheme[indicator.category]"
               :d="arc(indicator)"
               :class="{
-                highlighted: hovered === indicator.key,
-                unhighlighted: hovered && hovered !== indicator.key
+                highlighted: hovered?.key === indicator.key,
+                unhighlighted: hovered && hovered.key !== indicator.key
               }"
-              @mouseenter="hovered = indicator.key"
+              @mouseenter="hovered = indicator"
               @mouseleave="hovered = null"
             />
           </g>
@@ -40,8 +40,8 @@
                 :stroke-width="1"
                 :d="arc(indicator)"
                 :class="{
-                  highlighted: hovered === indicator.key,
-                  unhighlighted: hovered && hovered !== indicator.key
+                  highlighted: hovered?.key === indicator.key,
+                  unhighlighted: hovered && hovered.key !== indicator.key
                 }"
               />
             </g>
@@ -50,16 +50,15 @@
       </svg>
     </div>
     <div class="legend">
-      <div class="metric-label" :class="{ active: hovered }">
-        {{ hovered ? hovered : 'no metric selected' }}
-      </div>
-      <div class="category-labels">
-        <span
-          v-for="cat in indicatorCategories"
-          :key="cat"
-          :style="{ color: fingerprintScheme[cat] }"
+      <div v-if="hovered !== null" class="hovered-label">
+        <span class="category-label" :style="{ background: fingerprintScheme[hovered.category] }">
+          {{ hovered.category }}</span
         >
-          {{ cat }}
+        <span class="metric-label"> {{ hovered.key }} </span>
+      </div>
+      <div class="benchmark-message">
+        <span v-if="showBenchmark">
+          *Outlines show characteristics of benchmark crop {{ benchmarkCropObject.label }}
         </span>
       </div>
     </div>
@@ -69,7 +68,7 @@
 <script setup>
 import * as d3 from 'd3'
 import { useResizeObserver } from '@vueuse/core'
-import { computed, toRefs, ref, onMounted } from 'vue'
+import { computed, toRefs, ref } from 'vue'
 import { useCropInformationStore } from '../stores/cropInformation'
 import { storeToRefs } from 'pinia'
 import { fingerprintScheme } from '../utils/colors'
@@ -116,6 +115,7 @@ const benchmarkIndicators = computed(() => {
 })
 
 const showBenchmark = computed(() => {
+  if (!benchmarkCropObject.value) return false
   return benchmarkCropObject.value !== selectedCropObject.value
 })
 
@@ -174,11 +174,13 @@ const arc = computed(() => {
 
 <style scoped>
 .fingerprint-wrapper {
+  position: relative;
   height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  padding-bottom: 3rem;
 }
 .svg-wrapper {
   height: 100%;
@@ -203,23 +205,37 @@ svg {
 }
 
 .legend {
+  position: absolute;
+  bottom: 0;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
+  height: 3rem;
+  color: var(--white);
 }
 
-.category-labels {
+.hovered-label {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
-  text-transform: uppercase;
+  gap: 0.5rem;
+}
+
+.category-label {
+  color: var(--black);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 1px 4px;
+  text-transform: capitalize;
 }
 
 .metric-label {
-  text-align: center;
-  color: var(--dark-gray);
+  color: var(--white);
+  font-size: 1rem;
 }
 
-.metric-label.active {
-  color: var(--white);
+.benchmark-message {
+  font-size: 0.8125rem;
+  font-style: italic;
+  font-weight: 300;
 }
 </style>
