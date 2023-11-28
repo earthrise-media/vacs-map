@@ -20,23 +20,41 @@ const props = defineProps({
 
 const { map } = toRefs(props)
 
-const end = {
-  center: [8.11862, 46.58842],
-  zoom: 12.5,
-  bearing: 130,
-  pitch: 75
+const end1 = {
+  zoom: 6,
+  center: [38.969, 10.182]
 };
+
+const end2 = {
+  zoom: 2.75,
+  center: [1.99, 30.11]
+};
+
+const end3 = {
+  zoom: 3.75,
+  center: [-4.28, 10.29]
+};
+
+const end4 = {
+  zoom: 2.75,
+  center: [24.82, -23.08]
+};
+
+const end5 = {
+  zoom: 3.75,
+  center: [37.19, -18]
+}
 
 const handleClick = () => {
   map.value.setFog({
-    'color': 'rgb(220, 159, 159)', // Pink fog / lower atmosphere
-    'high-color': 'rgb(36, 92, 223)', // Blue sky / upper atmosphere
+    'color': 'hsla(209, 78%, 63%, 0.1)', // Pink fog / lower atmosphere
+    'high-color': 'hsl(210, 8%, 10%)', // Blue sky / upper atmosphere
     'horizon-blend': 0.4 // Exaggerate atmosphere (default is .1)
   });
 
   map.value.flyTo({
-    ...end, // Fly to the selected target
-    duration: 12000, // Animate over 12 seconds
+    ...end5, // Fly to the selected target
+    duration: 120000, // Animate over 12 seconds
     essential: true
   });
 };
