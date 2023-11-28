@@ -1,10 +1,10 @@
 <template>
   <div class="overview-top">
     <div class="row">
-      <div> {{ copy.header_question }}</div>
+      <div>{{ copy.header_question }}</div>
       <div class="buttons">
         <button @click="copyLink" title="Copy URL">
-          <img src="@/assets/img/copy-link.svg" alt="copy-link">
+          <img src="@/assets/img/copy-link.svg" alt="copy-link" />
         </button>
         <NavigationButton :to="backRoute">Back</NavigationButton>
       </div>
@@ -23,12 +23,10 @@ const route = useRoute()
 const backRoute = computed(() => (route.path === '/map-explore' ? '/crops' : '/'))
 
 const contentStore = useContentStore()
-const {
-  copy
-} = storeToRefs(contentStore)
+const { copy } = storeToRefs(contentStore)
 
 const copyLink = () => {
-  navigator.clipboard.writeText(window.location.href);
+  navigator.clipboard.writeText(window.location.href)
 }
 </script>
 
@@ -74,5 +72,4 @@ button {
 button:hover {
   background: var(--dark-gray-hover);
 }
-
 </style>

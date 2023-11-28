@@ -13,8 +13,8 @@ import { INITIAL_MAP_BOUNDS, MAPBOX_GL_ACCESS_TOKEN, MAPBOX_STYLE } from '@/cons
 import { storeToRefs } from 'pinia'
 import { useMapExploreStore } from '@/stores/mapExplore'
 
-const mapExploreStore = useMapExploreStore();
-const { mapPadding } = storeToRefs(mapExploreStore); 
+const mapExploreStore = useMapExploreStore()
+const { mapPadding } = storeToRefs(mapExploreStore)
 
 const map = shallowRef(null)
 const mapReady = ref(false)
@@ -43,11 +43,11 @@ const initializeMap = () => {
 
 onMounted(() => {
   initializeMap()
-  if (mapPadding.value) map.value.setPadding(mapPadding.value);
+  if (mapPadding.value) map.value.setPadding(mapPadding.value)
 })
 
 watch(mapPadding, () => {
-  if (mapPadding.value) map.value.setPadding(mapPadding.value);
+  if (mapPadding.value) map.value.setPadding(mapPadding.value)
 })
 </script>
 

@@ -2,16 +2,16 @@
 
 :root {
   --black: #17191b;
-  --black-90: rgba(25, 27, 30, 0.90);
+  --black-90: rgba(25, 27, 30, 0.9);
   --white: #e1dcd5;
-  --white-hover: #A8A39C;;
-  --white-80: rgba(225, 220, 213, 0.80);
-  --gray: #7E899C;
-  --dark-gray: #3E3D45;
-  --dark-gray-hover: #34323F;
-  --ui-blue: #8CA4CB;
-  --ui-blue-hover: #6982AD;
-  --ui-blue-80: rgba(140, 164, 203, 0.80);
+  --white-hover: #a8a39c;
+  --white-80: rgba(225, 220, 213, 0.8);
+  --gray: #7e899c;
+  --dark-gray: #3e3d45;
+  --dark-gray-hover: #34323f;
+  --ui-blue: #8ca4cb;
+  --ui-blue-hover: #6982ad;
+  --ui-blue-80: rgba(140, 164, 203, 0.8);
   --font-family-header: PPeiko-heavy;
   --font-family-h2: PPeiko-medium;
   --font-family-body: 'Work Sans';

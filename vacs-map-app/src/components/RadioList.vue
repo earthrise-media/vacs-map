@@ -13,11 +13,7 @@
         :value="option.value"
         @change="(e) => $emit('update:modelValue', e.target.value)"
       />
-      <img
-        v-if="modelValue === option.value"
-        src="@/assets/img/radio-checked.svg"
-        alt=""
-      />
+      <img v-if="modelValue === option.value" src="@/assets/img/radio-checked.svg" alt="" />
       <img v-else src="@/assets/img/radio-unchecked.svg" alt="" />
       {{ option.label }}
     </label>
@@ -29,24 +25,22 @@ import { toRefs } from 'vue'
 
 defineEmits(['update:modelValue'])
 const props = defineProps({
-name: {
-  type: String,
-  default: ''
-},
+  name: {
+    type: String,
+    default: ''
+  },
 
-options: {
-  type: Array,
-  default: () => []
-},
+  options: {
+    type: Array,
+    default: () => []
+  },
 
-modelValue: {
-  type: String,
-  default: null
-}
-
+  modelValue: {
+    type: String,
+    default: null
+  }
 })
 const { name, options, modelValue } = toRefs(props)
-
 </script>
 
 <style scoped>

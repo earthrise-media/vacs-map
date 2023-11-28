@@ -27,9 +27,7 @@ const router = useRouter()
 const navigate = () => router.push('/crops')
 
 const contentStore = useContentStore()
-const {
-  copy
-} = storeToRefs(contentStore)
+const { copy } = storeToRefs(contentStore)
 </script>
 
 <style scoped>
@@ -74,7 +72,7 @@ button {
   appearance: none;
   border-radius: 6.25rem;
   background: var(--ui-blue);
-  
+
   color: var(--black);
   font-family: Work Sans;
   font-size: 1.25rem;
@@ -92,15 +90,14 @@ button:hover {
 }
 
 @media only screen and (max-width: 1080px) {
-
   .callout-header {
     font-size: 2rem;
-    }
+  }
   .callout-content {
     font-size: 0.875rem;
-    display: -webkit-box; 
-    -webkit-box-orient: vertical; 
-    -webkit-line-clamp: 8; 
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 8;
     overflow-y: hidden;
     text-overflow: ellipsis;
   }
@@ -124,9 +121,9 @@ button:hover {
   }
 
   .callout-header {
-  font-size: 1.375rem;
-  line-height: 120%;
-}
+    font-size: 1.375rem;
+    line-height: 120%;
+  }
   .callout-content {
     font-size: 0.875rem;
   }
@@ -136,5 +133,4 @@ button:hover {
     font-size: 1rem;
   }
 }
-
 </style>

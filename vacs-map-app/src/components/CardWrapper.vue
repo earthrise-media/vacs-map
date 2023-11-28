@@ -4,7 +4,12 @@
 
     <div class="info">
       <div class="title" :class="{ bold: boldTitle }">{{ title }}</div>
-      <p class="description">{{ description }}</p>
+      <p class="description">
+        {{ description }}
+        <span v-if="showMoreInfo" class="more-info" @click="() => $emit('showInfo')">
+          More info >
+        </span>
+      </p>
     </div>
   </div>
 </template>
@@ -12,6 +17,7 @@
 <script setup>
 import { toRefs } from 'vue'
 
+defineEmits(['showInfo'])
 const props = defineProps({
   title: {
     type: String,
@@ -36,6 +42,11 @@ const props = defineProps({
   isActive: {
     type: Boolean,
     default: false
+  },
+
+  showMoreInfo: {
+    type: Boolean,
+    default: false
   }
 })
 const { title, description, handleClick } = toRefs(props)
@@ -53,8 +64,6 @@ const { title, description, handleClick } = toRefs(props)
 
   cursor: pointer;
 }
-
-
 
 .info {
   transition: all 0.5s ease;
@@ -108,5 +117,10 @@ const { title, description, handleClick } = toRefs(props)
 
 .card-wrapper:hover {
   box-shadow: 0 0 0 2px var(--ui-blue);
+}
+
+.more-info {
+  text-decoration: underline;
+  cursor: pointer;
 }
 </style>

@@ -28,7 +28,7 @@
     </div>
 
     <div class="sort-by">
-      <RadioList v-model="cropSortOrder" :options="sortOrderOptions" name="sort-order"/>
+      <RadioList v-model="cropSortOrder" :options="sortOrderOptions" name="sort-order" />
 
       <select v-model="cropSortBy">
         <option v-for="option in cropSortByOptions" :key="option" :value="option">
@@ -44,13 +44,11 @@ import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useFiltersStore } from '@/stores/filters'
 import { useContentStore } from '@/stores/siteContent'
-import RadioList  from '@/components/RadioList.vue'
+import RadioList from '@/components/RadioList.vue'
 import RadioSwitch from '@/components/RadioSwitch.vue'
 
 const contentStore = useContentStore()
-const {
-  copy
-} = storeToRefs(contentStore)
+const { copy } = storeToRefs(contentStore)
 
 const filtersStore = useFiltersStore()
 const {
@@ -70,19 +68,19 @@ const futureScenarios = computed(() => {
 const sortOrderOptions = [
   {
     value: 'descending',
-    label: "High to low"
+    label: 'High to low'
   },
   {
     value: 'ascending',
     label: 'Low to high'
   }
-];
+]
 
 const scenarioOptions = computed(() => {
-  return futureScenarios.value.map(s => {
+  return futureScenarios.value.map((s) => {
     return {
       value: s,
-      label: copy.value[`${s}_label`] 
+      label: copy.value[`${s}_label`]
     }
   })
 })
@@ -160,5 +158,4 @@ const scenarioOptions = computed(() => {
 .sort-by select:hover {
   color: var(--ui-blue-hover);
 }
-
 </style>

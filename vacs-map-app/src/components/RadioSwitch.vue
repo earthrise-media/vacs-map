@@ -1,11 +1,11 @@
 <template>
-    <span class="switch">
+  <span class="switch">
     <label
       v-for="option in options"
       :key="option.value"
       :class="{ selected: option.value === modelValue }"
       :style="{
-        width: `${100 / options.length}%`,
+        width: `${100 / options.length}%`
       }"
     >
       <input
@@ -39,10 +39,8 @@ const props = defineProps({
     type: String,
     default: null
   }
-
 })
 const { name, options, modelValue } = toRefs(props)
-
 </script>
 
 <style scoped>

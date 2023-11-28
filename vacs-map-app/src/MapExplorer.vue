@@ -9,15 +9,13 @@
         </component>
         <div class="map-overlay">
           <div class="overlay-left" ref="overlayLeftRef">
-            <ExploreSidebar class="interactive"/>
+            <ExploreSidebar class="interactive" />
           </div>
           <div class="overlay-right">
             <select v-model="selectedMap" class="interactive">
               <option v-for="map in availableMaps" :value="map.id">{{ map.name }}</option>
             </select>
-            <span class="layer-selector-message">
-              Add layer
-            </span>
+            <span class="layer-selector-message"> Add layer </span>
           </div>
         </div>
       </div>
@@ -28,7 +26,7 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useResizeObserver } from '@vueuse/core';
+import { useResizeObserver } from '@vueuse/core'
 import MapContainerColor from '@/components/MapContainerColor.vue'
 import MapContainerColorAcrossScenarios from './components/MapContainerColorAcrossScenarios.vue'
 import MapContainerColorRadius from '@/components/MapContainerColorRadius.vue'
@@ -97,8 +95,8 @@ const availableMaps = [
   }
 ]
 
-const basePadding = 50;
-const leftWidth = ref(null);
+const basePadding = 50
+const leftWidth = ref(null)
 const overlayLeftRef = ref(null)
 
 useResizeObserver(overlayLeftRef, ([entry]) => {
@@ -122,7 +120,6 @@ const selectedMapComponent = computed(() => {
 })
 
 onMounted(() => {
-
   mapPadding.value = {
     top: basePadding,
     right: basePadding,
@@ -132,7 +129,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  mapPadding.value = null;
+  mapPadding.value = null
 })
 </script>
 
