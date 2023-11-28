@@ -3,11 +3,8 @@
     <div class="legend">
       <div v-if="hovered" class="hovered-label">
         <span class="metric-label"> {{ hovered?.key }} </span>
-        <span 
-          class="category-label" 
-          :style="{ background: fingerprintScheme[hovered?.category] }"
-        > 
-          {{ selectedCropObject?.label }} 
+        <span class="category-label" :style="{ background: fingerprintScheme[hovered?.category] }">
+          {{ selectedCropObject?.label }}
         </span>
         <span v-if="showBenchmark" class="category-label benchmark-label">
           {{ benchmarkCropObject?.label }}
@@ -20,7 +17,7 @@
           class="category-label"
           :style="{ background: fingerprintScheme[cat] }"
         >
-        {{ cat }}
+          {{ cat }}
         </span>
         <span v-if="showBenchmark" class="category-label benchmark-label"> Benchmark </span>
       </div>
@@ -123,7 +120,9 @@ const benchmarkCropObject = computed(() => {
 })
 
 const benchmarkIndicators = computed(() => {
-  return getIndicators(benchmarkCropObject.value).filter((d, i) => selectedIndicators.value[i].value)
+  return getIndicators(benchmarkCropObject.value).filter(
+    (d, i) => selectedIndicators.value[i].value
+  )
 })
 
 const showBenchmark = computed(() => {
@@ -148,7 +147,7 @@ const getIndicators = (crop) => {
 }
 
 const indicatorCategories = computed(() => {
-  if (!selectedCropObject.value) return [];
+  if (!selectedCropObject.value) return []
   return Object.keys(selectedCropObject.value.indicators)
 })
 
@@ -241,7 +240,7 @@ svg {
   color: var(--white);
   font-size: 0.8125rem;
   font-weight: 500;
-  line-height: 140%; 
+  line-height: 140%;
   text-transform: uppercase;
 }
 
