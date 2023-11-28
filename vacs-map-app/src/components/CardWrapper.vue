@@ -3,7 +3,7 @@
     <slot></slot>
 
     <div class="info">
-      <div class="title">{{ title }}</div>
+      <div class="title" :class="{ bold: boldTitle }">{{ title }}</div>
       <p class="description">{{ description }}</p>
     </div>
   </div>
@@ -16,6 +16,11 @@ const props = defineProps({
   title: {
     type: String,
     default: ''
+  },
+
+  boldTitle: {
+    type: Boolean,
+    default: false
   },
 
   description: {
@@ -38,7 +43,7 @@ const { title, description, handleClick } = toRefs(props)
 
 <style scoped>
 .card-wrapper {
-  --title-height: 3.5rem;
+  --title-height: 3rem;
 
   position: relative;
   overflow-y: hidden;
@@ -49,9 +54,7 @@ const { title, description, handleClick } = toRefs(props)
   cursor: pointer;
 }
 
-.active {
-  border-color: var(--white);
-}
+
 
 .info {
   transition: all 0.5s ease;
@@ -62,12 +65,16 @@ const { title, description, handleClick } = toRefs(props)
   display: flex;
   flex-direction: column;
   width: 100%;
-  background: var(--white-80);
+  background: var(--white);
   color: var(--black);
+  font-size: 0.8125rem;
+  line-height: 140%;
+
+  max-height: 100%;
 }
 
 .title {
-  font-family: var(--font-family-header);
+  font-family: var(--font-family-h2);
   height: var(--title-height);
   font-size: 1.5rem;
   text-transform: capitalize;
@@ -78,8 +85,25 @@ const { title, description, handleClick } = toRefs(props)
   white-space: nowrap;
 }
 
+.title.bold {
+  font-family: var(--font-family-header);
+}
+
+.active {
+  border-color: var(--ui-blue);
+}
+
+.active .info {
+  background: var(--ui-blue);
+}
+
 .info:hover {
   transform: translateY(calc((100% - var(--title-height)) * -1));
+  background: var(--white-80);
+}
+
+.active .info:hover {
+  background: var(--ui-blue-80);
 }
 
 .card-wrapper:hover {

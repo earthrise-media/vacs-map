@@ -6,10 +6,15 @@
 </template>
 
 <script setup>
-import { onMounted, ref, shallowRef } from 'vue'
+import { onMounted, ref, shallowRef, watch } from 'vue'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { INITIAL_MAP_BOUNDS, MAPBOX_GL_ACCESS_TOKEN, MAPBOX_STYLE } from '@/constants'
+import { storeToRefs } from 'pinia'
+import { useMapExploreStore } from '@/stores/mapExplore'
+
+const mapExploreStore = useMapExploreStore();
+const { mapPadding } = storeToRefs(mapExploreStore); 
 
 const map = shallowRef(null)
 const mapReady = ref(false)
@@ -38,6 +43,11 @@ const initializeMap = () => {
 
 onMounted(() => {
   initializeMap()
+  if (mapPadding.value) map.value.setPadding(mapPadding.value);
+})
+
+watch(mapPadding, () => {
+  if (mapPadding.value) map.value.setPadding(mapPadding.value);
 })
 </script>
 
@@ -48,5 +58,44 @@ onMounted(() => {
 
 .base-map {
   height: 100%;
+}
+</style>
+
+<style>
+.mapboxgl-ctrl {
+  margin: 0 !important;
+}
+
+.mapboxgl-ctrl-top-right {
+  top: 5rem;
+  right: calc(var(--page-horizontal-margin) + 2px);
+}
+
+.mapboxgl-ctrl-group:not(:empty) {
+  border-radius: 0.5rem !important;
+  width: 1.875rem;
+  height: 3.5rem;
+}
+
+.mapboxgl-ctrl-group button {
+  background-color: var(--dark-gray) !important;
+  width: 100%;
+  height: 50%;
+}
+
+.mapboxgl-ctrl-group button:hover {
+  background-color: var(--dark-gray-hover) !important;
+}
+
+.mapboxgl-ctrl-group button + button {
+  border-top: 1px solid var(--gray) !important;
+}
+
+.mapboxgl-ctrl button.mapboxgl-ctrl-zoom-in .mapboxgl-ctrl-icon {
+  background-image: url(@/assets/img/map-plus-ctrl.svg) !important;
+}
+
+.mapboxgl-ctrl button.mapboxgl-ctrl-zoom-out .mapboxgl-ctrl-icon {
+  background-image: url(@/assets/img/map-minus-ctrl.svg) !important;
 }
 </style>

@@ -5,6 +5,7 @@
         v-for="crop in sortedCrops"
         :key="crop.id"
         :title="crop.label"
+        :bold-title="true"
         :description="crop.description"
         :handle-click="() => navigate(crop.id)"
       >

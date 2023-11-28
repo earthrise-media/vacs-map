@@ -28,7 +28,6 @@ const topic = computed(() => topicUrlOptions.find(({ label }) => label === topic
   width: 100vw;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
 }
 
 .layout-overview-content {
