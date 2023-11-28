@@ -1,5 +1,27 @@
 <template>
   <div class="fingerprint-wrapper">
+    <div class="legend">
+      <div v-if="hovered" class="hovered-label">
+        <span class="metric-label"> {{ hovered?.key }} </span>
+        <span class="category-label" :style="{ background: fingerprintScheme[hovered?.category] }">
+          {{ selectedCropObject?.label }}
+        </span>
+        <span v-if="showBenchmark" class="category-label benchmark-label">
+          {{ benchmarkCropObject?.label }}
+        </span>
+      </div>
+      <div v-else class="hovered-label">
+        <span
+          v-for="cat in indicatorCategories"
+          :key="cat"
+          class="category-label"
+          :style="{ background: fingerprintScheme[cat] }"
+        >
+          {{ cat }}
+        </span>
+        <span v-if="showBenchmark" class="category-label benchmark-label"> Benchmark </span>
+      </div>
+    </div>
     <div class="svg-wrapper" ref="wrapperRef">
       <svg>
         <g class="chart" :transform="`translate(${width / 2}, ${height / 2})`">
@@ -48,19 +70,6 @@
           </g>
         </g>
       </svg>
-    </div>
-    <div class="legend">
-      <div v-if="hovered !== null" class="hovered-label">
-        <span class="category-label" :style="{ background: fingerprintScheme[hovered.category] }">
-          {{ hovered.category }}</span
-        >
-        <span class="metric-label"> {{ hovered.key }} </span>
-      </div>
-      <div class="benchmark-message">
-        <span v-if="showBenchmark">
-          *Outlines show characteristics of benchmark crop {{ benchmarkCropObject.label }}
-        </span>
-      </div>
     </div>
   </div>
 </template>
@@ -111,7 +120,9 @@ const benchmarkCropObject = computed(() => {
 })
 
 const benchmarkIndicators = computed(() => {
-  return getIndicators(benchmarkCropObject.value)
+  return getIndicators(benchmarkCropObject.value).filter(
+    (d, i) => selectedIndicators.value[i].value
+  )
 })
 
 const showBenchmark = computed(() => {
@@ -136,6 +147,7 @@ const getIndicators = (crop) => {
 }
 
 const indicatorCategories = computed(() => {
+  if (!selectedCropObject.value) return []
   return Object.keys(selectedCropObject.value.indicators)
 })
 
@@ -174,17 +186,13 @@ const arc = computed(() => {
 
 <style scoped>
 .fingerprint-wrapper {
-  position: relative;
   height: 100%;
-  width: 100%;
+  max-width: 100%;
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding-bottom: 3rem;
+  flex-direction: row;
 }
 .svg-wrapper {
   height: 100%;
-  width: 100%;
 }
 
 svg {
@@ -205,22 +213,22 @@ svg {
 }
 
 .legend {
-  position: absolute;
-  bottom: 0;
+  width: 30%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  height: 3rem;
+  justify-content: center;
   color: var(--white);
 }
 
 .hovered-label {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 0.5rem;
 }
 
 .category-label {
+  white-space: nowrap;
+  width: min-content;
   color: var(--black);
   font-size: 0.8125rem;
   font-weight: 600;
@@ -230,12 +238,14 @@ svg {
 
 .metric-label {
   color: var(--white);
-  font-size: 1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 140%;
+  text-transform: uppercase;
 }
 
-.benchmark-message {
-  font-size: 0.8125rem;
-  font-style: italic;
-  font-weight: 300;
+.benchmark-label {
+  color: var(--gray);
+  border: 1px solid var(--gray);
 }
 </style>

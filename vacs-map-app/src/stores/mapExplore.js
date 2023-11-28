@@ -3,5 +3,7 @@ import { defineStore } from 'pinia'
 
 export const useMapExploreStore = defineStore('mapExplore', () => {
   const selectedMap = ref('')
-  return { selectedMap }
+
+  const mapPadding = ref(null)
+  return { selectedMap, mapPadding }
 })

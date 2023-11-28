@@ -14,11 +14,17 @@ const props = defineProps({
 
 <style scoped>
 .navigation-button {
-  border: 1px solid #bfbfbf;
-  border-radius: 4px;
+  font-family: var(--font-family-body);
+  border-radius: 6.25rem;
   color: var(--white);
-  font-size: 0.8em;
-  padding: 0.25rem 0.5rem;
+  background: var(--dark-gray);
+  font-size: 1rem;
+  padding: 0.5rem;
   text-decoration: none;
+  display: flex;
+}
+
+.navigation-button:hover {
+  background: var(--dark-gray-hover);
 }
 </style>

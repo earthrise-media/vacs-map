@@ -182,7 +182,7 @@ watch(selectedCrop, () => {
 
 <style scoped>
 .chart-wrapper {
-  height: 100%;
+  height: 8rem;
   width: 100%;
 }
 </style>

@@ -89,11 +89,20 @@ const handleClick = (geometry) => {
 
 <style scoped>
 .bbox-path {
-  fill: rgba(251, 189, 5, 0.7);
-  fill-opacity: 0.8;
+  cursor: pointer;
+  fill: var(--gray);
+  fill-opacity: 0.7;
 }
 
 .bbox-path:hover {
-  fill: rgba(255, 109, 1, 0.7);
+  stroke: var(--white);
+  stroke-width: 2;
+  stroke-opacity: 0.7;
+}
+
+.region-picker {
+  background: var(--black-90);
+  border: 1px solid var(--dark-gray);
+  border-radius: 100%;
 }
 </style>

@@ -8,8 +8,6 @@
 
 <style scoped>
 .layout-open {
-  background: var(--dark-gray);
-  color: var(--white);
   min-height: 100vh;
   width: 100vw;
 }

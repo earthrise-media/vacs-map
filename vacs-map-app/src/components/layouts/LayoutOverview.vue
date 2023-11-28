@@ -24,13 +24,10 @@ const topic = computed(() => topicUrlOptions.find(({ label }) => label === topic
 
 <style scoped>
 .layout-overview {
-  background: var(--dark-gray);
-  color: var(--white);
   height: 100vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
 }
 
 .layout-overview-content {
