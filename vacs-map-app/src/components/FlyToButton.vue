@@ -37,8 +37,7 @@ const handleClick = () => {
   map.value.flyTo({
     ...end, // Fly to the selected target
     duration: 12000, // Animate over 12 seconds
-    essential: true // This animation is considered essential with
-    //respect to prefers-reduced-motion
+    essential: true
   });
 };
 </script>
