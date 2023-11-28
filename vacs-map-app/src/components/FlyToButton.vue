@@ -67,9 +67,9 @@ const handleClick = () => {
 
   map.value.flyTo({
     // ...west, // Fly to the selected target
-    // ...south, // Fly to the selected target
+    ...south, // Fly to the selected target
     // ...obliqueEth, // Fly to the selected target
-    ...north, // Fly to the selected target
+    // ...north, // Fly to the selected target
     // all scenes are 12s except all crop animation
     // duration: 12000, // Animate over 12 seconds
     duration: 120000, // Animate over 2 minutes
