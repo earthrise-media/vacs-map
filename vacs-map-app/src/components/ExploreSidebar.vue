@@ -15,15 +15,16 @@
 
     <div class="sidebar-section grow">
       <span class="sidebar-header"> What are {{ selectedCropInfo?.label }}'s characteristics?</span>
-        <div class="crop-fingerprint">
+      <div class="crop-fingerprint">
         <CropFingerprint :crop-id="selectedCrop" />
       </div>
     </div>
-   
 
     <div class="sidebar-section">
-      <div class="scenarios"> 
-        <span class="sidebar-header"> How will climate change affect {{ selectedCropInfo?.label }}?</span>
+      <div class="scenarios">
+        <span class="sidebar-header">
+          How will climate change affect {{ selectedCropInfo?.label }}?</span
+        >
         <CardWrapper
           v-for="scenario in futureScenarios"
           :key="scenario"
@@ -31,11 +32,19 @@
           :description="copy[`${scenario}_short`]"
           :is-active="selectedModel === scenario"
           :handle-click="() => (selectedModel = scenario)"
+          :show-more-info="true"
+          @show-info="() => openModal(scenario)"
         >
           <DistributionPlot :scenario="scenario" />
         </CardWrapper>
       </div>
     </div>
+
+    <ContentModal v-if="modalOpen" @close="() => (modalOpen = false)" :title="modalHeader">
+      <p class="modal-content">
+        {{ modalContent }}
+      </p>
+    </ContentModal>
   </div>
 </template>
 
@@ -48,6 +57,7 @@ import { useContentStore } from '../stores/siteContent'
 import DistributionPlot from '@/components/DistributionPlot.vue'
 import CropFingerprint from '@/components/CropFingerprint.vue'
 import CardWrapper from '@/components/CardWrapper.vue'
+import ContentModal from './ContentModal.vue'
 
 const contentStore = useContentStore()
 const filtersStore = useFiltersStore()
@@ -55,7 +65,11 @@ const cropInformationStore = useCropInformationStore()
 const { availableCrops, selectedCrop, availableModels, selectedModel, availableCropGroups } =
   storeToRefs(filtersStore)
 const { data: cropInformation } = storeToRefs(cropInformationStore)
-const { copy } = storeToRefs(contentStore);
+const { copy } = storeToRefs(contentStore)
+
+const modalOpen = ref(false)
+const modalHeader = ref('')
+const modalContent = ref('')
 
 const futureScenarios = computed(() => availableModels.value.filter((d) => d.startsWith('future')))
 
@@ -65,6 +79,12 @@ const selectedCropInfo = computed(() => {
 
 const getCropsByGroup = (group) => {
   return cropInformation?.value?.filter((crop) => crop.crop_group === group)
+}
+
+const openModal = (s) => {
+  modalOpen.value = true
+  modalHeader.value = copy.value[`${s}_label`] + ' scenario' + ` (${s.split('_')[1].toUpperCase()})`
+  modalContent.value = copy.value[`${s}_long`]
 }
 </script>
 
