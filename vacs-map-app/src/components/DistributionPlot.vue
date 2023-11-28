@@ -1,6 +1,6 @@
 <template>
   <div class="chart-wrapper" ref="wrapperRef">
-    <canvas ref="canvasRef"/>
+    <canvas ref="canvasRef" />
   </div>
 </template>
 
@@ -29,8 +29,8 @@ const { selectedMetric, selectedCrop, availableModels, availableCrops } = storeT
 const { data: cropYieldsData } = storeToRefs(cropYieldsStore)
 const { hoveredId } = storeToRefs(mapExploreStore)
 
-const canvasRef = ref(null);
-const context = ref(null);
+const canvasRef = ref(null)
+const context = ref(null)
 const wrapperRef = ref(null)
 const width = ref(0)
 const height = ref(0)
@@ -39,11 +39,10 @@ useResizeObserver(wrapperRef, ([entry]) => {
   width.value = entry.contentRect.width
   height.value = entry.contentRect.height
 
-  canvasRef.value.width = width.value;
-  canvasRef.value.height = height.value;
-  draw();
+  canvasRef.value.width = width.value
+  canvasRef.value.height = height.value
+  draw()
 })
-
 
 const columnName = computed(() => {
   return [selectedMetric.value, selectedCrop.value, scenario.value].join('_')
@@ -61,24 +60,28 @@ const cropExtent = computed(() => {
 
 const gridCells = computed(() => {
   if (!cropYieldsData.value) return
-  return cropYieldsData.value.map((row) => {
-    const val = row[columnName.value];
-    return {
-      id: row.id,
-      val,
-      x: xScale.value(val),
-      fill: getCellColor(val)
-    }
-  }).filter(d => !!d.val)
+  return cropYieldsData.value
+    .map((row) => {
+      const val = row[columnName.value]
+      return {
+        id: row.id,
+        val,
+        x: xScale.value(val),
+        fill: getCellColor(val)
+      }
+    })
+    .filter((d) => !!d.val)
 })
 
 const xScale = computed(() => {
-  return d3
-    .scaleLinear()
-    // keep 0 values centered on spectrum
-    .domain([cropExtent.value[0], 0, cropExtent.value[1]])
-    .range([0, width.value/2, width.value])
-    // .clamp(true);
+  return (
+    d3
+      .scaleLinear()
+      // keep 0 values centered on spectrum
+      .domain([cropExtent.value[0], 0, cropExtent.value[1]])
+      .range([0, width.value / 2, width.value])
+  )
+  // .clamp(true);
 })
 
 const getCellColor = (value) => {
@@ -93,62 +96,62 @@ const getCellColor = (value) => {
 }
 
 // from D3 beeswarm example
-const dodge = (data, {radius = 1, x = d => d} = {}) => {
-  const radius2 = radius ** 2;
-  const circles = data.map(d => ({x: x(d), data: d})).sort((a, b) => a.x - b.x);
-  const epsilon = 1e-3;
-  let head = null, tail = null;
+const dodge = (data, { radius = 1, x = (d) => d } = {}) => {
+  const radius2 = radius ** 2
+  const circles = data.map((d) => ({ x: x(d), data: d })).sort((a, b) => a.x - b.x)
+  const epsilon = 1e-3
+  let head = null,
+    tail = null
 
   // Returns true if circle ⟨x,y⟩ intersects with any circle in the queue.
   function intersects(x, y) {
-    let a = head;
+    let a = head
     while (a) {
       if (radius2 - epsilon > (a.x - x) ** 2 + (a.y - y) ** 2) {
-        return true;
+        return true
       }
-      a = a.next;
+      a = a.next
     }
-    return false;
+    return false
   }
 
   // Place each circle sequentially.
   for (const b of circles) {
-
     // Remove circles from the queue that can’t intersect the new circle b.
-    while (head && head.x < b.x - radius2) head = head.next;
+    while (head && head.x < b.x - radius2) head = head.next
 
     // Choose the minimum non-intersecting tangent.
-    if (intersects(b.x, b.y = 0)) {
-      let a = head;
-      b.y = Infinity;
+    if (intersects(b.x, (b.y = 0))) {
+      let a = head
+      b.y = Infinity
       do {
-        let y1 = a.y + Math.sqrt(radius2 - (a.x - b.x) ** 2);
-        let y2 = a.y - Math.sqrt(radius2 - (a.x - b.x) ** 2);
-        if (Math.abs(y1) < Math.abs(b.y) && !intersects(b.x, y1)) b.y = y1;
-        if (Math.abs(y2) < Math.abs(b.y) && !intersects(b.x, y2)) b.y = y2;
-        a = a.next;
-      } while (a);
+        let y1 = a.y + Math.sqrt(radius2 - (a.x - b.x) ** 2)
+        let y2 = a.y - Math.sqrt(radius2 - (a.x - b.x) ** 2)
+        if (Math.abs(y1) < Math.abs(b.y) && !intersects(b.x, y1)) b.y = y1
+        if (Math.abs(y2) < Math.abs(b.y) && !intersects(b.x, y2)) b.y = y2
+        a = a.next
+      } while (a)
     }
 
     // Add b to the queue.
-    b.next = null;
-    if (head === null) head = tail = b;
-    else tail = tail.next = b;
+    b.next = null
+    if (head === null) head = tail = b
+    else tail = tail.next = b
   }
 
-  return circles;
+  return circles
 }
 
 const draw = () => {
-  if (!context.value) return;
+  if (!context.value) return
 
-  context.value.save();
+  context.value.save()
   //clear old canvas
-  context.value.clearRect(0, 0, width.value, height.value);
+  context.value.clearRect(0, 0, width.value, height.value)
 
-  gridCells.value?.forEach(cell => {
-    context.value.fillStyle = cell.fill;
-    context.value.fillRect(cell.x, 0, 0.1, height.value);
+  gridCells.value?.forEach((cell) => {
+    context.value.fillStyle = cell.fill
+    context.value.fillRect(cell.x, 0, 0.1, height.value)
   })
 
   // draw dots as swarm plot -- seems too slow
@@ -160,7 +163,7 @@ const draw = () => {
   //   context.value.fillRect(cell.x, height.value*.3 + cell.y, 2, 2);
   // })
 
-  context.value.restore();
+  context.value.restore()
 }
 
 onMounted(() => {
@@ -172,17 +175,17 @@ onMounted(() => {
 
   context.value = canvasRef.value?.getContext('2d')
 
-  draw();
+  draw()
 })
 
 watch(selectedCrop, () => {
-  draw();
+  draw()
 })
 </script>
 
 <style scoped>
 .chart-wrapper {
-  height: 100%;
+  height: 8rem;
   width: 100%;
 }
 </style>

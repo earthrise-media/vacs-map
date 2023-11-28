@@ -5,6 +5,7 @@
         v-for="crop in sortedCrops"
         :key="crop.id"
         :title="crop.label"
+        :bold-title="true"
         :description="crop.description"
         :handle-click="() => navigate(crop.id)"
       >
@@ -61,7 +62,7 @@ const getUrl = (crop) => {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  padding-bottom: 2rem;
+  padding: 2px 2px 2rem 2px;
 }
 .crop-cards {
   display: grid;

@@ -4,6 +4,7 @@ import { defineStore } from 'pinia'
 export const useMapExploreStore = defineStore('mapExplore', () => {
   const selectedMap = ref('')
   const hoveredId = ref(null)
-
-  return { selectedMap, hoveredId }
+  const mapPadding = ref(null)
+  
+  return { selectedMap, mapPadding, hoveredId }
 })
