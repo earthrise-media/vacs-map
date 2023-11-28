@@ -43,10 +43,8 @@ const getRasterColor = () => {
     //
     // const interpolator = d3.interpolateSinebow;
     // const interpolator = d3.interpolateCubehelixDefault
-;
-
     // Or define your own:
-    const interpolator = d3.interpolateHsl("transparent", "palegoldenrod");
+    const interpolator = d3.interpolateHsl('transparent', 'palegoldenrod')
 
     // const interpolator = d3.interpolateInferno
     return interpolator(value)

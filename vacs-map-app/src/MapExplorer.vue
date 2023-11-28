@@ -2,7 +2,11 @@
   <LayoutOverview>
     <div class="map-wrapper-row">
       <div class="map-wrapper">
-        <component :is="selectedMapComponent" />
+        <component :is="selectedMapComponent">
+          <template v-slot="{ map, mapReady }">
+            <RegionPicker :map="map" :map-ready="mapReady" />
+          </template>
+        </component>
         <div class="map-overlay">
           <div class="overlay-left" ref="overlayLeftRef">
             <ExploreSidebar class="interactive"/>
@@ -34,10 +38,11 @@ import MapContainerColorAfricanUnion from '@/components/MapContainerColorAfrican
 import MapContainerColorSandSoil from '@/components/MapContainerColorSandSoil.vue'
 import MapContainerColorSoil from '@/components/MapContainerColorSoil.vue'
 import MapContainerColorSand from '@/components/MapContainerColorSand.vue'
-import MapContainerColorPopulation from '@/components/MapContainerColorPopulation.vue';
+import MapContainerColorPopulation from '@/components/MapContainerColorPopulation.vue'
 import { useMapExploreStore } from '@/stores/mapExplore'
 import LayoutOverview from './components/layouts/LayoutOverview.vue'
 import ExploreSidebar from './components/ExploreSidebar.vue'
+import RegionPicker from './components/RegionPicker.vue'
 
 const availableMaps = [
   // {
@@ -89,7 +94,7 @@ const availableMaps = [
     id: 'population',
     name: 'Population',
     component: MapContainerColorPopulation
-  },
+  }
 ]
 
 const basePadding = 50;
@@ -199,5 +204,16 @@ select:hover {
 
 select:hover + .layer-selector-message {
   opacity: 1;
+}
+</style>
+
+<style>
+.region-picker {
+  position: absolute;
+  bottom: 2.5rem;
+  right: 2.5rem;
+  z-index: 1000;
+  width: 8rem;
+  height: 10rem;
 }
 </style>

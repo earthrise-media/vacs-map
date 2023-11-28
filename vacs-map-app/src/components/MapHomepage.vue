@@ -1,6 +1,6 @@
 <template>
   <div class="chart-wrapper" ref="wrapperRef">
-    <canvas ref="canvasRef"/>
+    <canvas ref="canvasRef" />
   </div>
 </template>
 
@@ -22,14 +22,14 @@ const { data: cropYieldsData } = storeToRefs(cropYieldsStore)
 const { data: gridData } = storeToRefs(gridStore)
 const { availableCrops, availableModels } = storeToRefs(filtersStore)
 
-const wrapperRef = ref(null);
-const canvasRef = ref(null);
-const context = ref(null);
+const wrapperRef = ref(null)
+const canvasRef = ref(null)
+const context = ref(null)
 
-const inset = -20;
-const width = ref(0);
-const height = ref(0);
-const timer = ref(null);
+const inset = -20
+const width = ref(0)
+const height = ref(0)
+const timer = ref(null)
 
 // these variables control what crop/scenario we are currently looking at
 const selectedCropIndex = ref(0)
@@ -37,13 +37,13 @@ const selectedScenarioIndex = ref(0)
 const switchCrop = ref(false)
 
 useResizeObserver(wrapperRef, ([entry]) => {
-  width.value = entry.contentRect.width;
-  height.value = entry.contentRect.height;
+  width.value = entry.contentRect.width
+  height.value = entry.contentRect.height
 
-  canvasRef.value.width = width.value;
-  canvasRef.value.height = height.value;
-  draw();
-});
+  canvasRef.value.width = width.value
+  canvasRef.value.height = height.value
+  draw()
+})
 
 const futureScenarios = computed(() => availableModels.value.filter((d) => d.startsWith('future')))
 
@@ -66,16 +66,22 @@ const outline = { type: 'Sphere' }
 
 // this handles the projection, with translation and scale based on window size (responsive)
 const projection = computed(() => {
-  return d3.geoOrthographic()
-    .rotate([-18,-3])
-    .fitExtent([[inset, inset], [width.value - inset, height.value - inset]], outline)
+  return d3
+    .geoOrthographic()
+    .rotate([-18, -3])
+    .fitExtent(
+      [
+        [inset, inset],
+        [width.value - inset, height.value - inset]
+      ],
+      outline
+    )
 })
-
 
 const gridCells = computed(() => {
   if (!gridData.value || !cropYieldsData.value) return
   return gridData.value.map((cell, i) => {
-    const val = cropYieldsData.value[i][selectedColumn.value];
+    const val = cropYieldsData.value[i][selectedColumn.value]
     return {
       id: cell.id,
       val,
@@ -118,43 +124,47 @@ const updateGrid = () => {
     }
     switchCrop.value = true
   }
-  draw();
+  draw()
 }
 
 const draw = () => {
-  if (!context.value) return;
+  if (!context.value) return
 
-  context.value.save();
+  context.value.save()
   //clear old canvas
-  context.value.clearRect(0, 0, width.value, height.value);
+  context.value.clearRect(0, 0, width.value, height.value)
 
   //draw 'globe'
-  const radius = Math.min(width.value, height.value)/2 - 90;
+  const radius = Math.min(width.value, height.value) / 2 - 90
   const gradient = context.value.createRadialGradient(
-    width.value/2, height.value/2, 0,
-    width.value/2, height.value/2, radius
-  );
-  gradient.addColorStop(0.05, '#3B4650');
-  gradient.addColorStop(0.99, '#272E34');
-  gradient.addColorStop(1, '#17191b');
+    width.value / 2,
+    height.value / 2,
+    0,
+    width.value / 2,
+    height.value / 2,
+    radius
+  )
+  gradient.addColorStop(0.05, '#3B4650')
+  gradient.addColorStop(0.99, '#272E34')
+  gradient.addColorStop(1, '#17191b')
 
-  context.value.fillStyle = gradient;
+  context.value.fillStyle = gradient
   context.value.fillRect(
-    width.value/2 - radius, 
-    height.value/2 - radius,
-    2*radius,
-    2*radius
-  );
+    width.value / 2 - radius,
+    height.value / 2 - radius,
+    2 * radius,
+    2 * radius
+  )
 
   //draw grid dots
-  const cellRadius = 1;
-  gridCells.value?.forEach(cell => {
-    context.value.beginPath();
-    context.value.arc(cell.x, cell.y, cellRadius, 0, Math.PI * 2, false);
-    context.value.fillStyle = cell.fill;
-    context.value.fill();
+  const cellRadius = 1
+  gridCells.value?.forEach((cell) => {
+    context.value.beginPath()
+    context.value.arc(cell.x, cell.y, cellRadius, 0, Math.PI * 2, false)
+    context.value.fillStyle = cell.fill
+    context.value.fill()
   })
-  context.value.restore();
+  context.value.restore()
 }
 
 onMounted(() => {
@@ -164,12 +174,12 @@ onMounted(() => {
   width.value = wrapperRef.value.clientWidth
   height.value = wrapperRef.value.clientHeight
 
-  canvasRef.value.width = width.value;
-  canvasRef.value.height = height.value;
+  canvasRef.value.width = width.value
+  canvasRef.value.height = height.value
 
   context.value = canvasRef.value?.getContext('2d')
 
-  draw();
+  draw()
 
   // call update grid every x milliseconds
   timer.value = setInterval(() => {
@@ -188,5 +198,4 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100%;
 }
-
 </style>
