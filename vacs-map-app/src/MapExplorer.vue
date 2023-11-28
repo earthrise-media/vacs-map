@@ -161,7 +161,11 @@ onUnmounted(() => {
 
 .overlay-right {
   position: relative;
-  padding-right: var(--page-horizontal-margin);
+  margin-right: var(--page-horizontal-margin);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .interactive {
