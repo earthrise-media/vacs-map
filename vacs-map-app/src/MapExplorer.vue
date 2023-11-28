@@ -6,6 +6,7 @@
         <component :is="selectedMapComponent">
           <template v-slot="{ map, mapReady }">
             <RegionPicker :map="map" :map-ready="mapReady" />
+            <FlyToButton :map="map" :map-ready="mapReady" />
           </template>
         </component>
         <div class="map-overlay">
@@ -32,6 +33,7 @@ import MapContainerColorSoil from '@/components/MapContainerColorSoil.vue'
 import MapContainerColorSand from '@/components/MapContainerColorSand.vue'
 import MapContainerColorPopulation from '@/components/MapContainerColorPopulation.vue'
 import { useMapExploreStore } from '@/stores/mapExplore'
+import FlyToButton from './components/FlyToButton.vue'
 import LayoutOverview from './components/layouts/LayoutOverview.vue'
 import ExploreSidebar from './components/ExploreSidebar.vue'
 import RegionPicker from './components/RegionPicker.vue'
@@ -130,5 +132,12 @@ const selectedMapComponent = computed(() => {
   z-index: 1000;
   width: 8rem;
   height: 10rem;
+}
+
+.fly-to {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  z-index: 1000;
 }
 </style>
