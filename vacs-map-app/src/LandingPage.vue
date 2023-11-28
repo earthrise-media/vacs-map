@@ -5,7 +5,7 @@
         <div class="callout-header">{{ copy.header_question }}</div>
         <div class="callout-content">
           <p>
-          {{ copy.vacs_short }}
+            {{ copy.vacs_short }}
           </p>
           <p class="keep-reading" @click="openModal">Keep reading</p>
         </div>
@@ -16,21 +16,17 @@
       </div>
     </div>
 
-    <div class="logos-row">
-      [logos go here]
-    </div>
+    <div class="logos-row">[logos go here]</div>
 
     <ContentModal v-if="modalOpen" @close="() => (modalOpen = false)" :title="modalHeader">
       <div class="modal-content">
         {{ modalContent }}
-        
       </div>
       <div class="vacs-link">
-        <a href="https://www.state.gov/the-vision-for-adapted-crops-and-soils/" target="_blank"> 
+        <a href="https://www.state.gov/the-vision-for-adapted-crops-and-soils/" target="_blank">
           Learn more about VACS >
         </a>
       </div>
-      
     </ContentModal>
   </LayoutOpen>
 </template>
@@ -129,13 +125,15 @@ button:hover {
   background: var(--ui-blue-hover);
 }
 
-.keep-reading, .vacs-link a {
+.keep-reading,
+.vacs-link a {
   cursor: pointer;
   color: var(--ui-blue);
   text-decoration: underline;
 }
 
-.keep-reading:hover, .vacs-link a:hover {
+.keep-reading:hover,
+.vacs-link a:hover {
   color: var(--ui-blue-hover);
 }
 
