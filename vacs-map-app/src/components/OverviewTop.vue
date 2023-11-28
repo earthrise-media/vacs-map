@@ -60,6 +60,9 @@ button {
   border: none;
   text-decoration: none;
 
+  display: flex;
+  align-items: center;
+
   padding: 0.625rem 0.75rem;
   border-radius: 100%;
   background: var(--dark-gray);
