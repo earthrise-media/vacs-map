@@ -266,17 +266,22 @@ const getCircleColorDiverging = (extent, center) => {
   return [
     'case',
     ['!=', ['get', colorColumn.value], null],
-    [
-      'interpolate',
-      ['linear'],
-      ['get', colorColumn.value],
-      min,
-      getColor(0),
-      center,
-      divergingScheme.center,
-      max,
-      getColor(1)
-    ],
+      [
+        'case',
+        ['boolean', ['feature-state', 'hovered'], false],
+        'white',
+        [
+          'interpolate',
+          ['linear'],
+          ['get', colorColumn.value],
+          min,
+          getColor(0),
+          center,
+          divergingScheme.center,
+          max,
+          getColor(1)
+        ],
+      ],
     'transparent'
   ]
 }

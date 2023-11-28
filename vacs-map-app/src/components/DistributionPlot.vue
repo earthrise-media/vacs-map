@@ -79,9 +79,9 @@ const xScale = computed(() => {
       .scaleLinear()
       // keep 0 values centered on spectrum
       .domain([cropExtent.value[0], 0, cropExtent.value[1]])
-      .range([0, width.value / 2, width.value])
+      .range([2, width.value / 2, width.value - 2])
+      .clamp(true)
   )
-  // .clamp(true);
 })
 
 const getCellColor = (value) => {
@@ -154,6 +154,13 @@ const draw = () => {
     context.value.fillRect(cell.x, 0, 0.1, height.value)
   })
 
+  //draw hovered
+  if (hoveredId.value) {
+    const cell = gridCells?.value.find(d => d.id === hoveredId.value);
+    context.value.fillStyle = 'white'
+    context.value.fillRect(cell.x, 0, 3, height.value)
+  }
+
   // draw dots as swarm plot -- seems too slow
   // const grid = dodge(gridCells.value, {radius: 1, x: d => d.x});
 
@@ -179,6 +186,10 @@ onMounted(() => {
 })
 
 watch(selectedCrop, () => {
+  draw()
+})
+
+watch(hoveredId, () => {
   draw()
 })
 </script>
