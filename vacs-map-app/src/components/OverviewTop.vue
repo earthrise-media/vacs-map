@@ -4,7 +4,7 @@
       <div> {{ copy.header_question }}</div>
       <div class="buttons">
         <button @click="copyLink" title="Copy URL">
-          <img src="../assets/img/copy-link.svg" alt="copy-link">
+          <img src="@/assets/img/copy-link.svg" alt="copy-link">
         </button>
         <NavigationButton :to="backRoute">Back</NavigationButton>
       </div>
@@ -63,8 +63,10 @@ button {
   text-decoration: none;
 
   padding: 0.625rem 0.75rem;
-  border-radius: 6.25rem;
+  border-radius: 100%;
   background: var(--dark-gray);
+  display: flex;
+  aspect-ratio: 1/1;
 
   cursor: pointer;
 }

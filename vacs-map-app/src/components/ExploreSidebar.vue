@@ -35,10 +35,10 @@
 import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useFiltersStore } from '@/stores/filters'
-import { useCropInformationStore } from '../stores/cropInformation'
-import DistributionPlot from './DistributionPlot.vue'
-import CropFingerprint from './CropFingerprint.vue'
-import CardWrapper from './CardWrapper.vue'
+import { useCropInformationStore } from '@/stores/cropInformation'
+import DistributionPlot from '@/components/DistributionPlot.vue'
+import CropFingerprint from '@/components/CropFingerprint.vue'
+import CardWrapper from '@/components/CardWrapper.vue'
 
 const filtersStore = useFiltersStore()
 const cropInformationStore = useCropInformationStore()

@@ -19,9 +19,9 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { useContentStore } from './stores/siteContent'
+import { useContentStore } from '@/stores/siteContent'
 import LayoutOpen from '@/components/layouts/LayoutOpen.vue'
-import MapHomepage from './components/MapHomepage.vue'
+import MapHomepage from '@/components/MapHomepage.vue'
 
 const router = useRouter()
 const navigate = () => router.push('/crops')
