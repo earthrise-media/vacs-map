@@ -7,7 +7,7 @@
       <p class="description">
         {{ description }}
         <span v-if="showMoreInfo" class="more-info" @click="() => $emit('showInfo')">
-          More info >
+          More info
         </span>
       </p>
     </div>

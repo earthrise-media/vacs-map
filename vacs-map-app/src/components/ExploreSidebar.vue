@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <div class="sidebar-section">
+    <div class="sidebar-section shrink">
       <div class="scenarios">
         <span class="sidebar-header">
           How will climate change affect {{ selectedCropInfo?.label }}?</span
@@ -97,7 +97,7 @@ const openModal = (s) => {
   height: 100%;
   margin-left: var(--page-horizontal-margin);
   padding: 1.25rem;
-  width: 440px;
+  width: 450px;
   border: 1px solid var(--dark-gray);
   border-radius: 1rem;
   background: var(--black-90);
@@ -119,6 +119,10 @@ const openModal = (s) => {
 
 .grow {
   flex-grow: 1;
+}
+
+.shrink {
+  flex-shrink: 1;
 }
 
 .crop-selection {
@@ -171,6 +175,7 @@ const openModal = (s) => {
 
 .scenarios {
   width: 100%;
+  flex-shrink: 1;
   display: flex;
   flex-direction: column;
   gap: 1rem;
