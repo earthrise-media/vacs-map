@@ -99,4 +99,10 @@ const handleClick = (geometry) => {
   stroke-width: 2;
   stroke-opacity: 0.7;
 }
+
+.region-picker {
+  background: var(--black-90);
+  border: 1px solid var(--dark-gray);
+  border-radius: 100%;
+}
 </style>

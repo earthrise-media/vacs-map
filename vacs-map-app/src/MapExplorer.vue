@@ -216,9 +216,10 @@ select:hover + .layer-selector-message {
 .region-picker {
   position: absolute;
   bottom: 2.5rem;
-  right: 2.5rem;
+  right: 1rem;
   z-index: 1000;
-  width: 8rem;
-  height: 10rem;
+  width: 12rem;
+  height: 12rem;
+  padding: 1.5rem;
 }
 </style>
