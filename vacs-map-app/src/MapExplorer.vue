@@ -192,11 +192,15 @@ select:hover {
 .layer-selector-message {
   position: absolute;
   left: 1rem;
-  transform: translateX(-140%);
+  transform: translateX(-130%);
   opacity: 0;
   transition: all 0.5s ease;
   font-size: 1rem;
-  color: var(--gray);
+  color: var(--ui-blue);
+  white-space: nowrap;
+  background: var(--dark-gray);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
 }
 
 select:hover + .layer-selector-message {
