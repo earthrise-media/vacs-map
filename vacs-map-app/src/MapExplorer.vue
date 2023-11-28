@@ -1,7 +1,6 @@
 <template>
   <LayoutOverview>
     <div class="map-wrapper-row">
-      <ExploreSidebar />
       <div class="map-wrapper">
         <component :is="selectedMapComponent">
           <template v-slot="{ map, mapReady }">
@@ -10,9 +9,15 @@
           </template>
         </component>
         <div class="map-overlay">
-          <select v-model="selectedMap">
-            <option v-for="map in availableMaps" :value="map.id">{{ map.name }}</option>
-          </select>
+          <div class="overlay-left" ref="overlayLeftRef">
+            <ExploreSidebar class="interactive" />
+          </div>
+          <div class="overlay-right">
+            <select v-model="selectedMap" class="interactive">
+              <option v-for="map in availableMaps" :value="map.id">{{ map.name }}</option>
+            </select>
+            <span class="layer-selector-message"> Add layer </span>
+          </div>
         </div>
       </div>
     </div>
@@ -20,8 +25,9 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useResizeObserver } from '@vueuse/core'
 import MapContainerColor from '@/components/MapContainerColor.vue'
 import MapContainerColorAcrossScenarios from './components/MapContainerColorAcrossScenarios.vue'
 import MapContainerColorRadius from '@/components/MapContainerColorRadius.vue'
@@ -39,67 +45,93 @@ import ExploreSidebar from './components/ExploreSidebar.vue'
 import RegionPicker from './components/RegionPicker.vue'
 
 const availableMaps = [
-  {
-    id: 'just-color',
-    name: 'dynamic color',
-    component: MapContainerColor
-  },
+  // {
+  //   id: 'just-color',
+  //   name: 'dynamic color',
+  //   component: MapContainerColor
+  // },
   {
     id: 'color-across-scenarios',
-    name: 'color across scenarios',
+    name: 'Default',
     component: MapContainerColorAcrossScenarios
   },
-  {
-    id: 'color-and-radius-1',
-    name: 'dynamic color and radius (cropyield)',
-    component: MapContainerColorRadius
-  },
-  {
-    id: 'not-filled',
-    name: 'circles not filled',
-    component: MapContainerNotFilled
-  },
-  {
-    id: 'not-filled-2',
-    name: 'circles not filled, two layers',
-    component: MapContainerNotFilledTwoLayers
-  },
-  {
-    id: 'african-union',
-    name: 'circles + african union regions',
-    component: MapContainerColorAfricanUnion
-  },
+  // {
+  //   id: 'color-and-radius-1',
+  //   name: 'dynamic color and radius (cropyield)',
+  //   component: MapContainerColorRadius
+  // },
+  // {
+  //   id: 'not-filled',
+  //   name: 'circles not filled',
+  //   component: MapContainerNotFilled
+  // },
+  // {
+  //   id: 'not-filled-2',
+  //   name: 'circles not filled, two layers',
+  //   component: MapContainerNotFilledTwoLayers
+  // },
+  // {
+  //   id: 'african-union',
+  //   name: 'circles + african union regions',
+  //   component: MapContainerColorAfricanUnion
+  // },
   {
     id: 'sand-soil',
-    name: 'circles + sand + soil carbon',
+    name: 'Sand + Soil',
     component: MapContainerColorSandSoil
   },
-  {
-    id: 'soil',
-    name: 'circles + soil carbon',
-    component: MapContainerColorSoil
-  },
-  {
-    id: 'sand',
-    name: 'circles + sand',
-    component: MapContainerColorSand
-  },
+  // {
+  //   id: 'soil',
+  //   name: 'circles + soil carbon',
+  //   component: MapContainerColorSoil
+  // },
+  // {
+  //   id: 'sand',
+  //   name: 'circles + sand',
+  //   component: MapContainerColorSand
+  // },
   {
     id: 'population',
-    name: 'circles + population',
+    name: 'Population',
     component: MapContainerColorPopulation
   }
 ]
 
+const basePadding = 50
+const leftWidth = ref(null)
+const overlayLeftRef = ref(null)
+
+useResizeObserver(overlayLeftRef, ([entry]) => {
+  leftWidth.value = entry.contentRect.width
+
+  mapPadding.value = {
+    ...mapPadding.value,
+    left: basePadding + leftWidth.value
+  }
+})
+
 const mapExploreStore = useMapExploreStore()
-const { selectedMap } = storeToRefs(mapExploreStore)
+const { selectedMap, mapPadding } = storeToRefs(mapExploreStore)
 
 if (!selectedMap.value) {
-  selectedMap.value = availableMaps[1].id
+  selectedMap.value = availableMaps[0].id
 }
 
 const selectedMapComponent = computed(() => {
   return availableMaps.find(({ id }) => id === selectedMap.value).component
+})
+
+onMounted(() => {
+  mapPadding.value = {
+    top: basePadding,
+    right: basePadding,
+    left: basePadding,
+    bottom: basePadding
+  }
+})
+
+onUnmounted(() => {
+  mapPadding.value = null
 })
 </script>
 
@@ -118,9 +150,67 @@ const selectedMapComponent = computed(() => {
 }
 
 .map-overlay {
+  height: 100%;
+  width: 100%;
   position: absolute;
-  top: 5rem;
-  right: 1rem;
+  top: 0rem;
+  left: 0rem;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  padding: 2rem 0;
+}
+
+.overlay-right {
+  position: relative;
+  margin-right: var(--page-horizontal-margin);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.interactive {
+  pointer-events: all;
+}
+
+select {
+  cursor: pointer;
+  width: 1.875rem;
+  padding-right: 1.875rem;
+  aspect-ratio: 1/1;
+
+  border-radius: 100%;
+  background: none;
+  border: none;
+  appearance: none;
+  background: var(--ui-blue);
+  background-image: url('@/assets/img/layers.svg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  outline: none;
+}
+
+select:hover {
+  background-color: var(--ui-blue-hover);
+}
+
+.layer-selector-message {
+  position: absolute;
+  left: 1rem;
+  transform: translateX(-130%);
+  opacity: 0;
+  transition: all 0.5s ease;
+  font-size: 1rem;
+  color: var(--ui-blue);
+  white-space: nowrap;
+  background: var(--dark-gray);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+}
+
+select:hover + .layer-selector-message {
+  opacity: 1;
 }
 </style>
 
