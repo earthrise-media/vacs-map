@@ -3,15 +3,30 @@
     <div class="map-wrapper-row">
       <div class="callout">
         <div class="callout-header">{{ copy.header_question }}</div>
-        <span class="callout-content">
+        <div class="callout-content">
+          <p>
           {{ copy.vacs_short }}
-        </span>
+          </p>
+          <p class="keep-reading" @click="openModal">Keep reading</p>
+        </div>
         <button class="go-to-topic" @click="navigate">Find out</button>
       </div>
       <div class="map-wrapper">
         <MapHomepage />
       </div>
     </div>
+
+    <ContentModal v-if="modalOpen" @close="() => (modalOpen = false)" :title="modalHeader">
+      <p class="modal-content">
+        {{ modalContent }}
+        <span class="vacs-link">
+          <a href="https://www.state.gov/the-vision-for-adapted-crops-and-soils/" target="_blank"> 
+            Learn more about VACS >
+          </a>
+        </span>
+      </p>
+      
+    </ContentModal>
   </LayoutOpen>
 </template>
 
@@ -22,12 +37,23 @@ import { storeToRefs } from 'pinia'
 import { useContentStore } from '@/stores/siteContent'
 import LayoutOpen from '@/components/layouts/LayoutOpen.vue'
 import MapHomepage from '@/components/MapHomepage.vue'
+import ContentModal from '@/components/ContentModal.vue'
 
 const router = useRouter()
 const navigate = () => router.push('/crops')
 
+const modalOpen = ref(false)
+const modalHeader = ref('')
+const modalContent = ref('')
+
 const contentStore = useContentStore()
 const { copy } = storeToRefs(contentStore)
+
+const openModal = () => {
+  modalOpen.value = true
+  modalHeader.value = 'What is VACS?'
+  modalContent.value = copy.value.vacs_long
+}
 </script>
 
 <style scoped>
@@ -87,6 +113,16 @@ button {
 
 button:hover {
   background: var(--ui-blue-hover);
+}
+
+.keep-reading, .vacs-link a {
+  cursor: pointer;
+  color: var(--ui-blue);
+  text-decoration: underline;
+}
+
+.keep-reading:hover, .vacs-link a:hover {
+  color: var(--ui-blue-hover);
 }
 
 @media only screen and (max-width: 1080px) {

@@ -57,7 +57,7 @@ import { useContentStore } from '../stores/siteContent'
 import DistributionPlot from '@/components/DistributionPlot.vue'
 import CropFingerprint from '@/components/CropFingerprint.vue'
 import CardWrapper from '@/components/CardWrapper.vue'
-import ContentModal from './ContentModal.vue'
+import ContentModal from '@components/ContentModal.vue'
 
 const contentStore = useContentStore()
 const filtersStore = useFiltersStore()

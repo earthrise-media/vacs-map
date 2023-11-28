@@ -60,7 +60,7 @@ onClickOutside(contentInnerRef, () => emit('close'))
   color: var(--black);
   border-radius: 4px;
   overflow-y: auto;
-  max-width: 40%;
+  max-width: 50%;
   padding: 2.5rem;
 }
 
