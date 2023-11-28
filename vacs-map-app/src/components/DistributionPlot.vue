@@ -10,6 +10,7 @@ import { useResizeObserver } from '@vueuse/core'
 import { computed, toRefs, ref, onMounted, watch } from 'vue'
 import { useFiltersStore } from '@/stores/filters'
 import { useCropYieldsStore } from '@/stores/cropYields'
+import { useMapExploreStore } from '../stores/mapExplore'
 import { storeToRefs } from 'pinia'
 import { divergingScheme } from '@/utils/colors'
 
@@ -21,10 +22,12 @@ const props = defineProps({
 })
 const { scenario } = toRefs(props)
 
+const mapExploreStore = useMapExploreStore()
 const cropYieldsStore = useCropYieldsStore()
 const filtersStore = useFiltersStore()
 const { selectedMetric, selectedCrop, availableModels, availableCrops } = storeToRefs(filtersStore)
 const { data: cropYieldsData } = storeToRefs(cropYieldsStore)
+const { hoveredId } = storeToRefs(mapExploreStore)
 
 const canvasRef = ref(null)
 const context = ref(null)
@@ -76,9 +79,9 @@ const xScale = computed(() => {
       .scaleLinear()
       // keep 0 values centered on spectrum
       .domain([cropExtent.value[0], 0, cropExtent.value[1]])
-      .range([0, width.value / 2, width.value])
+      .range([2, width.value / 2, width.value - 2])
+      .clamp(true)
   )
-  // .clamp(true);
 })
 
 const getCellColor = (value) => {
@@ -151,6 +154,13 @@ const draw = () => {
     context.value.fillRect(cell.x, 0, 0.1, height.value)
   })
 
+  //draw hovered
+  if (hoveredId.value) {
+    const cell = gridCells?.value.find(d => d.id === hoveredId.value);
+    context.value.fillStyle = 'white'
+    context.value.fillRect(cell.x, 0, 3, height.value)
+  }
+
   // draw dots as swarm plot -- seems too slow
   // const grid = dodge(gridCells.value, {radius: 1, x: d => d.x});
 
@@ -176,6 +186,10 @@ onMounted(() => {
 })
 
 watch(selectedCrop, () => {
+  draw()
+})
+
+watch(hoveredId, () => {
   draw()
 })
 </script>
