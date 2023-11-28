@@ -171,8 +171,8 @@ onUnmounted(() => {
 select {
   cursor: pointer;
   width: 1.875rem;
-  height: 2rem;
   padding-right: 1.875rem;
+  aspect-ratio: 1/1;
 
   border-radius: 100%;
   background: none;

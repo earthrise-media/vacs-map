@@ -54,7 +54,7 @@ const { title, description, handleClick } = toRefs(props)
 
 <style scoped>
 .card-wrapper {
-  --title-height: 3rem;
+  --title-height: 2.5rem;
 
   position: relative;
   overflow-y: hidden;
@@ -85,7 +85,7 @@ const { title, description, handleClick } = toRefs(props)
 .title {
   font-family: var(--font-family-h2);
   height: var(--title-height);
-  font-size: 1.5rem;
+  font-size: 1.375rem;
   text-transform: capitalize;
   display: flex;
   align-items: center;

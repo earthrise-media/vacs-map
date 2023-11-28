@@ -112,7 +112,7 @@ const openModal = (s) => {
 }
 
 .sidebar-header {
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 600;
   line-height: 120%;
 }
@@ -128,7 +128,7 @@ const openModal = (s) => {
 }
 
 .crop-description {
-  font-size: 1rem;
+  font-size: 0.875rem;
   line-height: 140%;
 }
 
@@ -139,7 +139,7 @@ const openModal = (s) => {
   background: none;
   border-bottom: 1px solid var(--gray);
   font-family: var(--font-family-header);
-  font-size: 2.5rem;
+  font-size: 1.75rem;
   color: var(--white);
   padding: 0.5rem;
 
@@ -151,13 +151,17 @@ const openModal = (s) => {
   background-size: 1rem;
   background-position: 98% center;
   background-repeat: no-repeat;
+
+  outline: none !important;
 }
 
 .crop-selection optgroup {
-  font-size: 1.25rem;
+  color: var(--black) !important;
+  font-size: 1.25rem !important;
 }
 .crop-selection option {
-  font-size: 1rem;
+  color: var(--black) !important;
+  font-size: 1rem !important;
 }
 
 .crop-fingerprint {

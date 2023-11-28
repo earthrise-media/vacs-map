@@ -35,7 +35,7 @@ const copyLink = () => {
   display: flex;
   flex-direction: column;
   font-family: var(--font-family-h2);
-  font-size: 1.875rem;
+  font-size: 1.5rem;
   gap: 0.5rem;
   margin: 1rem var(--page-horizontal-margin);
 }
