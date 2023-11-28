@@ -16,15 +16,20 @@
       </div>
     </div>
 
+    <div class="logos-row">
+      [logos go here]
+    </div>
+
     <ContentModal v-if="modalOpen" @close="() => (modalOpen = false)" :title="modalHeader">
-      <p class="modal-content">
+      <div class="modal-content">
         {{ modalContent }}
-        <span class="vacs-link">
-          <a href="https://www.state.gov/the-vision-for-adapted-crops-and-soils/" target="_blank"> 
-            Learn more about VACS >
-          </a>
-        </span>
-      </p>
+        
+      </div>
+      <div class="vacs-link">
+        <a href="https://www.state.gov/the-vision-for-adapted-crops-and-soils/" target="_blank"> 
+          Learn more about VACS >
+        </a>
+      </div>
       
     </ContentModal>
   </LayoutOpen>
@@ -60,8 +65,17 @@ const openModal = () => {
 .map-wrapper-row {
   display: flex;
   flex-direction: row;
-  height: 100vh;
+  height: calc(100vh - 6rem);
   justify-content: space-between;
+}
+
+.logos-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 2rem;
+  height: 6rem;
+  color: var(--white);
 }
 
 .map-wrapper {
@@ -123,6 +137,10 @@ button:hover {
 
 .keep-reading:hover, .vacs-link a:hover {
   color: var(--ui-blue-hover);
+}
+
+.vacs-link {
+  margin-left: auto;
 }
 
 @media only screen and (max-width: 1080px) {
