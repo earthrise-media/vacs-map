@@ -174,7 +174,7 @@ const openScenarioModal = (s) => {
   font-family: var(--font-family-header);
   font-size: 1.5rem;
   color: var(--white);
-  padding: 0.5rem;
+  padding: 0.5rem 0;
 
   overflow: hidden;
   white-space: nowrap;
@@ -182,7 +182,7 @@ const openScenarioModal = (s) => {
 
   background-image: url('../assets/img/select-arrow-blue.svg');
   background-size: 1rem;
-  background-position: 98% center;
+  background-position: 100% center;
   background-repeat: no-repeat;
 
   outline: none !important;
