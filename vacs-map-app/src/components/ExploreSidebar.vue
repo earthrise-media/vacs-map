@@ -172,7 +172,7 @@ const openScenarioModal = (s) => {
   background: none;
   border-bottom: 1px solid var(--gray);
   font-family: var(--font-family-header);
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   color: var(--white);
   padding: 0.5rem;
 
