@@ -30,6 +30,8 @@
               v-for="indicator in selectedIndicators"
               :key="indicator.key"
               :fill="fingerprintScheme[indicator.category]"
+              stroke="#17191b"
+              stroke-width="0.5"
               :d="arc(indicator)"
               :class="{
                 highlighted: hovered?.key === indicator.key,
@@ -43,14 +45,6 @@
           <g class="chart-overlay">
             <g class="axes" fill="none" stroke="#17191b">
               <circle v-for="d in d3.range(11)" :key="d" :r="y(d)" />
-
-              <line
-                v-for="metric in indicatorMetrics"
-                :key="metric"
-                :transform="`rotate(${xDegrees(metric) + xDegrees.bandwidth() / 2})`"
-                :x1="0"
-                :x2="y(10)"
-              />
             </g>
 
             <g v-if="showBenchmark">
