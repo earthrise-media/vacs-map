@@ -149,6 +149,7 @@ const scenarioOptions = computed(() => {
   text-transform: uppercase;
   color: var(--ui-blue);
   padding: 0.5rem;
+  padding-right: 2rem;
 
   background-image: url('../assets/img/select-arrow-blue.svg');
   background-position: 95% center;
