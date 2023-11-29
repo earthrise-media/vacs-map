@@ -21,11 +21,25 @@
 
     <ContentModal v-if="modalOpen" @close="() => (modalOpen = false)" :title="modalHeader">
       <div class="modal-content">
-        {{ modalContent }}
+        <p>
+          <a href="https://www.state.gov/the-vision-for-adapted-crops-and-soils/" target="_blank">The Vision for Adapted Crops and Soils</a> (VACS) is a multi-phase initiative launched by the U.S. Department of State, in collaboration with the African Union, and the Food and Agriculture Organization (FAO). VACS aims to address food security and nutrition challenges in Africa in the face of climate change. The program focuses on identifying, adapting, and promoting the use of nutritious, indigenous, and traditional food crops that are well-suited to the local environment and are able to withstand the changing climate conditions.
+        </p>
+        <br>
+        <p>
+          VACS promotes an integrated approach, with investments designed to be self-sustaining and  have increasing returns year after year. Interventions will be guided by a cohesive framework that recognizes the complexity of land use—with a particular focus on what farmers should plant and where. Farmers, policymakers, extension workers, and suppliers will be empowered with options and information tailored for their own local conditions and preferences. Nutrition will also be prioritized as the endpoint for resilient food systems.
+        </p>
+        <br>
+        <p>
+          The program has brought together experts in various fields, including climate adaptation, plant breeding, nutrition, and food composition. The selection process for crops was informed by scientific data and expert opinions, ensuring a balance of priorities across different scientific disciplines and stakeholder interests. This collaborative approach is critical for developing an inclusive and effective strategy to address the nutritional needs and environmental challenges in Africa.
+        </p>
+        <br>
+        <p>
+          VACS is part of Feed the Future, the U.S. government's global hunger and food security initiative, and supports the implementation of the U.S. Global Food Security Strategy (2022-2026). It contributes to the President's Emergency Plan for Adaptation and Resilience (<a href="https://www.whitehouse.gov/briefing-room/statements-releases/2021/11/01/fact-sheet-president-biden-renews-u-s-leadership-on-world-stage-at-u-n-climate-conference-cop26/" target="_blank">PREPARE</a>) and advances the commitments made in the <a href="https://www.whitehouse.gov/briefing-room/statements-releases/2022/12/15/u-s-africa-leaders-summit-joint-statement-on-food-security/" target="_blank">U.S.-AU Joint Statement on Food Security</a> at the 2023 U.S.-Africa Leaders Summit.
+        </p>
       </div>
       <div class="vacs-link">
         <a href="https://www.state.gov/the-vision-for-adapted-crops-and-soils/" target="_blank">
-          Learn more about VACS >
+          Learn more about VACS →
         </a>
       </div>
     </ContentModal>
@@ -45,7 +59,6 @@ const navigate = () => router.push('/crops')
 
 const modalOpen = ref(false)
 const modalHeader = ref('')
-const modalContent = ref('')
 
 const contentStore = useContentStore()
 const { copy } = storeToRefs(contentStore)
@@ -53,7 +66,6 @@ const { copy } = storeToRefs(contentStore)
 const openModal = () => {
   modalOpen.value = true
   modalHeader.value = 'What is VACS?'
-  modalContent.value = copy.value.vacs_long
 }
 </script>
 
@@ -142,8 +154,7 @@ button:hover {
   background: var(--ui-blue-hover);
 }
 
-.keep-reading,
-.vacs-link a {
+.keep-reading {
   cursor: pointer;
   color: var(--ui-blue);
   text-decoration: underline;
@@ -153,6 +164,12 @@ button:hover {
 .keep-reading:hover,
 .vacs-link a:hover {
   color: var(--ui-blue-hover);
+}
+
+a {
+  cursor: pointer;
+  color: var(--ui-blue-light-bg);
+  text-decoration: underline;
 }
 
 .vacs-link {
