@@ -162,7 +162,7 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   pointer-events: none;
-  padding: 2rem 0;
+  padding: 1rem 0 2rem 0;
 }
 
 .overlay-left {
@@ -235,11 +235,11 @@ select:hover + .layer-selector-message {
 .region-picker {
   position: absolute;
   bottom: 2.5rem;
-  right: 1rem;
+  right: var(--page-horizontal-margin);
   z-index: 1000;
-  width: 12rem;
-  height: 12rem;
-  padding: 1.5rem;
+  width: 8rem;
+  height: 8rem;
+  padding: 1rem;
 }
 
 @media only screen and (max-width: 720px) {
