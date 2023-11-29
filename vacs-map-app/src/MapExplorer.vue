@@ -5,6 +5,7 @@
         <component :is="selectedMapComponent">
           <template v-slot="{ map, mapReady }">
             <RegionPicker :map="map" :map-ready="mapReady" />
+            <span class="region-picker-message hover-message"> Zoom to a region </span>
           </template>
         </component>
         <div class="map-overlay desktop">
@@ -16,7 +17,7 @@
             <select v-model="selectedMap" class="interactive">
               <option v-for="map in availableMaps" :value="map.id">{{ map.name }}</option>
             </select>
-            <span class="layer-selector-message"> Add layer </span>
+            <span class="layer-selector-message hover-message"> Add layer </span>
           </div>
         </div>
         <MobileExploreMapControls />
@@ -206,18 +207,25 @@ select:hover {
   background-color: var(--ui-blue-hover);
 }
 
-.layer-selector-message {
-  position: absolute;
-  left: 1rem;
-  transform: translateX(-130%);
+.hover-message {
   opacity: 0;
   transition: all 0.5s ease;
   font-size: 1rem;
   color: var(--ui-blue);
   white-space: nowrap;
-  background: var(--dark-gray);
   padding: 0.25rem 0.5rem;
-  border-radius: 0.5rem;
+}
+
+.layer-selector-message {
+  position: absolute;
+  left: 1rem;
+  transform: translateX(-130%);
+}
+
+.region-picker-message {
+  position: absolute;
+  right: calc(var(--page-horizontal-margin) - 0.75rem);
+  bottom: 11rem;
 }
 
 select:hover + .layer-selector-message {
@@ -240,6 +248,10 @@ select:hover + .layer-selector-message {
   width: 8rem;
   height: 8rem;
   padding: 1rem;
+}
+
+.region-picker:hover + .region-picker-message {
+  opacity: 1;
 }
 
 @media only screen and (max-width: 720px) {
