@@ -78,11 +78,9 @@ onClickOutside(contentInnerRef, () => emit('close'))
   height: 20px;
 }
 
-
 @media only screen and (max-width: 720px) {
   .content-modal-inner {
     max-width: 95%;
-  }  
+  }
 }
-
 </style>

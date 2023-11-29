@@ -8,7 +8,7 @@
         </button>
         <NavigationButton :to="backRoute" class="desktop">Back</NavigationButton>
         <NavigationButton :to="backRoute" class="mobile">
-          <img src="@/assets/img/back-arrow.svg" alt="">
+          <img src="@/assets/img/back-arrow.svg" alt="" />
         </NavigationButton>
       </div>
     </div>
@@ -83,9 +83,7 @@ button:hover {
   display: none;
 }
 
-
 @media only screen and (max-width: 720px) {
-
   .desktop {
     display: none;
   }

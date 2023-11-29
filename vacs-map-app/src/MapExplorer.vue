@@ -231,7 +231,6 @@ select:hover + .layer-selector-message {
   padding: 1.5rem;
 }
 
-
 @media only screen and (max-width: 720px) {
   .region-picker {
     display: none;

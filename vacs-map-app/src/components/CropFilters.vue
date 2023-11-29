@@ -2,9 +2,9 @@
   <div class="crop-filters">
     <div class="filters-header mobile">
       <span class="header"> Filter crops </span>
-      <img src="@/assets/img/close.svg" alt="" @click="$emit('closeFilters')">
+      <img src="@/assets/img/close.svg" alt="" @click="$emit('closeFilters')" />
     </div>
-    
+
     <div class="left-side">
       <span class="mobile category-header"> climate scenario </span>
       <RadioSwitch v-model="selectedModel" :options="scenarioOptions" name="selected-scenario" />
@@ -172,8 +172,6 @@ const scenarioOptions = computed(() => {
 .mobile {
   display: none;
 }
-
-
 
 @media only screen and (max-width: 720px) {
   .mobile {

@@ -32,6 +32,6 @@ const props = defineProps({
   .navigation-button {
     background: var(--ui-blue);
     aspect-ratio: 1/1;
-  }  
+  }
 }
 </style>

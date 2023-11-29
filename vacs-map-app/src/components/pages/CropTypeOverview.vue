@@ -1,29 +1,24 @@
 <template>
   <LayoutOverview>
     <div class="wrapper">
-      <CropFilters class="desktop"/>
+      <CropFilters class="desktop" />
       <CropCards />
-      <div class="overlay mobile" :class=" { showFilters }"/>
+      <div class="overlay mobile" :class="{ showFilters }" />
     </div>
-    <CropFilters 
-        v-if="showFilters" 
-        class="mobile"  
-        @close-filters="() => (showFilters = false)"
-      />
-      <div class="mobile show-filters" @click="() => showFilters = true">
-        <img src="@/assets/img/show-filters.svg" alt="">
-      </div>
+    <CropFilters v-if="showFilters" class="mobile" @close-filters="() => (showFilters = false)" />
+    <div class="mobile show-filters" @click="() => (showFilters = true)">
+      <img src="@/assets/img/show-filters.svg" alt="" />
+    </div>
   </LayoutOverview>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref } from 'vue'
 import LayoutOverview from '@/components/layouts/LayoutOverview.vue'
 import CropCards from '@/components/CropCards.vue'
 import CropFilters from '@/components/CropFilters.vue'
 
-const showFilters = ref(false);
-
+const showFilters = ref(false)
 </script>
 
 <style scoped>
@@ -40,7 +35,6 @@ const showFilters = ref(false);
 }
 
 @media only screen and (max-width: 720px) {
-
   .desktop {
     display: none;
   }

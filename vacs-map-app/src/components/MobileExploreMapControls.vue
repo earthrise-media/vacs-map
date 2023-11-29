@@ -11,10 +11,10 @@
           </optgroup>
         </select>
       </div>
-      
+
       <div class="row-item">
         <span class="item-label"> Emissions </span>
-        <RadioSwitch v-model="selectedModel" :options="scenarioOptions" name="selected-scenario"/>
+        <RadioSwitch v-model="selectedModel" :options="scenarioOptions" name="selected-scenario" />
       </div>
     </div>
 
@@ -24,19 +24,15 @@
 
 <script setup>
 import { storeToRefs } from 'pinia'
-import { computed } from 'vue';
+import { computed } from 'vue'
 import { useFiltersStore } from '@/stores/filters'
 import { useCropInformationStore } from '@/stores/cropInformation'
-import RadioSwitch from '@/components/RadioSwitch.vue';
+import RadioSwitch from '@/components/RadioSwitch.vue'
 
 const cropInformationStore = useCropInformationStore()
 const filtersStore = useFiltersStore()
-const {
-  selectedCrop,
-  availableModels,
-  selectedModel,
-  availableCropGroups
-} = storeToRefs (filtersStore)
+const { selectedCrop, availableModels, selectedModel, availableCropGroups } =
+  storeToRefs(filtersStore)
 const { data: cropInformation } = storeToRefs(cropInformationStore)
 
 const getCropsByGroup = (group) => {
@@ -58,7 +54,6 @@ const scenarioOptions = computed(() => {
 </script>
 
 <style scoped>
-
 .wrapper {
   position: absolute;
   top: 0;
@@ -87,7 +82,6 @@ const scenarioOptions = computed(() => {
   font-weight: 500;
 }
 
-
 select {
   font-family: var(--font-family-header);
   font-size: 0.75rem;
@@ -111,5 +105,4 @@ select {
     display: flex;
   }
 }
-
 </style>

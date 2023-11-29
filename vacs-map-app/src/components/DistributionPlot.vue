@@ -156,7 +156,7 @@ const draw = () => {
 
   //draw hovered
   if (hoveredId.value) {
-    const cell = gridCells?.value.find(d => d.id === hoveredId.value);
+    const cell = gridCells?.value.find((d) => d.id === hoveredId.value)
     context.value.fillStyle = 'white'
     context.value.fillRect(cell.x, 0, 3, height.value)
   }

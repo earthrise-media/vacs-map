@@ -2,7 +2,7 @@
   <LayoutOpen>
     <div class="video-wrapper">
       <video autoplay loop muted>
-        <source src="@/assets/img/homepage-video.mp4" type="video/mp4">
+        <source src="@/assets/img/homepage-video.mp4" type="video/mp4" />
       </video>
     </div>
 
