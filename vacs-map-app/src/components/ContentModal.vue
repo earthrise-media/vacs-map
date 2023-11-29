@@ -62,6 +62,8 @@ onClickOutside(contentInnerRef, () => emit('close'))
   overflow-y: auto;
   max-width: 50%;
   padding: 2.5rem;
+
+  white-space: pre-line;
 }
 
 .header {
