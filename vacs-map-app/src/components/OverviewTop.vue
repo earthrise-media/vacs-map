@@ -6,7 +6,7 @@
         <button @click="copyLink" title="Copy URL">
           <img src="@/assets/img/copy-link.svg" alt="copy-link" />
         </button>
-        <NavigationButton :to="backRoute">Back</NavigationButton>
+        <NavigationButton :to="backRoute" class="back-button">Back</NavigationButton>
       </div>
     </div>
   </div>
@@ -74,5 +74,12 @@ button {
 
 button:hover {
   background: var(--dark-gray-hover);
+}
+
+
+@media only screen and (max-width: 720px) {
+  .overview-top {
+    font-size: 1rem;
+  }
 }
 </style>

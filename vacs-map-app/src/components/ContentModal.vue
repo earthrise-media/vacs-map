@@ -61,6 +61,7 @@ onClickOutside(contentInnerRef, () => emit('close'))
   border-radius: 4px;
   overflow-y: auto;
   max-width: 50%;
+  max-height: 70%;
   padding: 2.5rem;
 }
 
@@ -76,4 +77,12 @@ onClickOutside(contentInnerRef, () => emit('close'))
   cursor: pointer;
   height: 20px;
 }
+
+
+@media only screen and (max-width: 720px) {
+  .content-modal-inner {
+    max-width: 95%;
+  }  
+}
+
 </style>

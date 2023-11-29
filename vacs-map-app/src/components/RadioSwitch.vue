@@ -85,4 +85,10 @@ label.selected:hover {
 input {
   display: none;
 }
+
+@media only screen and (max-width: 720px) {
+  .switch {
+    width: 100%;
+  }  
+}
 </style>
