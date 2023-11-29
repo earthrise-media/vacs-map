@@ -22,6 +22,7 @@ const props = defineProps({
   padding: 0.625rem 0.75rem;
   text-decoration: none;
   display: flex;
+  justify-content: center;
 }
 
 .navigation-button:hover {
