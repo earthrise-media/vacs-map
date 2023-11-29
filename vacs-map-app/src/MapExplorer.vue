@@ -21,6 +21,7 @@
         </div>
       </div>
     </div>
+    <MapTooltip />
   </LayoutOverview>
 </template>
 
@@ -39,9 +40,10 @@ import MapContainerColorSoil from '@/components/MapContainerColorSoil.vue'
 import MapContainerColorSand from '@/components/MapContainerColorSand.vue'
 import MapContainerColorPopulation from '@/components/MapContainerColorPopulation.vue'
 import { useMapExploreStore } from '@/stores/mapExplore'
-import LayoutOverview from './components/layouts/LayoutOverview.vue'
-import ExploreSidebar from './components/ExploreSidebar.vue'
-import RegionPicker from './components/RegionPicker.vue'
+import LayoutOverview from '@/components/layouts/LayoutOverview.vue'
+import ExploreSidebar from '@/components/ExploreSidebar.vue'
+import RegionPicker from '@/components/RegionPicker.vue'
+import MapTooltip from '@/components/MapTooltip.vue'
 import MapLegend from '@/components/MapLegend.vue'
 
 const availableMaps = [

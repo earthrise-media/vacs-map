@@ -4,8 +4,8 @@
 import * as d3 from 'd3'
 import { computed, toRefs, watch } from 'vue'
 import { divergingScheme } from '@/utils/colors'
-import { storeToRefs } from 'pinia';
-import { useMapExploreStore } from '../stores/mapExplore';
+import { storeToRefs } from 'pinia'
+import { useMapExploreStore } from '../stores/mapExplore'
 
 const props = defineProps({
   id: {
@@ -84,8 +84,8 @@ const {
   stroke
 } = toRefs(props)
 
-const mapExploreStore = useMapExploreStore();
-const { hoveredId } = storeToRefs(mapExploreStore);
+const mapExploreStore = useMapExploreStore()
+const { hoveredId } = storeToRefs(mapExploreStore)
 
 const addLayer = () => {
   if (!map.value || !mapReady.value || map.value.getLayer(id.value)) return
@@ -99,19 +99,9 @@ const addLayer = () => {
         'circle-stroke-width': fill.value ? 0.2 : 1.5,
         'circle-stroke-color': getCircleStrokeColor(),
         'circle-stroke-opacity': fill.value ? 0 : 0.8,
-        'circle-opacity': [
-          'case',
-          ['boolean', ['feature-state', 'hovered'], false],
-          0.5,
-          1
-        ],
+        'circle-opacity': ['case', ['boolean', ['feature-state', 'hovered'], false], 0.5, 1],
         'circle-color': getCircleFillColor(),
-        'circle-blur': [
-          'case',
-          ['boolean', ['feature-state', 'hovered'], false],
-          0,
-          0.5
-        ],
+        'circle-blur': ['case', ['boolean', ['feature-state', 'hovered'], false], 0, 0.5]
       }
     },
     'settlement-subdivision-label'
@@ -122,23 +112,23 @@ const addLayer = () => {
 
 const addHoverListeners = () => {
   if (!map.value || !mapReady.value || !map.value.getLayer(id.value)) return
-  
+
   map.value.on('mousemove', id.value, (event) => {
-    if (!event?.features?.length) return;
-    const feature = event?.features[0];
+    if (!event?.features?.length) return
+    const feature = event?.features[0]
     if (feature?.id) {
-      if (!feature.properties[colorColumn.value]) return;
-      hoveredId.value = feature.properties.id;
+      if (!feature.properties[colorColumn.value]) return
+      hoveredId.value = feature.properties.id
     }
-  });
+  })
 
   map.value.on('mouseleave', id.value, (event) => {
-    hoveredId.value = null;
-  });
+    hoveredId.value = null
+  })
 }
 
 const updateHoveredFeatureState = (elementId, hovered) => {
-  if (!id) return;
+  if (!id.value) return
   map.value.setFeatureState(
     {
       source: sourceId.value,
@@ -147,7 +137,7 @@ const updateHoveredFeatureState = (elementId, hovered) => {
     {
       hovered
     }
-  );
+  )
 }
 
 const getCircleColorQuintiles = (quintiles) => {
@@ -266,22 +256,22 @@ const getCircleColorDiverging = (extent, center) => {
   return [
     'case',
     ['!=', ['get', colorColumn.value], null],
+    [
+      'case',
+      ['boolean', ['feature-state', 'hovered'], false],
+      'white',
       [
-        'case',
-        ['boolean', ['feature-state', 'hovered'], false],
-        'white',
-        [
-          'interpolate',
-          ['linear'],
-          ['get', colorColumn.value],
-          min,
-          getColor(0),
-          center,
-          divergingScheme.center,
-          max,
-          getColor(1)
-        ],
-      ],
+        'interpolate',
+        ['linear'],
+        ['get', colorColumn.value],
+        min,
+        getColor(0),
+        center,
+        divergingScheme.center,
+        max,
+        getColor(1)
+      ]
+    ],
     'transparent'
   ]
 }
