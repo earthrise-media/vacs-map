@@ -36,6 +36,8 @@ const initializeMap = () => {
   const nav = new mapboxgl.NavigationControl({
     showCompass: false
   })
+
+
   map.value.addControl(nav, 'top-right')
   map.value.dragRotate.disable()
   map.value.touchZoomRotate.disableRotation()
@@ -97,5 +99,13 @@ watch(mapPadding, () => {
 
 .mapboxgl-ctrl button.mapboxgl-ctrl-zoom-out .mapboxgl-ctrl-icon {
   background-image: url(@/assets/img/map-minus-ctrl.svg) !important;
+}
+
+.mapboxgl-ctrl-attrib-inner, .mapboxgl-ctrl-attrib {
+  background: var(--dark-gray) !important;
+}
+
+.mapboxgl-ctrl-attrib a {
+  color: var(--white) !important;
 }
 </style>
