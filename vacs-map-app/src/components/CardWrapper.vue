@@ -1,8 +1,8 @@
 <template>
-  <div class="card-wrapper" @click="handleClick" :class="{ active: isActive }">
+  <div class="card-wrapper" @click="handleClick" :class="{ active: isActive,  bold: boldTitle }">
     <slot></slot>
 
-    <div class="info">
+    <div class="info" :class="{ bold: boldTitle }" >
       <div class="title" :class="{ bold: boldTitle }">{{ title }}</div>
       <p class="description">
         {{ description }}
@@ -60,9 +60,13 @@ const { title, description, handleClick } = toRefs(props)
   overflow-y: hidden;
 
   box-shadow: 0 0 0 1px var(--gray);
-  border-radius: 1rem;
+  border-radius: 0.5rem;
 
   cursor: pointer;
+}
+
+.card-wrapper.bold {
+  border-radius: 0.75rem;
 }
 
 .info {
@@ -79,13 +83,19 @@ const { title, description, handleClick } = toRefs(props)
   font-size: 0.8125rem;
   line-height: 140%;
 
+  height: 100%;
   max-height: 100%;
+}
+
+.info.bold {
+  background: var(--white-80);
+  height: unset;
 }
 
 .title {
   font-family: var(--font-family-h2);
   height: var(--title-height);
-  font-size: 1.375rem;
+  font-size: 1.125rem;
   text-transform: capitalize;
   display: flex;
   align-items: center;
@@ -96,6 +106,7 @@ const { title, description, handleClick } = toRefs(props)
 
 .title.bold {
   font-family: var(--font-family-header);
+  font-size: 1.375rem;
 }
 
 .active {
@@ -122,5 +133,7 @@ const { title, description, handleClick } = toRefs(props)
 .more-info {
   text-decoration: underline;
   cursor: pointer;
+  font-size: 0.875rem;
+  white-space: nowrap;
 }
 </style>
