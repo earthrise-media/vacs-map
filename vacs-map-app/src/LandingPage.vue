@@ -1,19 +1,20 @@
 <template>
   <LayoutOpen>
-    <div class="map-wrapper-row">
-      <div class="callout">
-        <div class="callout-header">{{ copy.header_question }}</div>
-        <div class="callout-content">
-          <p>
-            {{ copy.vacs_short }}
-          </p>
-          <p class="keep-reading" @click="openModal">Keep reading</p>
-        </div>
-        <button class="go-to-topic" @click="navigate">Find out</button>
+    <div class="video-wrapper">
+      <video autoplay loop muted>
+        <source src="@/assets/img/homepage-video.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <div class="callout">
+      <div class="callout-header">{{ copy.header_question }}</div>
+      <div class="callout-content">
+        <span>
+          {{ copy.vacs_short + ' ' }}
+        </span>
+        <span class="keep-reading" @click="openModal">Keep reading</span>
       </div>
-      <div class="map-wrapper">
-        <MapHomepage />
-      </div>
+      <button class="go-to-topic" @click="navigate">Find out</button>
     </div>
 
     <div class="logos-row">[logos go here]</div>
@@ -37,7 +38,6 @@ import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useContentStore } from '@/stores/siteContent'
 import LayoutOpen from '@/components/layouts/LayoutOpen.vue'
-import MapHomepage from '@/components/MapHomepage.vue'
 import ContentModal from '@/components/ContentModal.vue'
 
 const router = useRouter()
@@ -58,38 +58,55 @@ const openModal = () => {
 </script>
 
 <style scoped>
-.map-wrapper-row {
+.video-wrapper {
   display: flex;
   flex-direction: row;
-  height: calc(100vh - 6rem);
+  height: 100vh;
+  width: 100vw;
+  background: var(--black);
   justify-content: space-between;
 }
 
+video {
+  object-fit: cover;
+  width: 100vw;
+  height: 100vh;
+  min-width: 100vw;
+  height: 100vh;
+}
+
 .logos-row {
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
   gap: 2rem;
-  height: 6rem;
+  height: 4rem;
   color: var(--white);
-}
-
-.map-wrapper {
-  display: flex;
-  flex-direction: column;
-  width: 55%;
-  justify-content: center;
+  background: var(--black-80);
 }
 
 .callout {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  padding: 0 2rem 0 6rem;
+  max-width: 60%;
+  padding: 2.5rem;
   flex-basis: 0;
   flex-grow: 1;
   gap: 2rem;
+  text-align: center;
+
+  background: var(--black-80);
+  border-radius: 0.5rem;
 }
 
 .callout-header {
@@ -130,6 +147,7 @@ button:hover {
   cursor: pointer;
   color: var(--ui-blue);
   text-decoration: underline;
+  white-space: nowrap;
 }
 
 .keep-reading:hover,
@@ -147,9 +165,6 @@ button:hover {
   }
   .callout-content {
     font-size: 0.875rem;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 8;
     overflow-y: hidden;
     text-overflow: ellipsis;
   }
