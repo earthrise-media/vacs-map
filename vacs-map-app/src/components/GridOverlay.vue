@@ -101,7 +101,10 @@ const addLayer = () => {
         'circle-stroke-opacity': fill.value ? 0 : 0.8,
         'circle-opacity': ['case', ['boolean', ['feature-state', 'hovered'], false], 0.5, 1],
         'circle-color': getCircleFillColor(),
-        'circle-blur': ['case', ['boolean', ['feature-state', 'hovered'], false], 0, 0.5]
+        'circle-blur': ['case', ['boolean', ['feature-state', 'hovered'], false], 0, 0.5],
+        'circle-color-transition': { duration: 1000 },
+        'circle-opacity-transition': { duration: 1000 },
+        'circle-radius-transition': { duration: 1000 }
       }
     },
     'settlement-subdivision-label'
