@@ -11,3 +11,9 @@
 
   --page-horizontal-margin: 3.5rem;
 }
+
+@media only screen and (max-width: 720px) {
+  #app {
+    --page-horizontal-margin: 1rem;
+  }
+}

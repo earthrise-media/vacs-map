@@ -1,8 +1,15 @@
 <template>
   <div class="crop-filters">
+    <div class="filters-header mobile">
+      <span class="header"> Filter crops </span>
+      <img src="@/assets/img/close.svg" alt="" @click="$emit('closeFilters')" />
+    </div>
+
     <div class="left-side">
+      <span class="mobile category-header"> climate scenario </span>
       <RadioSwitch v-model="selectedModel" :options="scenarioOptions" name="selected-scenario" />
 
+      <span class="mobile category-header"> food groups </span>
       <div class="crop-groups">
         <div
           class="crop-group-label"
@@ -27,6 +34,7 @@
       </div>
     </div>
 
+    <span class="mobile category-header"> order by </span>
     <div class="sort-by">
       <RadioList v-model="cropSortOrder" :options="sortOrderOptions" name="sort-order" />
 
@@ -40,7 +48,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useFiltersStore } from '@/stores/filters'
 import { useContentStore } from '@/stores/siteContent'
@@ -50,6 +58,7 @@ import RadioSwitch from '@/components/RadioSwitch.vue'
 const contentStore = useContentStore()
 const { copy } = storeToRefs(contentStore)
 
+defineEmits(['closeFilters'])
 const filtersStore = useFiltersStore()
 const {
   availableModels,
@@ -158,5 +167,68 @@ const scenarioOptions = computed(() => {
 
 .sort-by select:hover {
   color: var(--ui-blue-hover);
+}
+
+.mobile {
+  display: none;
+}
+
+@media only screen and (max-width: 720px) {
+  .mobile {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .filters-header {
+    width: 100%;
+    display: flex;
+  }
+
+  .filters-header img {
+    margin-left: auto;
+    margin-right: 1rem;
+    width: 1rem;
+    cursor: pointer;
+  }
+
+  .header {
+    font-family: var(--font-family-h2);
+    font-size: 1.25rem;
+  }
+
+  .category-header {
+    text-transform: uppercase;
+    font-size: 0.875rem;
+  }
+  .crop-filters {
+    z-index: 500;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding: 2rem var(--page-horizontal-margin);
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+    background: var(--black);
+    border-radius: 1.875rem 1.875rem 0rem 0rem;
+  }
+
+  .left-side {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .crop-groups {
+    gap: 0.5rem;
+  }
+
+  .sort-by {
+    width: 100%;
+    margin: 0;
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+  }
 }
 </style>

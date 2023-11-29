@@ -185,6 +185,8 @@ button:hover {
 
   .callout {
     padding: 1rem;
+    max-width: 90%;
+    width: 95%;
   }
 
   .callout-header {

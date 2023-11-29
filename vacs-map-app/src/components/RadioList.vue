@@ -51,7 +51,6 @@ const { name, options, modelValue } = toRefs(props)
   padding: 0.25rem 0;
 }
 .option-wrapper {
-  width: 100%;
   display: flex;
 }
 

@@ -7,9 +7,9 @@
             <RegionPicker :map="map" :map-ready="mapReady" />
           </template>
         </component>
-        <div class="map-overlay">
+        <div class="map-overlay desktop">
           <div class="overlay-left">
-            <ExploreSidebar class="interactive" ref="overlayLeftRef" />
+            <ExploreSidebar class="interactive" ref="overlayLeftRef"/>
             <MapLegend />
           </div>
           <div class="overlay-right">
@@ -19,6 +19,7 @@
             <span class="layer-selector-message"> Add layer </span>
           </div>
         </div>
+        <MobileExploreMapControls />
       </div>
     </div>
     <MapTooltip />
@@ -40,9 +41,10 @@ import MapContainerColorSoil from '@/components/MapContainerColorSoil.vue'
 import MapContainerColorSand from '@/components/MapContainerColorSand.vue'
 import MapContainerColorPopulation from '@/components/MapContainerColorPopulation.vue'
 import { useMapExploreStore } from '@/stores/mapExplore'
-import LayoutOverview from '@/components/layouts/LayoutOverview.vue'
-import ExploreSidebar from '@/components/ExploreSidebar.vue'
-import RegionPicker from '@/components/RegionPicker.vue'
+import LayoutOverview from './components/layouts/LayoutOverview.vue'
+import ExploreSidebar from './components/ExploreSidebar.vue'
+import RegionPicker from './components/RegionPicker.vue'
+import MobileExploreMapControls from './components/MobileExploreMapControls.vue'
 import MapTooltip from '@/components/MapTooltip.vue'
 import MapLegend from '@/components/MapLegend.vue'
 
@@ -221,6 +223,12 @@ select:hover {
 select:hover + .layer-selector-message {
   opacity: 1;
 }
+
+@media only screen and (max-width: 720px) {
+  .desktop {
+    display: none;
+  }
+}
 </style>
 
 <style>
@@ -232,5 +240,11 @@ select:hover + .layer-selector-message {
   width: 12rem;
   height: 12rem;
   padding: 1.5rem;
+}
+
+@media only screen and (max-width: 720px) {
+  .region-picker {
+    display: none;
+  }
 }
 </style>

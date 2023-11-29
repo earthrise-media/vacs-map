@@ -50,6 +50,7 @@ const { name, options, modelValue } = toRefs(props)
   justify-content: space-between;
   border: 1px solid var(--gray);
   border-radius: 100px;
+  background: var(--dark-gray);
 }
 
 label {
@@ -84,5 +85,11 @@ label.selected:hover {
 
 input {
   display: none;
+}
+
+@media only screen and (max-width: 720px) {
+  .switch {
+    width: 100%;
+  }
 }
 </style>
