@@ -101,6 +101,10 @@ watch(mapPadding, () => {
   background-image: url(@/assets/img/map-minus-ctrl.svg) !important;
 }
 
+.mapboxgl-ctrl button:disabled .mapboxgl-ctrl-icon {
+  opacity: 1 !important;
+}
+
 .mapboxgl-ctrl-attrib-inner, .mapboxgl-ctrl-attrib {
   background: var(--dark-gray) !important;
 }
