@@ -7,7 +7,7 @@
             <RegionPicker :map="map" :map-ready="mapReady" />
           </template>
         </component>
-        <div class="map-overlay">
+        <div class="map-overlay desktop">
           <div class="overlay-left" ref="overlayLeftRef">
             <ExploreSidebar class="interactive" />
           </div>
@@ -18,6 +18,7 @@
             <span class="layer-selector-message"> Add layer </span>
           </div>
         </div>
+        <MobileExploreMapControls />
       </div>
     </div>
   </LayoutOverview>
@@ -41,6 +42,7 @@ import { useMapExploreStore } from '@/stores/mapExplore'
 import LayoutOverview from './components/layouts/LayoutOverview.vue'
 import ExploreSidebar from './components/ExploreSidebar.vue'
 import RegionPicker from './components/RegionPicker.vue'
+import MobileExploreMapControls from './components/MobileExploreMapControls.vue'
 
 const availableMaps = [
   // {
@@ -210,6 +212,12 @@ select:hover {
 select:hover + .layer-selector-message {
   opacity: 1;
 }
+
+@media only screen and (max-width: 720px) {
+  .desktop {
+    display: none;
+  }
+}
 </style>
 
 <style>
@@ -221,5 +229,12 @@ select:hover + .layer-selector-message {
   width: 12rem;
   height: 12rem;
   padding: 1.5rem;
+}
+
+
+@media only screen and (max-width: 720px) {
+  .region-picker {
+    display: none;
+  }
 }
 </style>
