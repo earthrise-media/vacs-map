@@ -128,7 +128,7 @@ const addHoverListeners = () => {
 }
 
 const updateHoveredFeatureState = (elementId, hovered) => {
-  if (!id) return
+  if (!id.value) return
   map.value.setFeatureState(
     {
       source: sourceId.value,

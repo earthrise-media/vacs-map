@@ -63,6 +63,8 @@ onClickOutside(contentInnerRef, () => emit('close'))
   max-width: 50%;
   max-height: 70%;
   padding: 2.5rem;
+
+  white-space: pre-line;
 }
 
 .header {

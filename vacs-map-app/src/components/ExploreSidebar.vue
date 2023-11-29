@@ -14,7 +14,15 @@
     </div>
 
     <div class="sidebar-section grow">
-      <span class="sidebar-header"> What are {{ selectedCropInfo?.label }}'s characteristics?</span>
+      <span class="sidebar-header">
+        What are {{ selectedCropInfo?.label }}'s characteristics?
+        <img
+          class="info"
+          src="@/assets/img/info.svg"
+          alt=""
+          @click="openChartModal('fingerprint')"
+        />
+      </span>
       <div class="crop-fingerprint">
         <CropFingerprint :crop-id="selectedCrop" />
       </div>
@@ -23,8 +31,14 @@
     <div class="sidebar-section shrink">
       <div class="scenarios">
         <span class="sidebar-header">
-          How will climate change affect {{ selectedCropInfo?.label }}?</span
-        >
+          How will climate change affect {{ selectedCropInfo?.label }}?
+          <img
+            class="info"
+            src="@/assets/img/info.svg"
+            alt=""
+            @click="openChartModal('distribution')"
+          />
+        </span>
         <CardWrapper
           v-for="scenario in futureScenarios"
           :key="scenario"
@@ -33,7 +47,7 @@
           :is-active="selectedModel === scenario"
           :handle-click="() => (selectedModel = scenario)"
           :show-more-info="true"
-          @show-info="() => openModal(scenario)"
+          @show-info="() => openScenarioModal(scenario)"
         >
           <DistributionPlot :scenario="scenario" />
         </CardWrapper>
@@ -81,7 +95,13 @@ const getCropsByGroup = (group) => {
   return cropInformation?.value?.filter((crop) => crop.crop_group === group)
 }
 
-const openModal = (s) => {
+const openChartModal = (chartType) => {
+  modalOpen.value = true
+  modalHeader.value = 'How do I interpret this chart?'
+  modalContent.value = copy.value[chartType + '_chart']
+}
+
+const openScenarioModal = (s) => {
   modalOpen.value = true
   modalHeader.value = copy.value[`${s}_label`] + ' scenario' + ` (${s.split('_')[1].toUpperCase()})`
   modalContent.value = copy.value[`${s}_long`]
@@ -112,9 +132,18 @@ const openModal = (s) => {
 }
 
 .sidebar-header {
-  font-size: 1rem;
+  font-size: 0.925rem;
   font-weight: 600;
   line-height: 120%;
+}
+
+.info {
+  vertical-align: top;
+  cursor: pointer;
+}
+
+.info:hover {
+  opacity: 0.7;
 }
 
 .grow {

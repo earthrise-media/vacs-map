@@ -10,6 +10,7 @@
         <div class="map-overlay desktop">
           <div class="overlay-left" ref="overlayLeftRef">
             <ExploreSidebar class="interactive" />
+            <MapLegend />
           </div>
           <div class="overlay-right">
             <select v-model="selectedMap" class="interactive">
@@ -21,6 +22,7 @@
         <MobileExploreMapControls />
       </div>
     </div>
+    <MapTooltip />
   </LayoutOverview>
 </template>
 
@@ -43,6 +45,8 @@ import LayoutOverview from './components/layouts/LayoutOverview.vue'
 import ExploreSidebar from './components/ExploreSidebar.vue'
 import RegionPicker from './components/RegionPicker.vue'
 import MobileExploreMapControls from './components/MobileExploreMapControls.vue'
+import MapTooltip from '@/components/MapTooltip.vue'
+import MapLegend from '@/components/MapLegend.vue'
 
 const availableMaps = [
   // {
@@ -159,6 +163,13 @@ onUnmounted(() => {
   justify-content: space-between;
   pointer-events: none;
   padding: 2rem 0;
+}
+
+.overlay-left {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 2rem;
 }
 
 .overlay-right {
