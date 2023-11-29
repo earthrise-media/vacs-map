@@ -14,9 +14,14 @@
     </div>
 
     <div class="sidebar-section grow">
-      <span class="sidebar-header"> 
+      <span class="sidebar-header">
         What are {{ selectedCropInfo?.label }}'s characteristics?
-        <img class="info" src="@/assets/img/info.svg" alt="" @click="openChartModal('fingerprint')">
+        <img
+          class="info"
+          src="@/assets/img/info.svg"
+          alt=""
+          @click="openChartModal('fingerprint')"
+        />
       </span>
       <div class="crop-fingerprint">
         <CropFingerprint :crop-id="selectedCrop" />
@@ -27,7 +32,12 @@
       <div class="scenarios">
         <span class="sidebar-header">
           How will climate change affect {{ selectedCropInfo?.label }}?
-          <img class="info" src="@/assets/img/info.svg" alt="" @click="openChartModal('distribution')">
+          <img
+            class="info"
+            src="@/assets/img/info.svg"
+            alt=""
+            @click="openChartModal('distribution')"
+          />
         </span>
         <CardWrapper
           v-for="scenario in futureScenarios"
@@ -87,8 +97,8 @@ const getCropsByGroup = (group) => {
 
 const openChartModal = (chartType) => {
   modalOpen.value = true
-  modalHeader.value = "How to interpret this chart?"
-  modalContent.value = copy.value[chartType + '_chart'] 
+  modalHeader.value = 'How to interpret this chart?'
+  modalContent.value = copy.value[chartType + '_chart']
 }
 
 const openScenarioModal = (s) => {
@@ -122,7 +132,7 @@ const openScenarioModal = (s) => {
 }
 
 .sidebar-header {
-  font-size: 1rem;
+  font-size: 0.925rem;
   font-weight: 600;
   line-height: 120%;
 }
