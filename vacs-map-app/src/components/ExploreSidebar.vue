@@ -97,7 +97,7 @@ const getCropsByGroup = (group) => {
 
 const openChartModal = (chartType) => {
   modalOpen.value = true
-  modalHeader.value = 'How to interpret this chart?'
+  modalHeader.value = 'How do I interpret this chart?'
   modalContent.value = copy.value[chartType + '_chart']
 }
 
