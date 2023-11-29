@@ -8,8 +8,8 @@
           </template>
         </component>
         <div class="map-overlay desktop">
-          <div class="overlay-left" ref="overlayLeftRef">
-            <ExploreSidebar class="interactive" />
+          <div class="overlay-left">
+            <ExploreSidebar class="interactive" ref="overlayLeftRef"/>
             <MapLegend />
           </div>
           <div class="overlay-right">
