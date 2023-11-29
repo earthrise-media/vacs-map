@@ -42,7 +42,7 @@
         <CardWrapper
           v-for="scenario in futureScenarios"
           :key="scenario"
-          :title="copy[`${scenario}_label`]"
+          :title="copy[`${scenario}_label`] + ` (${scenario.split('_')[1].toUpperCase()})`"
           :description="copy[`${scenario}_short`]"
           :is-active="selectedModel === scenario"
           :handle-click="() => (selectedModel = scenario)"
