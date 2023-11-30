@@ -115,7 +115,7 @@ watch(mapPadding, () => {
 
 @media only screen and (max-width: 720px) {
   .mapboxgl-ctrl-top-right {
-    top: 10rem;
+    display: none;
   }
 }
 </style>
