@@ -52,7 +52,7 @@
       </div>
     </div>
 
-    <ContentModal v-if="modalOpen" @close="() => (modalOpen = false)" :title="modalHeader">
+    <ContentModal v-if="modalOpen" @close="() => (modalOpen = false)" :title="modalHeader" :wide="true">
       <div class="modal-content">
         <p>
           <a href="https://www.state.gov/the-vision-for-adapted-crops-and-soils/" target="_blank"
