@@ -1,8 +1,8 @@
 <template>
-  <div class="card-wrapper" @click="handleClick" :class="{ active: isActive,  bold: boldTitle }">
+  <div class="card-wrapper" @click="handleClick" :class="{ active: isActive, bold: boldTitle }">
     <slot></slot>
 
-    <div class="info" :class="{ bold: boldTitle }" >
+    <div class="info" :class="{ bold: boldTitle }">
       <div class="title" :class="{ bold: boldTitle }">{{ title }}</div>
       <p class="description">
         {{ description }}
@@ -135,5 +135,11 @@ const { title, description, handleClick } = toRefs(props)
   cursor: pointer;
   font-size: 0.875rem;
   white-space: nowrap;
+}
+
+@media only screen and (max-width: 720px) {
+  .card-wrapper:hover {
+    box-shadow: 0 0 0 1px var(--gray);
+  }
 }
 </style>
