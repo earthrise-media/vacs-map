@@ -5,8 +5,8 @@ export const useContentStore = defineStore('siteContent', () => {
   const tooltips = ref({})
 
   const copy = ref({
-    header_question: 'What crops have the most potential in a changing climate?',
-    vacs_mini: 
+    header_question: 'Which crops have the most potential in a changing climate?',
+    vacs_mini:
       'Vision for Adapted Crops and Soils (VACS) addresses food security in Africa by developing and mobilizing investment in resilient, nutritious indigenous crops suited to the changing climate.',
     vacs_short:
       'The Vision for Adapted Crops and Soils (VACS) is a multi-phase initiative launched by the U.S. Department of State, in collaboration with the African Union, and the Food and Agriculture Organization (FAO). VASC aims to address food security and nutrition challenges in Africa in the face of climate change. The program focuses on identifying, adapting, and promoting the use of nutritious, indigenous, and traditional food crops that are well-suited to the local environment and are able to withstand changing climate conditions.',
