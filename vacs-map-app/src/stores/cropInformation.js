@@ -15,6 +15,7 @@ export const useCropInformationStore = defineStore('cropInformation', () => {
     let genetic = await d3.csv(getDataUrl('crop-info-genetic.csv'), d3.autoType)
     let nutritional = await d3.csv(getDataUrl('crop-info-nutritional.csv'), d3.autoType)
     let biophysical = await d3.csv(getDataUrl('crop-info-biophysical.csv'), d3.autoType)
+    let regional = await d3.csv(getDataUrl('crop-info-regional-potential.csv'), d3.autoType)
 
     const getIndicators = (array, id) => {
       return Object.fromEntries(Object.entries(array.find((d) => d.id === id)).slice(1))
@@ -26,9 +27,15 @@ export const useCropInformationStore = defineStore('cropInformation', () => {
         nutritional: getIndicators(nutritional, d.id),
         biophysical: getIndicators(biophysical, d.id)
       }
+
+      const regionalPotential = Object.fromEntries(
+        Object.entries(regional.find((c) => c.id === d.id)).slice(1)
+      )
+
       return {
         ...d,
-        indicators: indicators
+        indicators,
+        regionalPotential
       }
     })
     data.value = Object.freeze(general)

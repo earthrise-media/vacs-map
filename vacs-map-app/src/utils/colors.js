@@ -5,7 +5,14 @@ export const divergingScheme = {
 }
 
 export const fingerprintScheme = {
-  nutritional: '#C299EC',
-  genetic: '#BBBBBB',
-  biophysical: '#E5C659'
+  nutritional: '#8DA4CB',
+  genetic: '#C4D3EB',
+  biophysical: '#5A7CB6'
+}
+
+export const stopLightScheme = {
+  low: '#FFA31A',
+  medium: '#E5C659',
+  high: '#34A853',
+  default: '#7E899C'
 }
