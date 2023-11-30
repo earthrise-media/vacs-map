@@ -56,11 +56,11 @@ onClickOutside(contentInnerRef, () => emit('close'))
   position: relative;
   display: flex;
   flex-direction: column;
-  background: var(--white);
-  color: var(--black);
+  background: var(--dark-gray);
+  color: var(--white);
   border-radius: 4px;
   overflow-y: auto;
-  max-width: 50%;
+  max-width: 70%;
   max-height: 70%;
   padding: 2.5rem;
 
@@ -70,6 +70,7 @@ onClickOutside(contentInnerRef, () => emit('close'))
 .header {
   font-family: var(--font-family-h2);
   font-size: 1.875rem;
+  padding-bottom: 0.25rem;
 }
 
 .close-button {
@@ -81,8 +82,13 @@ onClickOutside(contentInnerRef, () => emit('close'))
 }
 
 @media only screen and (max-width: 720px) {
+  .content-modal {
+    justify-content: flex-end;
+  }
   .content-modal-inner {
-    max-width: 95%;
+    max-width: 100%;
+    max-height: 85%;
+    border-radius: 1.875rem 1.875rem 0 0;
   }
 }
 </style>
