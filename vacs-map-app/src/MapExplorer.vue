@@ -46,7 +46,6 @@ import MapLegend from '@/components/MapLegend.vue'
 import OverviewTop from '@/components/OverviewTop.vue'
 
 const availableMaps = [
-
   {
     id: 'color-across-scenarios',
     name: 'Default',
@@ -56,7 +55,7 @@ const availableMaps = [
     id: 'sand-soil',
     name: 'Sand + Soil',
     component: MapContainerColorSandSoil
-  },
+  }
 ]
 
 const basePadding = 50
