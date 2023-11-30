@@ -117,6 +117,5 @@ watch(mapPadding, () => {
   .mapboxgl-ctrl-top-right {
     top: 10rem;
   }
-
- }
+}
 </style>

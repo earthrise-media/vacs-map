@@ -116,12 +116,12 @@ const selectedIndicators = computed(() => {
 })
 
 const hoverIndicators = computed(() => {
-  return selectedIndicators.value.map(d => {
+  return selectedIndicators.value.map((d) => {
     return {
       ...d,
       value: 10
     }
-  });
+  })
 })
 
 const benchmarkCropObject = computed(() => {
@@ -168,7 +168,7 @@ const indicatorMetrics = computed(() => {
 })
 
 const radius = computed(() => {
-  return Math.min(width.value, height.value) / 2 * 0.95
+  return (Math.min(width.value, height.value) / 2) * 0.95
 })
 
 const x = computed(() => {

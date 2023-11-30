@@ -35,7 +35,9 @@ const sentence = computed(() => {
 
   const valueDescriptor = hoveredValue.value > 0 ? 'increases' : 'decreases'
 
-  return `In ${modelDescriptor}, ${cropName} ${valueDescriptor} by ${pFormat(hoveredValue.value)} at this location`
+  return `In ${modelDescriptor}, ${cropName} ${valueDescriptor} by ${pFormat(
+    hoveredValue.value
+  )} at this location`
 })
 
 const hoveredValue = computed(() => {
@@ -51,7 +53,6 @@ const hoveredValue = computed(() => {
 const pFormat = (value) => {
   return d3.format('.1%')(Math.abs(value))
 }
-
 </script>
 
 <style scoped></style>

@@ -9,11 +9,11 @@
           </template>
         </component>
         <div class="overlay-wrapper">
-          <OverviewTop class="interactive"/>
+          <OverviewTop class="interactive" />
           <div class="map-overlay desktop">
             <div class="overlay-left">
-              <ExploreSidebar class="interactive" ref="overlayLeftRef"/>
-              <MapLegend class="interactive"/>
+              <ExploreSidebar class="interactive" ref="overlayLeftRef" />
+              <MapLegend class="interactive" />
             </div>
             <div class="overlay-right">
               <select v-model="selectedMap" class="interactive">
