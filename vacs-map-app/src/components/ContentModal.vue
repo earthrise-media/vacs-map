@@ -29,7 +29,7 @@ const props = defineProps({
 
   wide: {
     type: Boolean,
-    default: false,
+    default: false
   }
 })
 

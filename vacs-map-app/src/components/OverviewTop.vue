@@ -23,7 +23,7 @@ import { storeToRefs } from 'pinia'
 import { useContentStore } from '../stores/siteContent'
 import NavigationButton from '@/components/NavigationButton.vue'
 
-const linkCopied = ref(false);
+const linkCopied = ref(false)
 const route = useRoute()
 const backRoute = computed(() => (route.path === '/map-explore' ? '/crops' : '/'))
 
@@ -32,9 +32,9 @@ const { copy } = storeToRefs(contentStore)
 
 const copyLink = () => {
   navigator.clipboard.writeText(window.location.href)
-  linkCopied.value = true;
+  linkCopied.value = true
   setTimeout(() => {
-    linkCopied.value = false;
+    linkCopied.value = false
   }, 1200)
 }
 </script>
@@ -63,7 +63,7 @@ const copyLink = () => {
   box-shadow: var(--shadow);
   color: var(--black);
   padding: 0.5rem;
-  border-radius: 0.25rem;;
+  border-radius: 0.25rem;
 }
 
 .row {
@@ -122,7 +122,11 @@ button:hover {
 }
 
 @keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 </style>
