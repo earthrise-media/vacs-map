@@ -33,7 +33,9 @@ const sentence = computed(() => {
       ? 'a low emissions scenario'
       : 'a high emissions scenario'
 
-  return `In ${modelDescriptor}, ${cropName} has a yield ratio of ${hoveredValue.value} at this location`
+  const valueDescriptor = hoveredValue.value > 0 ? 'increases' : 'decreases'
+
+  return `In ${modelDescriptor}, ${cropName} ${valueDescriptor} by ${pFormat(hoveredValue.value)} at this location`
 })
 
 const hoveredValue = computed(() => {
@@ -43,12 +45,13 @@ const hoveredValue = computed(() => {
   const cellObject = yieldData.value.find((d) => d.id === hoveredId.value)
 
   if (!cellObject) return ''
-  return vFormat(cellObject[columnName])
+  return cellObject[columnName]
 })
 
-const vFormat = (value) => {
-  return d3.format('.2f')(value)
+const pFormat = (value) => {
+  return d3.format('.1%')(Math.abs(value))
 }
+
 </script>
 
 <style scoped></style>
