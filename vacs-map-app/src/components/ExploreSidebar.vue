@@ -31,7 +31,7 @@
     <div class="sidebar-section shrink">
       <div class="scenarios">
         <span class="sidebar-header">
-          How will climate change affect {{ selectedCropInfo?.label }}?
+          How will future GHG emissions affect {{ selectedCropInfo?.label }}?
           <img
             class="info"
             src="@/assets/img/info.svg"
