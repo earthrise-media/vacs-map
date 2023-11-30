@@ -31,7 +31,7 @@
     <div class="sidebar-section shrink">
       <div class="scenarios">
         <span class="sidebar-header">
-          How will climate change affect {{ selectedCropInfo?.label }}?
+          How will future GHG emissions affect {{ selectedCropInfo?.label }}?
           <img
             class="info"
             src="@/assets/img/info.svg"
@@ -42,7 +42,7 @@
         <CardWrapper
           v-for="scenario in futureScenarios"
           :key="scenario"
-          :title="copy[`${scenario}_label`]"
+          :title="copy[`${scenario}_label`] + ` (${scenario.split('_')[1].toUpperCase()})`"
           :description="copy[`${scenario}_short`]"
           :is-active="selectedModel === scenario"
           :handle-click="() => (selectedModel = scenario)"
@@ -172,9 +172,9 @@ const openScenarioModal = (s) => {
   background: none;
   border-bottom: 1px solid var(--gray);
   font-family: var(--font-family-header);
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   color: var(--white);
-  padding: 0.5rem;
+  padding: 0.5rem 0;
 
   overflow: hidden;
   white-space: nowrap;
@@ -182,7 +182,7 @@ const openScenarioModal = (s) => {
 
   background-image: url('../assets/img/select-arrow-blue.svg');
   background-size: 1rem;
-  background-position: 98% center;
+  background-position: 100% center;
   background-repeat: no-repeat;
 
   outline: none !important;

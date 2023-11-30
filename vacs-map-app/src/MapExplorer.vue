@@ -1,29 +1,33 @@
 <template>
-  <LayoutOverview>
+  <LayoutOpen>
     <div class="map-wrapper-row">
       <div class="map-wrapper">
         <component :is="selectedMapComponent">
           <template v-slot="{ map, mapReady }">
             <RegionPicker :map="map" :map-ready="mapReady" />
+            <span class="region-picker-message hover-message"> Zoom to a region </span>
           </template>
         </component>
-        <div class="map-overlay desktop">
-          <div class="overlay-left">
-            <ExploreSidebar class="interactive" ref="overlayLeftRef"/>
-            <MapLegend />
+        <div class="overlay-wrapper">
+          <OverviewTop class="interactive" />
+          <div class="map-overlay desktop">
+            <div class="overlay-left">
+              <ExploreSidebar class="interactive" ref="overlayLeftRef" />
+              <MapLegend class="interactive" />
+            </div>
+            <div class="overlay-right">
+              <select v-model="selectedMap" class="interactive">
+                <option v-for="map in availableMaps" :value="map.id">{{ map.name }}</option>
+              </select>
+              <span class="layer-selector-message hover-message"> Add layer </span>
+            </div>
           </div>
-          <div class="overlay-right">
-            <select v-model="selectedMap" class="interactive">
-              <option v-for="map in availableMaps" :value="map.id">{{ map.name }}</option>
-            </select>
-            <span class="layer-selector-message"> Add layer </span>
-          </div>
+          <MobileExploreMapControls />
         </div>
-        <MobileExploreMapControls />
       </div>
     </div>
     <MapTooltip />
-  </LayoutOverview>
+  </LayoutOpen>
 </template>
 
 <script setup>
@@ -41,12 +45,13 @@ import MapContainerColorSoil from '@/components/MapContainerColorSoil.vue'
 import MapContainerColorSand from '@/components/MapContainerColorSand.vue'
 import MapContainerColorPopulation from '@/components/MapContainerColorPopulation.vue'
 import { useMapExploreStore } from '@/stores/mapExplore'
-import LayoutOverview from './components/layouts/LayoutOverview.vue'
+import LayoutOpen from './components/layouts/LayoutOpen.vue'
 import ExploreSidebar from './components/ExploreSidebar.vue'
 import RegionPicker from './components/RegionPicker.vue'
 import MobileExploreMapControls from './components/MobileExploreMapControls.vue'
 import MapTooltip from '@/components/MapTooltip.vue'
 import MapLegend from '@/components/MapLegend.vue'
+import OverviewTop from '@/components/OverviewTop.vue'
 
 const availableMaps = [
   // {
@@ -153,16 +158,24 @@ onUnmounted(() => {
   flex-grow: 1;
 }
 
-.map-overlay {
+.overlay-wrapper {
   height: 100%;
   width: 100%;
   position: absolute;
   top: 0rem;
   left: 0rem;
+  pointer-events: none;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.map-overlay {
+  flex-grow: 1;
   display: flex;
   justify-content: space-between;
   pointer-events: none;
-  padding: 2rem 0;
+  padding: 1rem 0 2rem 0;
 }
 
 .overlay-left {
@@ -206,18 +219,25 @@ select:hover {
   background-color: var(--ui-blue-hover);
 }
 
+.hover-message {
+  opacity: 0;
+  transition: all 0.5s ease;
+  font-size: 1rem;
+  color: var(--gray);
+  white-space: nowrap;
+  padding: 0.25rem 0.5rem;
+}
+
 .layer-selector-message {
   position: absolute;
   left: 1rem;
   transform: translateX(-130%);
-  opacity: 0;
-  transition: all 0.5s ease;
-  font-size: 1rem;
-  color: var(--ui-blue);
-  white-space: nowrap;
-  background: var(--dark-gray);
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.5rem;
+}
+
+.region-picker-message {
+  position: absolute;
+  right: calc(var(--page-horizontal-margin) - 0.75rem);
+  bottom: 11rem;
 }
 
 select:hover + .layer-selector-message {
@@ -235,11 +255,15 @@ select:hover + .layer-selector-message {
 .region-picker {
   position: absolute;
   bottom: 2.5rem;
-  right: 1rem;
+  right: var(--page-horizontal-margin);
   z-index: 1000;
-  width: 12rem;
-  height: 12rem;
-  padding: 1.5rem;
+  width: 8rem;
+  height: 8rem;
+  padding: 1rem;
+}
+
+.region-picker:hover + .region-picker-message {
+  opacity: 1;
 }
 
 @media only screen and (max-width: 720px) {

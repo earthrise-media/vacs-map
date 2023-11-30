@@ -1,6 +1,6 @@
 <template>
   <div class="content-modal" :style="{ top: `${top}px` }">
-    <div class="content-modal-inner" ref="contentInnerRef">
+    <div class="content-modal-inner" :class="{ wide }" ref="contentInnerRef">
       <div class="close-button" @click="emit('close')">
         <img src="@/assets/img/close.svg" />
       </div>
@@ -25,6 +25,11 @@ const props = defineProps({
   title: {
     type: String,
     default: ''
+  },
+
+  wide: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -56,20 +61,25 @@ onClickOutside(contentInnerRef, () => emit('close'))
   position: relative;
   display: flex;
   flex-direction: column;
-  background: var(--white);
-  color: var(--black);
+  background: var(--dark-gray);
+  color: var(--white);
   border-radius: 4px;
   overflow-y: auto;
-  max-width: 50%;
+  max-width: 45%;
   max-height: 70%;
   padding: 2.5rem;
 
   white-space: pre-line;
 }
 
+.wide {
+  max-width: 70%;
+}
+
 .header {
   font-family: var(--font-family-h2);
   font-size: 1.875rem;
+  padding-bottom: 0.25rem;
 }
 
 .close-button {
@@ -81,8 +91,13 @@ onClickOutside(contentInnerRef, () => emit('close'))
 }
 
 @media only screen and (max-width: 720px) {
+  .content-modal {
+    justify-content: flex-end;
+  }
   .content-modal-inner {
-    max-width: 95%;
+    max-width: 100%;
+    max-height: 85%;
+    border-radius: 1.875rem 1.875rem 0 0;
   }
 }
 </style>

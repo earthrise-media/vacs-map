@@ -1,26 +1,43 @@
 <template>
   <div class="map-legend">
-    <div class="legend-title">{{ selectedCropInfo?.label }} yield ratio</div>
+    <div class="legend-title">
+      {{ selectedCropInfo?.label }} yield ratio
+      <img src="@/assets/img/info.svg" alt="" @click="openYieldRatioModal" />
+    </div>
     <div class="legend-gradient" :style="gradientStyle"></div>
     <div class="legend-ticks">
-      <div class="legend-tick">Min</div>
-      <div class="legend-tick">0</div>
-      <div class="legend-tick">Max</div>
+      <div class="legend-tick">↓%</div>
+      <div class="legend-tick">No change</div>
+      <div class="legend-tick">↑%</div>
     </div>
+
+    <ContentModal v-if="modalOpen" @close="() => (modalOpen = false)" :title="modalHeader">
+      <p class="modal-content">
+        {{ modalContent }}
+      </p>
+    </ContentModal>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useCropInformationStore } from '@/stores/cropInformation'
 import { useFiltersStore } from '@/stores/filters'
+import { useContentStore } from '@/stores/siteContent'
 import { divergingScheme } from '@/utils/colors'
+import ContentModal from '@/components/ContentModal.vue'
 
+const contentStore = useContentStore()
 const cropInformationStore = useCropInformationStore()
 const filtersStore = useFiltersStore()
 const { selectedCrop } = storeToRefs(filtersStore)
 const { data: cropInformation } = storeToRefs(cropInformationStore)
+const { copy } = storeToRefs(contentStore)
+
+const modalOpen = ref(false)
+const modalHeader = ref('')
+const modalContent = ref('')
 
 const selectedCropInfo = computed(() => {
   return cropInformation?.value?.find((d) => d.id === selectedCrop.value)
@@ -28,7 +45,13 @@ const selectedCropInfo = computed(() => {
 
 const gradientStyle = {
   background: `linear-gradient(to right, ${divergingScheme.min},
-  ${divergingScheme.center}, ${divergingScheme.max})`,
+  ${divergingScheme.center}, ${divergingScheme.max})`
+}
+
+const openYieldRatioModal = () => {
+  modalOpen.value = true
+  modalHeader.value = 'What is yield ratio?'
+  modalContent.value = copy.value['yield_ratio']
 }
 </script>
 
@@ -41,11 +64,22 @@ const gradientStyle = {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  width: 15rem;
+  width: 18rem;
 }
 
 .legend-title {
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.legend-title img {
+  cursor: pointer;
+}
+
+.legend-title img:hover {
+  opacity: 70%;
 }
 
 .legend-gradient {
@@ -68,5 +102,11 @@ const gradientStyle = {
 
 .legend-tick:last-of-type {
   text-align: right;
+}
+
+@media only screen and (max-width: 720px) {
+  .map-legend {
+    width: 100%;
+  }
 }
 </style>

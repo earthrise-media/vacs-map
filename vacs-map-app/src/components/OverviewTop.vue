@@ -3,25 +3,27 @@
     <div class="row">
       <div>{{ copy.header_question }}</div>
       <div class="buttons">
-        <button @click="copyLink" title="Copy URL">
+        <button @click="copyLink">
           <img src="@/assets/img/copy-link.svg" alt="copy-link" />
         </button>
         <NavigationButton :to="backRoute" class="desktop">Back</NavigationButton>
         <NavigationButton :to="backRoute" class="mobile">
           <img src="@/assets/img/back-arrow.svg" alt="" />
         </NavigationButton>
+        <span v-if="linkCopied" class="link-copied-message"> Url copied to clipboard </span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useContentStore } from '../stores/siteContent'
 import NavigationButton from '@/components/NavigationButton.vue'
 
+const linkCopied = ref(false)
 const route = useRoute()
 const backRoute = computed(() => (route.path === '/map-explore' ? '/crops' : '/'))
 
@@ -30,6 +32,10 @@ const { copy } = storeToRefs(contentStore)
 
 const copyLink = () => {
   navigator.clipboard.writeText(window.location.href)
+  linkCopied.value = true
+  setTimeout(() => {
+    linkCopied.value = false
+  }, 1200)
 }
 </script>
 
@@ -40,7 +46,24 @@ const copyLink = () => {
   font-family: var(--font-family-h2);
   font-size: 1.5rem;
   gap: 0.5rem;
-  margin: 1rem var(--page-horizontal-margin);
+  padding: 1rem var(--page-horizontal-margin);
+  background: var(--black-90);
+}
+
+.link-copied-message {
+  position: absolute;
+  bottom: 0;
+  transform: translateY(130%) translateX(-90%);
+  font-size: 0.75rem;
+  font-family: var(--font-family-body);
+  font-weight: 500;
+  animation: fadeIn 1s;
+  white-space: nowrap;
+  background: var(--ui-blue);
+  box-shadow: var(--shadow);
+  color: var(--black);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
 }
 
 .row {
@@ -51,6 +74,7 @@ const copyLink = () => {
 }
 
 .buttons {
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -93,6 +117,16 @@ button:hover {
   }
   .overview-top {
     font-size: 1rem;
+    font-family: var(--font-family-header);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
 </style>
