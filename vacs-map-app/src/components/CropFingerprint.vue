@@ -37,8 +37,6 @@
                 highlighted: hovered?.key === indicator.key,
                 unhighlighted: hovered && hovered.key !== indicator.key
               }"
-              @mouseenter="hovered = indicator"
-              @mouseleave="hovered = null"
             />
           </g>
 
@@ -51,14 +49,25 @@
               <path
                 v-for="indicator in benchmarkIndicators"
                 :key="indicator.key"
-                fill="none"
-                stroke="#e1dcd5"
+                fill="#ffffff01"
+                stroke="#7e899c"
                 :stroke-width="1"
                 :d="arc(indicator)"
                 :class="{
                   highlighted: hovered?.key === indicator.key,
                   unhighlighted: hovered && hovered.key !== indicator.key
                 }"
+              />
+            </g>
+
+            <g class="hover-detectors">
+              <path
+                v-for="indicator in hoverIndicators"
+                :key="indicator.key"
+                fill="transparent"
+                :d="arc(indicator)"
+                @mouseenter="hovered = indicator"
+                @mouseleave="hovered = null"
               />
             </g>
           </g>
@@ -106,6 +115,15 @@ const selectedIndicators = computed(() => {
   return getIndicators(selectedCropObject.value)
 })
 
+const hoverIndicators = computed(() => {
+  return selectedIndicators.value.map(d => {
+    return {
+      ...d,
+      value: 10
+    }
+  });
+})
+
 const benchmarkCropObject = computed(() => {
   if (!cropInformation.value) return null
   return cropInformation.value.find(
@@ -150,7 +168,7 @@ const indicatorMetrics = computed(() => {
 })
 
 const radius = computed(() => {
-  return Math.min(width.value, height.value) / 2
+  return Math.min(width.value, height.value) / 2 * 0.95
 })
 
 const x = computed(() => {
@@ -160,19 +178,15 @@ const x = computed(() => {
     .range([0, Math.PI * 2])
 })
 
-const xDegrees = computed(() => {
-  return d3.scaleBand().domain(indicatorMetrics.value).range([0, 360])
-})
-
 const y = computed(() => {
-  return d3.scaleLinear().domain([0, 10]).range([0, radius.value])
+  return d3.scaleLinear().domain([0, 11]).range([0, radius.value])
 })
 
 const arc = computed(() => {
   return d3
     .arc()
     .innerRadius(y.value(0))
-    .outerRadius((d) => y.value(d.value))
+    .outerRadius((d) => y.value(d.value !== null ? d.value + 1 : 0))
     .startAngle((d) => x.value(d.key))
     .endAngle((d) => x.value(d.key) + x.value.bandwidth())
 })
@@ -198,6 +212,10 @@ svg {
   pointer-events: none;
 }
 
+.hover-detectors {
+  pointer-events: all;
+}
+
 .highlighted {
   opacity: 1;
 }
@@ -207,7 +225,7 @@ svg {
 }
 
 .legend {
-  width: 30%;
+  width: 40%;
   display: flex;
   flex-direction: column;
   justify-content: center;
