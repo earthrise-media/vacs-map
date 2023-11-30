@@ -29,9 +29,9 @@ export const useCropInformationStore = defineStore('cropInformation', () => {
       }
 
       const regionalPotential = Object.fromEntries(
-        Object.entries(regional.find(c => c.id === d.id)).slice(1)
+        Object.entries(regional.find((c) => c.id === d.id)).slice(1)
       )
-      
+
       return {
         ...d,
         indicators,

@@ -77,8 +77,8 @@ onMounted(() => {
 })
 
 const selectedCropRegionalPotentials = computed(() => {
-  if (!selectedCrop.value) return null;
-  return cropInformation.value?.find(d => d.id === selectedCrop.value).regionalPotential
+  if (!selectedCrop.value) return null
+  return cropInformation.value?.find((d) => d.id === selectedCrop.value).regionalPotential
 })
 
 const getColor = (regionId) => {
