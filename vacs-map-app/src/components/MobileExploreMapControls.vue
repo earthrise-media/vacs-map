@@ -154,7 +154,9 @@ const openScenariosModal = () => {
 .item-label {
   font-size: 0.75rem;
   font-weight: 500;
-  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 select {
