@@ -37,7 +37,6 @@ const initializeMap = () => {
     showCompass: false
   })
 
-
   map.value.addControl(nav, 'top-right')
   map.value.dragRotate.disable()
   map.value.touchZoomRotate.disableRotation()
@@ -69,7 +68,7 @@ watch(mapPadding, () => {
 }
 
 .mapboxgl-ctrl-top-right {
-  top: 5rem;
+  top: 4rem;
   right: calc(var(--page-horizontal-margin));
 }
 
@@ -105,11 +104,19 @@ watch(mapPadding, () => {
   opacity: 1 !important;
 }
 
-.mapboxgl-ctrl-attrib-inner, .mapboxgl-ctrl-attrib {
+.mapboxgl-ctrl-attrib-inner,
+.mapboxgl-ctrl-attrib {
   background: var(--dark-gray) !important;
 }
 
 .mapboxgl-ctrl-attrib a {
   color: var(--white) !important;
 }
+
+@media only screen and (max-width: 720px) {
+  .mapboxgl-ctrl-top-right {
+    top: 5rem;
+  }
+
+ }
 </style>

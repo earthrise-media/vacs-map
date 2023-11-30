@@ -93,6 +93,7 @@ button:hover {
   }
   .overview-top {
     font-size: 1rem;
+    font-family: var(--font-family-header);
   }
 }
 </style>

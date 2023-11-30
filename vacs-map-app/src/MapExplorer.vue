@@ -10,8 +10,8 @@
         </component>
         <div class="map-overlay desktop">
           <div class="overlay-left">
-            <ExploreSidebar class="interactive" ref="overlayLeftRef"/>
-            <MapLegend />
+            <ExploreSidebar class="interactive" ref="overlayLeftRef" />
+            <MapLegend class="interactive" />
           </div>
           <div class="overlay-right">
             <select v-model="selectedMap" class="interactive">
@@ -211,7 +211,7 @@ select:hover {
   opacity: 0;
   transition: all 0.5s ease;
   font-size: 1rem;
-  color: var(--ui-blue);
+  color: var(--gray);
   white-space: nowrap;
   padding: 0.25rem 0.5rem;
 }
