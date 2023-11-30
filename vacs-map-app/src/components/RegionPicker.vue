@@ -6,6 +6,7 @@
         class="bbox-path"
         :key="r.id"
         :d="r.d"
+        :fill="r.fill"
         @click="handleClick(r.geometry)"
       />
     </svg>
@@ -19,7 +20,10 @@ import { storeToRefs } from 'pinia'
 import * as d3 from 'd3'
 import bbox from '@turf/bbox'
 import rewind from '@turf/rewind'
+import { useFiltersStore } from '@/stores/filters'
 import { useAfricanUnionRegionsStore } from '@/stores/africanUnionRegions'
+import { useCropInformationStore } from '@/stores/cropInformation'
+import { stopLightScheme } from '@/utils/colors'
 
 const props = defineProps({
   map: {
@@ -35,8 +39,12 @@ const props = defineProps({
 
 const { map, mapReady } = toRefs(props)
 
+const filtersStore = useFiltersStore()
+const cropInformationStore = useCropInformationStore()
 const africanUnionRegionsStore = useAfricanUnionRegionsStore()
 const { bboxes } = storeToRefs(africanUnionRegionsStore)
+const { data: cropInformation } = storeToRefs(cropInformationStore)
+const { selectedCrop } = storeToRefs(filtersStore)
 
 const wrapperRef = ref(null)
 const width = ref(0)
@@ -68,12 +76,26 @@ onMounted(() => {
   africanUnionRegionsStore.loadBboxes()
 })
 
+const selectedCropRegionalPotentials = computed(() => {
+  if (!selectedCrop.value) return null;
+  return cropInformation.value?.find(d => d.id === selectedCrop.value).regionalPotential
+})
+
+const getColor = (regionId) => {
+  if (!selectedCropRegionalPotentials.value) return stopLightScheme.default
+  const rp = selectedCropRegionalPotentials.value[regionId]
+  if (!rp) return stopLightScheme.default
+  return stopLightScheme[rp.toLowerCase()]
+}
+
 const paths = computed(() => {
   return (
     fixedBboxes.value?.features?.map((f) => {
+      const rid = f.properties.AU_region
       return {
         d: geoGenerator.value(f),
-        id: f.properties.AU_region,
+        id: rid,
+        fill: getColor(rid),
         geometry: f.geometry
       }
     }) ?? []
@@ -90,7 +112,6 @@ const handleClick = (geometry) => {
 <style scoped>
 .bbox-path {
   cursor: pointer;
-  fill: var(--gray);
   fill-opacity: 0.7;
 }
 

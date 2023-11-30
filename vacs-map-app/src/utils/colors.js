@@ -9,3 +9,10 @@ export const fingerprintScheme = {
   genetic: '#BBBBBB',
   biophysical: '#E5C659'
 }
+
+export const stopLightScheme = {
+  low: '#FF6D01',
+  medium: '#FBBD05',
+  high: '#34A853',
+  default: '#7E899C'
+}
