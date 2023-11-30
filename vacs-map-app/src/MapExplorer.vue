@@ -1,5 +1,5 @@
 <template>
-  <LayoutOverview>
+  <LayoutOpen>
     <div class="map-wrapper-row">
       <div class="map-wrapper">
         <component :is="selectedMapComponent">
@@ -8,23 +8,26 @@
             <span class="region-picker-message hover-message"> Zoom to a region </span>
           </template>
         </component>
-        <div class="map-overlay desktop">
-          <div class="overlay-left">
-            <ExploreSidebar class="interactive" ref="overlayLeftRef" />
-            <MapLegend class="interactive" />
+        <div class="overlay-wrapper">
+          <OverviewTop class="interactive"/>
+          <div class="map-overlay desktop">
+            <div class="overlay-left">
+              <ExploreSidebar class="interactive" ref="overlayLeftRef"/>
+              <MapLegend class="interactive"/>
+            </div>
+            <div class="overlay-right">
+              <select v-model="selectedMap" class="interactive">
+                <option v-for="map in availableMaps" :value="map.id">{{ map.name }}</option>
+              </select>
+              <span class="layer-selector-message hover-message"> Add layer </span>
+            </div>
           </div>
-          <div class="overlay-right">
-            <select v-model="selectedMap" class="interactive">
-              <option v-for="map in availableMaps" :value="map.id">{{ map.name }}</option>
-            </select>
-            <span class="layer-selector-message hover-message"> Add layer </span>
-          </div>
+          <MobileExploreMapControls />
         </div>
-        <MobileExploreMapControls />
       </div>
     </div>
     <MapTooltip />
-  </LayoutOverview>
+  </LayoutOpen>
 </template>
 
 <script setup>
@@ -42,12 +45,13 @@ import MapContainerColorSoil from '@/components/MapContainerColorSoil.vue'
 import MapContainerColorSand from '@/components/MapContainerColorSand.vue'
 import MapContainerColorPopulation from '@/components/MapContainerColorPopulation.vue'
 import { useMapExploreStore } from '@/stores/mapExplore'
-import LayoutOverview from './components/layouts/LayoutOverview.vue'
+import LayoutOpen from './components/layouts/LayoutOpen.vue'
 import ExploreSidebar from './components/ExploreSidebar.vue'
 import RegionPicker from './components/RegionPicker.vue'
 import MobileExploreMapControls from './components/MobileExploreMapControls.vue'
 import MapTooltip from '@/components/MapTooltip.vue'
 import MapLegend from '@/components/MapLegend.vue'
+import OverviewTop from '@/components/OverviewTop.vue'
 
 const availableMaps = [
   // {
@@ -154,12 +158,20 @@ onUnmounted(() => {
   flex-grow: 1;
 }
 
-.map-overlay {
+.overlay-wrapper {
   height: 100%;
   width: 100%;
   position: absolute;
   top: 0rem;
   left: 0rem;
+  pointer-events: none;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.map-overlay {
+  flex-grow: 1;
   display: flex;
   justify-content: space-between;
   pointer-events: none;

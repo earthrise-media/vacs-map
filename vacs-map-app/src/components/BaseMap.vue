@@ -68,7 +68,7 @@ watch(mapPadding, () => {
 }
 
 .mapboxgl-ctrl-top-right {
-  top: 4rem;
+  top: 9rem;
   right: calc(var(--page-horizontal-margin));
 }
 
@@ -115,7 +115,7 @@ watch(mapPadding, () => {
 
 @media only screen and (max-width: 720px) {
   .mapboxgl-ctrl-top-right {
-    top: 5rem;
+    top: 10rem;
   }
 
  }

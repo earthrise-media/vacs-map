@@ -98,9 +98,6 @@ const openScenariosModal = () => {
 
 <style scoped>
 .wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
   display: none;
   flex-direction: column;
   padding: 0.5rem 1rem 2rem 1rem;
