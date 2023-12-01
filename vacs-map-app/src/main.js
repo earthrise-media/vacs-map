@@ -14,6 +14,8 @@ import QueryPlugin from '@/store-plugins/query'
 import { getActivePinia } from 'pinia'
 
 const app = createApp(App)
+app.use(createPinia())
+getActivePinia().use(QueryPlugin)
 
 const routes = [
   { path: '/', component: LandingPage },
@@ -30,8 +32,5 @@ const router = VueRouter.createRouter({
   routes // short for `routes: routes`
 })
 
-app.use(createPinia())
 app.use(router)
 app.mount('#app')
-
-getActivePinia().use(QueryPlugin)

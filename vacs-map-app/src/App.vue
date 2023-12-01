@@ -27,9 +27,6 @@ onMounted(() => {
   cropYieldsStore.load()
   cropInformationStore.load()
 
-  // initialize so pages load
-  filtersStore.selectedCrop = filtersStore.availableCrops[0]
-
   window.addEventListener('resize', documentHeight)
   documentHeight
 })
