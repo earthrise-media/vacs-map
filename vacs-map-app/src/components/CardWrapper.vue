@@ -4,6 +4,12 @@
 
     <div class="info" :class="{ bold: boldTitle }">
       <div class="title" :class="{ bold: boldTitle }">{{ title }}</div>
+      <div v-if="indicator" class="indicator"> 
+        <span class="indicator-category"> {{ indicator.key }} </span>
+        <span class="indicator-level" :style="{ background: indicatorColor }"> 
+          {{ indicatorLevel }} 
+        </span>
+      </div>
       <p class="description">
         {{ description }}
         <span v-if="showMoreInfo" class="more-info" @click="() => $emit('showInfo')">
@@ -15,7 +21,8 @@
 </template>
 
 <script setup>
-import { toRefs } from 'vue'
+import { toRefs, computed } from 'vue'
+import { stopLightScheme } from '@/utils/colors';
 
 defineEmits(['showInfo'])
 const props = defineProps({
@@ -47,9 +54,26 @@ const props = defineProps({
   showMoreInfo: {
     type: Boolean,
     default: false
+  },
+
+  indicator: {
+    type: Object,
+    default: () => {}
   }
 })
-const { title, description, handleClick } = toRefs(props)
+const { title, description, handleClick, indicator } = toRefs(props)
+
+const indicatorLevel = computed(() => {
+  if (indicator?.value.val === null) return 'no data'
+  if (indicator.value.val < 3) return 'low'
+  if (indicator.value.val < 7) return 'medium'
+  return 'high'
+})
+
+const indicatorColor = computed(() =>  {
+  if (indicatorLevel.value === 'no data') return stopLightScheme.default
+  return stopLightScheme[indicatorLevel.value]
+})
 </script>
 
 <style scoped>
@@ -107,6 +131,25 @@ const { title, description, handleClick } = toRefs(props)
 .title.bold {
   font-family: var(--font-family-header);
   font-size: 1.375rem;
+}
+
+.indicator {
+  display: flex;
+  gap: 0.375rem;
+  align-items: center;
+}
+
+.indicator-category {
+  color: var(--black);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.indicator-level {
+  color: var(--white);
+  padding: 0.0625rem 0.1875rem;
+  text-transform: capitalize;
+  font-weight: 600;
 }
 
 .active {

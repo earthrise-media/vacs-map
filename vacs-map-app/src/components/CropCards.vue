@@ -8,6 +8,10 @@
         :bold-title="true"
         :description="crop.description"
         :handle-click="() => navigate(crop.id)"
+        :indicator="{
+          key: cropSortBy, 
+          val: crop.indicators.nutritional[cropSortBy]
+        }"
       >
         <img :src="getUrl(crop.id)" alt="" />
       </CardWrapper>
