@@ -9,7 +9,7 @@
         :description="crop.description"
         :handle-click="() => navigate(crop.id)"
         :indicator="{
-          key: cropSortBy, 
+          key: cropSortBy,
           val: crop.indicators.nutritional[cropSortBy]
         }"
       >

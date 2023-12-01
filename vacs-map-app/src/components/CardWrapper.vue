@@ -4,10 +4,10 @@
 
     <div class="info" :class="{ bold: boldTitle }">
       <div class="title" :class="{ bold: boldTitle }">{{ title }}</div>
-      <div v-if="indicator" class="indicator"> 
+      <div v-if="indicator" class="indicator">
         <span class="indicator-category"> {{ indicator.key }} </span>
-        <span class="indicator-level" :style="{ background: indicatorColor }"> 
-          {{ indicatorLevel }} 
+        <span class="indicator-level" :style="{ background: indicatorColor }">
+          {{ indicatorLevel }}
         </span>
       </div>
       <p class="description">
@@ -22,7 +22,7 @@
 
 <script setup>
 import { toRefs, computed } from 'vue'
-import { stopLightScheme } from '@/utils/colors';
+import { stopLightScheme } from '@/utils/colors'
 
 defineEmits(['showInfo'])
 const props = defineProps({
@@ -70,7 +70,7 @@ const indicatorLevel = computed(() => {
   return 'high'
 })
 
-const indicatorColor = computed(() =>  {
+const indicatorColor = computed(() => {
   if (indicatorLevel.value === 'no data') return stopLightScheme.default
   return stopLightScheme[indicatorLevel.value]
 })
