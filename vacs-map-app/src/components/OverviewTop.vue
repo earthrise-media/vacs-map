@@ -49,7 +49,7 @@ const copyLink = () => {
   font-family: var(--font-family-h2);
   font-size: 1.5rem;
   gap: 0.5rem;
-  padding: 1rem var(--page-horizontal-margin);
+  padding: 1rem var(--page-horizontal-margin) 0.375rem var(--page-horizontal-margin);
   background: var(--black-90);
 }
 
