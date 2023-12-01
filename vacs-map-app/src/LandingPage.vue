@@ -144,7 +144,6 @@ const openModal = () => {
   display: flex;
   flex-direction: row;
   height: 100vh;
-  height: var(--doc-height);
   width: 100vw;
   background: var(--black);
   justify-content: space-between;
@@ -155,8 +154,6 @@ video {
   width: 100vw;
   height: 100vh;
   min-width: 100vw;
-  height: 100vh;
-  height: var(--doc-height);
 }
 
 .overlay {
