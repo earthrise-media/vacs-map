@@ -15,15 +15,13 @@ import { useFiltersStore } from '@/stores/filters'
 const cropYieldsStore = useCropYieldsStore()
 const cropInformationStore = useCropInformationStore()
 const gridStore = useGridStore()
+// load filters store to ensure we have all needed data in app
 const filtersStore = useFiltersStore()
 
 onMounted(() => {
   gridStore.load()
   cropYieldsStore.load()
   cropInformationStore.load()
-
-  // initialize so pages load
-  filtersStore.selectedCrop = filtersStore.availableCrops[0]
 })
 </script>
 
