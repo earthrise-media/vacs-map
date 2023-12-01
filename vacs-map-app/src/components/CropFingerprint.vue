@@ -1,25 +1,34 @@
 <template>
   <div class="fingerprint-wrapper">
     <div class="legend">
-      <div v-if="hovered" class="hovered-label">
-        <span class="metric-label"> {{ hovered?.key }} </span>
-        <span class="category-label" :style="{ background: fingerprintScheme[hovered?.category] }">
-          {{ selectedCropObject?.label }}
-        </span>
-        <span v-if="showBenchmark" class="category-label benchmark-label">
-          {{ benchmarkCropObject?.label }}
-        </span>
-      </div>
-      <div v-else class="hovered-label">
-        <span
-          v-for="cat in indicatorCategories"
-          :key="cat"
-          class="category-label"
-          :style="{ background: fingerprintScheme[cat] }"
-        >
-          {{ cat }}
-        </span>
-        <span v-if="showBenchmark" class="category-label benchmark-label"> Benchmark </span>
+      <span class="benchmark-message">
+        *As compared to benchmark crop {{ benchmarkCropObject?.label }}</span
+      >
+
+      <div class="responsive-legend">
+        <div v-if="hovered" class="hovered-label">
+          <span class="metric-label"> {{ hovered?.key }} </span>
+          <span
+            class="category-label"
+            :style="{ background: fingerprintScheme[hovered?.category] }"
+          >
+            {{ selectedCropObject?.label }}
+          </span>
+          <span v-if="showBenchmark" class="category-label benchmark-label">
+            {{ benchmarkCropObject?.label }}
+          </span>
+        </div>
+        <div v-else class="hovered-label">
+          <span
+            v-for="cat in indicatorCategories"
+            :key="cat"
+            class="category-label"
+            :style="{ background: fingerprintScheme[cat] }"
+          >
+            {{ cat }}
+          </span>
+          <span v-if="showBenchmark" class="category-label benchmark-label"> Benchmark </span>
+        </div>
       </div>
     </div>
     <div class="svg-wrapper" ref="wrapperRef">
@@ -228,8 +237,20 @@ svg {
   width: 40%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   color: var(--white);
+}
+
+.benchmark-message {
+  color: var(--gray);
+  font-size: 0.8125rem;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 140%;
+  white-space: nowrap;
+}
+
+.responsive-legend {
+  margin: auto 0;
 }
 
 .hovered-label {

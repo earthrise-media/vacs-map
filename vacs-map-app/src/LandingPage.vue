@@ -249,7 +249,8 @@ button:hover {
   background: var(--ui-blue-hover);
 }
 
-.keep-reading, .vacs-link {
+.keep-reading,
+.vacs-link {
   cursor: pointer;
   color: var(--ui-blue);
   text-decoration: underline;

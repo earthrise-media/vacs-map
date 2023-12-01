@@ -15,7 +15,7 @@ const toPersist = [
     store: 'filters',
     key: 'selectedModel',
     outputKey: 'model'
-  },
+  }
 ]
 
 const getParams = (pinia) => {

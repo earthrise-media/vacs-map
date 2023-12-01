@@ -128,7 +128,7 @@ const openScenarioModal = (s) => {
 .sidebar-section {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.2rem;
 }
 
 .sidebar-header {

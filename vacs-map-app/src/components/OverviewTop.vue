@@ -28,7 +28,7 @@ const route = useRoute()
 const router = useRouter()
 const backRoute = computed(() => (route.path === '/map-explore' ? '/crops' : '/'))
 
-const navigateHome = () => router.push('/');
+const navigateHome = () => router.push('/')
 
 const contentStore = useContentStore()
 const { copy } = storeToRefs(contentStore)
