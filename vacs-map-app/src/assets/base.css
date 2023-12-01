@@ -20,8 +20,7 @@
   --font-family-body: 'Work Sans';
   --shadow: 0px 0px 20px 0px rgba(255, 254, 254, 0.1);
 
-
-  --doc-height: 100%
+  --doc-height: 100%;
 }
 
 *,

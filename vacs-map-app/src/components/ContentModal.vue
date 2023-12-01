@@ -2,12 +2,12 @@
   <div class="content-modal" :style="{ top: `${top}px` }">
     <div class="content-modal-inner" :class="{ wide }" ref="contentInnerRef">
       <div class="close-button" @click="emit('close')">
-      <img src="@/assets/img/close.svg" />
+        <img src="@/assets/img/close.svg" />
       </div>
       <span class="header">
         {{ title }}
       </span>
-      
+
       <slot></slot>
     </div>
   </div>
