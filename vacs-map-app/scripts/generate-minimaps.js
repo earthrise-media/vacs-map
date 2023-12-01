@@ -124,7 +124,7 @@ const generateMapSvg = (crop, model, data, world, Africa, AfricanCountries, Afri
     .fitExtent(
       [
         [margin, margin],
-        [width - margin, height - margin]
+        [width - margin, height - margin*3]
       ],
       Africa
     )
