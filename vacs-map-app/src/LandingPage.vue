@@ -108,6 +108,7 @@
         </p>
       </div>
       <div class="vacs-link">
+        <br />
         <a href="https://www.state.gov/the-vision-for-adapted-crops-and-soils/" target="_blank">
           Learn more about VACS →
         </a>
@@ -249,7 +250,8 @@ button:hover {
   background: var(--ui-blue-hover);
 }
 
-.keep-reading {
+.keep-reading,
+.vacs-link {
   cursor: pointer;
   color: var(--ui-blue);
   text-decoration: underline;
@@ -263,7 +265,7 @@ button:hover {
 
 a {
   cursor: pointer;
-  color: var(--ui-blue-light-bg);
+  color: var(--ui-blue);
   text-decoration: underline;
 }
 

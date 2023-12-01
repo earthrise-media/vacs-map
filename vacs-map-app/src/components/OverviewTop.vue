@@ -1,7 +1,7 @@
 <template>
   <div class="overview-top">
     <div class="row">
-      <div>{{ copy.header_question }}</div>
+      <div class="header-question" @click="navigateHome">{{ copy.header_question }}</div>
       <div class="buttons">
         <button @click="copyLink">
           <img src="@/assets/img/copy-link.svg" alt="copy-link" />
@@ -18,14 +18,17 @@
 
 <script setup>
 import { computed, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useContentStore } from '../stores/siteContent'
 import NavigationButton from '@/components/NavigationButton.vue'
 
 const linkCopied = ref(false)
 const route = useRoute()
+const router = useRouter()
 const backRoute = computed(() => (route.path === '/map-explore' ? '/crops' : '/'))
+
+const navigateHome = () => router.push('/')
 
 const contentStore = useContentStore()
 const { copy } = storeToRefs(contentStore)
@@ -46,24 +49,29 @@ const copyLink = () => {
   font-family: var(--font-family-h2);
   font-size: 1.5rem;
   gap: 0.5rem;
-  padding: 1rem var(--page-horizontal-margin);
+  padding: 1rem var(--page-horizontal-margin) 0.375rem var(--page-horizontal-margin);
   background: var(--black-90);
+}
+
+.header-question {
+  cursor: pointer;
 }
 
 .link-copied-message {
   position: absolute;
   bottom: 0;
-  transform: translateY(130%) translateX(-90%);
-  font-size: 0.75rem;
+  transform: translateY(-5%) translateX(-40%);
+  font-size: 1rem;
   font-family: var(--font-family-body);
   font-weight: 500;
-  animation: fadeIn 1s;
+  animation: fadeIn 0.5s;
   white-space: nowrap;
   background: var(--ui-blue);
   box-shadow: var(--shadow);
   color: var(--black);
   padding: 0.5rem;
   border-radius: 0.25rem;
+  cursor: default;
 }
 
 .row {

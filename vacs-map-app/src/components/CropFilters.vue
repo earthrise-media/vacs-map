@@ -97,6 +97,7 @@ const scenarioOptions = computed(() => {
 
 <style scoped>
 .crop-filters {
+  padding-top: 0.5rem;
   display: flex;
   gap: 1.25rem;
   align-items: center;

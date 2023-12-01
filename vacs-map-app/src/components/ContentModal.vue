@@ -64,23 +64,24 @@ onClickOutside(contentInnerRef, () => emit('close'))
   flex-direction: column;
   background: var(--dark-gray);
   color: var(--white);
-  border-radius: 4px;
-  max-height: 70%;
+  border-radius: 1rem;
+  max-height: 75%;
   overflow-y: auto;
-  max-width: 45%;
-  padding: 2.5rem;
+  max-width: 40%;
+  padding: 1.5rem;
 
   white-space: pre-line;
 }
 
 .wide {
-  max-width: 70%;
+  max-width: 80%;
 }
 
 .header {
   font-family: var(--font-family-h2);
   font-size: 1.875rem;
   padding-bottom: 0.25rem;
+  line-height: 110%;
 }
 
 .close-button {

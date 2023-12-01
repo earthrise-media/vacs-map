@@ -42,7 +42,7 @@
         <CardWrapper
           v-for="scenario in futureScenarios"
           :key="scenario"
-          :title="copy[`${scenario}_label`] + ` (${scenario.split('_')[1].toUpperCase()})`"
+          :title="copy[`${scenario}_label`] + ` &mdash; ${scenario.split('_')[1].toUpperCase()}`"
           :description="copy[`${scenario}_short`]"
           :is-active="selectedModel === scenario"
           :handle-click="() => (selectedModel = scenario)"
@@ -128,7 +128,7 @@ const openScenarioModal = (s) => {
 .sidebar-section {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.2rem;
 }
 
 .sidebar-header {

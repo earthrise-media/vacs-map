@@ -1,25 +1,36 @@
 <template>
   <div class="fingerprint-wrapper">
     <div class="legend">
-      <div v-if="hovered" class="hovered-label">
-        <span class="metric-label"> {{ hovered?.key }} </span>
-        <span class="category-label" :style="{ background: fingerprintScheme[hovered?.category] }">
-          {{ selectedCropObject?.label }}
-        </span>
-        <span v-if="showBenchmark" class="category-label benchmark-label">
-          {{ benchmarkCropObject?.label }}
-        </span>
-      </div>
-      <div v-else class="hovered-label">
-        <span
-          v-for="cat in indicatorCategories"
-          :key="cat"
-          class="category-label"
-          :style="{ background: fingerprintScheme[cat] }"
-        >
-          {{ cat }}
-        </span>
-        <span v-if="showBenchmark" class="category-label benchmark-label"> Benchmark </span>
+      <span class="benchmark-message">
+        *As compared to benchmark crop {{ benchmarkCropObject?.label }}</span
+      >
+
+      <div class="responsive-legend">
+        <div v-if="hovered" class="hovered-label">
+          <span class="metric-label"> {{ hovered?.key }} </span>
+          <span
+            class="category-label"
+            :style="{ background: fingerprintScheme[hovered?.category] }"
+          >
+            {{ selectedCropObject?.label }}
+          </span>
+          <span v-if="showBenchmark" class="category-label benchmark-label">
+            {{ benchmarkCropObject?.label }}
+          </span>
+        </div>
+        <div v-else class="hovered-label">
+          <span
+            v-for="cat in indicatorCategories"
+            :key="cat"
+            class="category-label"
+            :style="{ background: fingerprintScheme[cat] }"
+            @mouseenter="hoveredCategory = cat"
+            @mouseleave="hoveredCategory = null"
+          >
+            {{ cat }}
+          </span>
+          <span v-if="showBenchmark" class="category-label benchmark-label"> Benchmark </span>
+        </div>
       </div>
     </div>
     <div class="svg-wrapper" ref="wrapperRef">
@@ -34,8 +45,11 @@
               stroke-width="0.5"
               :d="arc(indicator)"
               :class="{
-                highlighted: hovered?.key === indicator.key,
-                unhighlighted: hovered && hovered.key !== indicator.key
+                highlighted:
+                  hovered?.key === indicator.key || hoveredCategory === indicator.category,
+                unhighlighted:
+                  (hovered && hovered.key !== indicator.key) ||
+                  (hoveredCategory && hoveredCategory !== indicator.category)
               }"
             />
           </g>
@@ -54,8 +68,11 @@
                 :stroke-width="1"
                 :d="arc(indicator)"
                 :class="{
-                  highlighted: hovered?.key === indicator.key,
-                  unhighlighted: hovered && hovered.key !== indicator.key
+                  highlighted:
+                    hovered?.key === indicator.key || hoveredCategory === indicator.category,
+                  unhighlighted:
+                    (hovered && hovered.key !== indicator.key) ||
+                    (hoveredCategory && hoveredCategory !== indicator.category)
                 }"
               />
             </g>
@@ -93,6 +110,8 @@ const props = defineProps({
 })
 const { cropId } = toRefs(props)
 const hovered = ref(null)
+
+const hoveredCategory = ref(null)
 
 const wrapperRef = ref(null)
 const width = ref(0)
@@ -228,14 +247,27 @@ svg {
   width: 40%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   color: var(--white);
+}
+
+.benchmark-message {
+  color: var(--gray);
+  font-size: 0.8125rem;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 140%;
+  white-space: nowrap;
+}
+
+.responsive-legend {
+  margin: auto 0;
 }
 
 .hovered-label {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  line-height: 110%;
 }
 
 .category-label {
@@ -246,13 +278,13 @@ svg {
   font-weight: 600;
   padding: 1px 4px;
   text-transform: capitalize;
+  cursor: default;
 }
 
 .metric-label {
   color: var(--white);
   font-size: 0.8125rem;
   font-weight: 500;
-  line-height: 140%;
   text-transform: uppercase;
 }
 
