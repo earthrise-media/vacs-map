@@ -8,7 +8,9 @@
 
 <style scoped>
 .layout-open {
-  min-height: 100vh;
+  height: 100vh;
+  max-height: var(--doc-height);
+  min-height: var(--doc-height);
   width: 100vw;
 }
 </style>

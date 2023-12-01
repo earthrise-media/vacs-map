@@ -126,4 +126,15 @@ const setPosition = (px, py) => {
 .top.left {
   transform: translateX(-100%) translateY(-100%);
 }
+
+@media only screen and (max-width: 720px) {
+  .tooltip {
+    top: unset !important;
+    bottom: 8rem !important;
+    left: 1rem !important;
+    transform: unset !important;
+  }
+}
 </style>
+
+
