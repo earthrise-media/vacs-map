@@ -236,6 +236,7 @@ svg {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  line-height: 110%;
 }
 
 .category-label {
@@ -252,7 +253,6 @@ svg {
   color: var(--white);
   font-size: 0.8125rem;
   font-weight: 500;
-  line-height: 140%;
   text-transform: uppercase;
 }
 
