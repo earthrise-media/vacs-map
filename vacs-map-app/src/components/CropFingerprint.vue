@@ -45,11 +45,10 @@
               stroke-width="0.5"
               :d="arc(indicator)"
               :class="{
-                highlighted: 
-                  hovered?.key === indicator.key || 
-                  hoveredCategory === indicator.category,
-                unhighlighted: 
-                  (hovered && hovered.key !== indicator.key) || 
+                highlighted:
+                  hovered?.key === indicator.key || hoveredCategory === indicator.category,
+                unhighlighted:
+                  (hovered && hovered.key !== indicator.key) ||
                   (hoveredCategory && hoveredCategory !== indicator.category)
               }"
             />
@@ -69,13 +68,12 @@
                 :stroke-width="1"
                 :d="arc(indicator)"
                 :class="{
-                highlighted: 
-                  hovered?.key === indicator.key || 
-                  hoveredCategory === indicator.category,
-                unhighlighted: 
-                  (hovered && hovered.key !== indicator.key) || 
-                  (hoveredCategory && hoveredCategory !== indicator.category)
-              }"
+                  highlighted:
+                    hovered?.key === indicator.key || hoveredCategory === indicator.category,
+                  unhighlighted:
+                    (hovered && hovered.key !== indicator.key) ||
+                    (hoveredCategory && hoveredCategory !== indicator.category)
+                }"
               />
             </g>
 

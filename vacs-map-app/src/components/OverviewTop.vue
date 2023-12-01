@@ -64,7 +64,7 @@ const copyLink = () => {
   font-size: 1rem;
   font-family: var(--font-family-body);
   font-weight: 500;
-  animation: fadeIn 1s ;
+  animation: fadeIn 1s;
   white-space: nowrap;
   background: var(--ui-blue);
   box-shadow: var(--shadow);
