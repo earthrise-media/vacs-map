@@ -61,7 +61,7 @@ const copyLink = () => {
   position: absolute;
   bottom: 0;
   transform: translateY(130%) translateX(-90%);
-  font-size: 0.75rem;
+  font-size: 1rem;
   font-family: var(--font-family-body);
   font-weight: 500;
   animation: fadeIn 1s;
