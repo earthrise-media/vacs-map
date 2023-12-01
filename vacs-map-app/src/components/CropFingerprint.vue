@@ -24,6 +24,8 @@
             :key="cat"
             class="category-label"
             :style="{ background: fingerprintScheme[cat] }"
+            @mouseenter="hoveredCategory = cat"
+            @mouseleave="hoveredCategory = null"
           >
             {{ cat }}
           </span>
@@ -43,8 +45,12 @@
               stroke-width="0.5"
               :d="arc(indicator)"
               :class="{
-                highlighted: hovered?.key === indicator.key,
-                unhighlighted: hovered && hovered.key !== indicator.key
+                highlighted: 
+                  hovered?.key === indicator.key || 
+                  hoveredCategory === indicator.category,
+                unhighlighted: 
+                  (hovered && hovered.key !== indicator.key) || 
+                  (hoveredCategory && hoveredCategory !== indicator.category)
               }"
             />
           </g>
@@ -63,9 +69,13 @@
                 :stroke-width="1"
                 :d="arc(indicator)"
                 :class="{
-                  highlighted: hovered?.key === indicator.key,
-                  unhighlighted: hovered && hovered.key !== indicator.key
-                }"
+                highlighted: 
+                  hovered?.key === indicator.key || 
+                  hoveredCategory === indicator.category,
+                unhighlighted: 
+                  (hovered && hovered.key !== indicator.key) || 
+                  (hoveredCategory && hoveredCategory !== indicator.category)
+              }"
               />
             </g>
 
@@ -102,6 +112,8 @@ const props = defineProps({
 })
 const { cropId } = toRefs(props)
 const hovered = ref(null)
+
+const hoveredCategory = ref(null)
 
 const wrapperRef = ref(null)
 const width = ref(0)
@@ -268,6 +280,7 @@ svg {
   font-weight: 600;
   padding: 1px 4px;
   text-transform: capitalize;
+  cursor: default;
 }
 
 .metric-label {
