@@ -108,6 +108,7 @@
         </p>
       </div>
       <div class="vacs-link">
+        <br>
         <a href="https://www.state.gov/the-vision-for-adapted-crops-and-soils/" target="_blank">
           Learn more about VACS →
         </a>

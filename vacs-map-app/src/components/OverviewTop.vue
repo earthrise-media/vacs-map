@@ -60,11 +60,11 @@ const copyLink = () => {
 .link-copied-message {
   position: absolute;
   bottom: 0;
-  transform: translateY(130%) translateX(-90%);
+  transform: translateY(-5%) translateX(-40%);
   font-size: 1rem;
   font-family: var(--font-family-body);
   font-weight: 500;
-  animation: fadeIn 1s;
+  animation: fadeIn 1s ;
   white-space: nowrap;
   background: var(--ui-blue);
   box-shadow: var(--shadow);

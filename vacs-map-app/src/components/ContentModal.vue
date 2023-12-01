@@ -68,7 +68,7 @@ onClickOutside(contentInnerRef, () => emit('close'))
   max-height: 75%;
   overflow-y: auto;
   max-width: 40%;
-  padding: 2.5rem;
+  padding: 1.5rem;
 
   white-space: pre-line;
 }
@@ -81,6 +81,7 @@ onClickOutside(contentInnerRef, () => emit('close'))
   font-family: var(--font-family-h2);
   font-size: 1.875rem;
   padding-bottom: 0.25rem;
+  line-height: 110%;
 }
 
 .close-button {
