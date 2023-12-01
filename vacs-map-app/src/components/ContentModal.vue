@@ -64,7 +64,7 @@ onClickOutside(contentInnerRef, () => emit('close'))
   flex-direction: column;
   background: var(--dark-gray);
   color: var(--white);
-  border-radius: 4px;
+  border-radius: 1rem;
   max-height: 75%;
   overflow-y: auto;
   max-width: 40%;
