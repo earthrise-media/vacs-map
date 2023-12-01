@@ -2,11 +2,12 @@
   <div class="content-modal" :style="{ top: `${top}px` }">
     <div class="content-modal-inner" :class="{ wide }" ref="contentInnerRef">
       <div class="close-button" @click="emit('close')">
-        <img src="@/assets/img/close.svg" />
+      <img src="@/assets/img/close.svg" />
       </div>
       <span class="header">
         {{ title }}
       </span>
+      
       <slot></slot>
     </div>
   </div>
@@ -64,9 +65,9 @@ onClickOutside(contentInnerRef, () => emit('close'))
   background: var(--dark-gray);
   color: var(--white);
   border-radius: 4px;
+  max-height: 70%;
   overflow-y: auto;
   max-width: 45%;
-  max-height: 70%;
   padding: 2.5rem;
 
   white-space: pre-line;
@@ -83,9 +84,12 @@ onClickOutside(contentInnerRef, () => emit('close'))
 }
 
 .close-button {
-  position: absolute;
-  right: 1.75rem;
-  top: 1.5rem;
+  position: sticky;
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  right: 0rem;
+  top: 0rem;
   cursor: pointer;
   height: 20px;
 }
@@ -96,7 +100,7 @@ onClickOutside(contentInnerRef, () => emit('close'))
   }
   .content-modal-inner {
     max-width: 100%;
-    max-height: 85%;
+    max-height: 92%;
     border-radius: 1.875rem 1.875rem 0 0;
   }
 }
