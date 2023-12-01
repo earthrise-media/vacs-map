@@ -25,6 +25,8 @@ const topic = computed(() => topicUrlOptions.find(({ label }) => label === topic
 <style scoped>
 .layout-overview {
   height: 100vh;
+  max-height: var(--doc-height);
+  min-height: var(--doc-height);
   width: 100vw;
   display: flex;
   flex-direction: column;
