@@ -1,7 +1,7 @@
 <template>
   <div class="overview-top">
     <div class="row">
-      <div>{{ copy.header_question }}</div>
+      <div class="header-question" @click="navigateHome">{{ copy.header_question }}</div>
       <div class="buttons">
         <button @click="copyLink">
           <img src="@/assets/img/copy-link.svg" alt="copy-link" />
@@ -18,14 +18,17 @@
 
 <script setup>
 import { computed, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useContentStore } from '../stores/siteContent'
 import NavigationButton from '@/components/NavigationButton.vue'
 
 const linkCopied = ref(false)
 const route = useRoute()
+const router = useRouter()
 const backRoute = computed(() => (route.path === '/map-explore' ? '/crops' : '/'))
+
+const navigateHome = () => router.push('/');
 
 const contentStore = useContentStore()
 const { copy } = storeToRefs(contentStore)
@@ -48,6 +51,10 @@ const copyLink = () => {
   gap: 0.5rem;
   padding: 1rem var(--page-horizontal-margin);
   background: var(--black-90);
+}
+
+.header-question {
+  cursor: pointer;
 }
 
 .link-copied-message {
