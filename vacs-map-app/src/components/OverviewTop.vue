@@ -64,13 +64,14 @@ const copyLink = () => {
   font-size: 1rem;
   font-family: var(--font-family-body);
   font-weight: 500;
-  animation: fadeIn 1s;
+  animation: fadeIn 0.5s;
   white-space: nowrap;
   background: var(--ui-blue);
   box-shadow: var(--shadow);
   color: var(--black);
   padding: 0.5rem;
   border-radius: 0.25rem;
+  cursor: default;
 }
 
 .row {
