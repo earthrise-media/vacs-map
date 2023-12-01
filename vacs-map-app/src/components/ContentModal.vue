@@ -65,16 +65,16 @@ onClickOutside(contentInnerRef, () => emit('close'))
   background: var(--dark-gray);
   color: var(--white);
   border-radius: 4px;
-  max-height: 70%;
+  max-height: 75%;
   overflow-y: auto;
-  max-width: 45%;
+  max-width: 40%;
   padding: 2.5rem;
 
   white-space: pre-line;
 }
 
 .wide {
-  max-width: 70%;
+  max-width: 80%;
 }
 
 .header {
