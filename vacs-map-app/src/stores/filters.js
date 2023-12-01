@@ -55,7 +55,9 @@ export const useFiltersStore = defineStore('filters', () => {
           .map((k) => k.split('_').slice(2).join('_'))
       )
     ).sort()
-    selectedModel.value = availableModels.value[0]
+    if (!selectedModel.value) {
+      selectedModel.value = availableModels.value[0]
+    }
   })
 
   const cropInformationStore = useCropInformationStore()

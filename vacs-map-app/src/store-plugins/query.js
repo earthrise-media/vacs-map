@@ -16,11 +16,6 @@ const toPersist = [
     key: 'selectedModel',
     outputKey: 'model'
   },
-  {
-    store: 'mapExplore',
-    key: 'selectedMap',
-    outputKey: 'map'
-  }
 ]
 
 const getParams = (pinia) => {
@@ -63,7 +58,7 @@ export default ({ pinia, store }) => {
     if (Object.keys(params).length > 0) {
       if (window) {
         const newUrl = location.hash.split('?')[0] + `?${qs.stringify(params)}`
-        window.history.replaceState(null, '', newUrl)
+        window.history.replaceState({ ...window.history.state }, '', newUrl)
       }
     }
   })
