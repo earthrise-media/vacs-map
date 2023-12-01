@@ -136,5 +136,3 @@ const setPosition = (px, py) => {
   }
 }
 </style>
-
-
