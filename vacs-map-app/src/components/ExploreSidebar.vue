@@ -115,7 +115,7 @@ const openScenarioModal = (s) => {
   gap: 1rem;
   justify-content: space-between;
   height: 100%;
-  margin-left: var(--page-horizontal-margin);
+  max-height: 50rem;
   padding: 1.25rem;
   width: 450px;
   border: 1px solid var(--dark-gray);
