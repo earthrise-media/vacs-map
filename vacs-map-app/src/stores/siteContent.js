@@ -9,7 +9,7 @@ export const useContentStore = defineStore('siteContent', () => {
     vacs_mini:
       'Vision for Adapted Crops and Soils (VACS) addresses food security in Africa by developing and mobilizing investment in resilient, nutritious indigenous crops suited to the changing climate.',
     vacs_short:
-      'Vision for Adapted Crops and Soils (VACS) addresses food security in Africa by developing and mobilizing investment in resilient, nutritious indigenous crops suited to the changing climate. VACS is a multi-phase initiative launched by the U.S. Department of State, in collaboration with the African Union, and the Food and Agriculture Organization (FAO). VACS aims to address food security and nutrition challenges in Africa in the face of climate change by identifying, adapting, and promoting the use of food crops that are well-suited to the local environment and are able to withstand changing climate conditions.',
+      'Vision for Adapted Crops and Soils (VACS) addresses food security in Africa by developing and mobilizing investment in resilient, nutritious indigenous crops suited to the changing climate. VACS is a multi-phase initiative launched by the U.S. Department of State, in collaboration with the African Union, the Food and Agriculture Organization (FAO), and AgMIP. VACS aims to address food security and nutrition challenges in Africa in the face of climate change by identifying, adapting, and promoting the use of food crops that are well-suited to the local environment and are able to withstand changing climate conditions.',
     future_ssp126_label: 'Low emissions',
     future_ssp370_label: 'High emissions',
     future_ssp126_short:
