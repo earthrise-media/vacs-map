@@ -65,6 +65,7 @@ const openYieldRatioModal = () => {
   flex-direction: column;
   gap: 0.25rem;
   width: 18rem;
+  margin-top: auto;
 }
 
 .legend-title {
