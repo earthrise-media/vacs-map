@@ -25,7 +25,9 @@ export const useContentStore = defineStore('siteContent', () => {
     distribution_chart:
       'These two line graphs show how a crop will do in each climate change scenario. Any dot that has data on the map is drawn as a line in this chart. Its position on the chart indicates how positive or negative the yield ratio is in that specific scenario. \n\n Hover over the scenario name to learn more about what each model indicates or choose a new crop to see how climate change impacts different crops.',
     fingerprint_chart:
-      'This crop footprint gives an impression of the nutritional, biophysical, and genetic characteristics of the selected crop. Larger segments with more ticks have better scores in that category. Some charts also show a benchmark crop outline that represents a more widely-used or known crop in the same food group that can be useful in understanding footprint of the crop on the map. \n\n Hover over a column to see what each segment is representing or hover over a category to highlight that specific section. Choose a new crop to understand how its nutritional, biophysical, and genetic characteristics vary.'
+      'This crop footprint gives an impression of the nutritional, biophysical, and genetic characteristics of the selected crop. Larger segments with more ticks have better scores in that category. Some charts also show a benchmark crop outline that represents a more widely-used or known crop in the same food group that can be useful in understanding footprint of the crop on the map. \n\n Hover over a column to see what each segment is representing or hover over a category to highlight that specific section. Choose a new crop to understand how its nutritional, biophysical, and genetic characteristics vary.',
+    dataDisclaimer:
+      'All data used in this application are preliminary results and subject to change'
   })
 
   return {

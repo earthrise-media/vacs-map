@@ -50,6 +50,7 @@
           </a>
         </div>
       </div>
+      <DataDisclaimer />
     </div>
 
     <ContentModal
@@ -124,6 +125,7 @@ import { storeToRefs } from 'pinia'
 import { useContentStore } from '@/stores/siteContent'
 import LayoutOpen from '@/components/layouts/LayoutOpen.vue'
 import ContentModal from '@/components/ContentModal.vue'
+import DataDisclaimer from './components/DataDisclaimer.vue'
 
 const router = useRouter()
 const navigate = () => router.push('/crops')
