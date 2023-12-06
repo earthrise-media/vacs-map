@@ -9,7 +9,7 @@
           </template>
         </component>
         <div class="overlay-wrapper">
-          <OverviewTop class="interactive" />
+          <OverviewTop class="interactive"/>
           <div class="map-overlay desktop">
             <div class="overlay-left">
               <ExploreSidebar class="interactive" ref="overlayLeftRef" />
@@ -123,6 +123,7 @@ onUnmounted(() => {
 }
 
 .map-overlay {
+  height: 1rem;
   flex-grow: 1;
   display: flex;
   justify-content: space-between;
@@ -131,8 +132,12 @@ onUnmounted(() => {
 }
 
 .overlay-left {
+  height: 100%;
+  margin-left: var(--page-horizontal-margin);
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
   align-items: flex-end;
   gap: 2rem;
 }
