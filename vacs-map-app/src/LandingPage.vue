@@ -273,6 +273,10 @@ a {
   margin-left: auto;
 }
 
+.mobile {
+  display: none;
+}
+
 @media only screen and (max-width: 1080px) {
   .callout-header {
     font-size: 2rem;
