@@ -336,3 +336,10 @@ a {
   }
 }
 </style>
+
+<style>
+
+.overlay .disclaimer-wrapper {
+  justify-content: center;
+}
+</style>
