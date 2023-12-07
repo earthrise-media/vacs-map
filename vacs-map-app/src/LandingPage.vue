@@ -50,6 +50,7 @@
           </a>
         </div>
       </div>
+      <DataDisclaimer />
     </div>
 
     <ContentModal
@@ -124,6 +125,7 @@ import { storeToRefs } from 'pinia'
 import { useContentStore } from '@/stores/siteContent'
 import LayoutOpen from '@/components/layouts/LayoutOpen.vue'
 import ContentModal from '@/components/ContentModal.vue'
+import DataDisclaimer from './components/DataDisclaimer.vue'
 
 const router = useRouter()
 const navigate = () => router.push('/crops')
@@ -273,6 +275,10 @@ a {
   margin-left: auto;
 }
 
+.mobile {
+  display: none;
+}
+
 @media only screen and (max-width: 1080px) {
   .callout-header {
     font-size: 2rem;
@@ -328,5 +334,12 @@ a {
     width: 100%;
     font-size: 1rem;
   }
+}
+</style>
+
+<style>
+
+.overlay .disclaimer-wrapper {
+  justify-content: center;
 }
 </style>

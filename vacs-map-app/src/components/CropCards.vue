@@ -16,6 +16,7 @@
         <img :src="getUrl(crop.id)" alt="" />
       </CardWrapper>
     </div>
+    <DataDisclaimer />
   </div>
 </template>
 
@@ -28,6 +29,7 @@ import * as d3 from 'd3'
 import { useFiltersStore } from '@/stores/filters'
 import { useCropInformationStore } from '../stores/cropInformation'
 import CardWrapper from './CardWrapper.vue'
+import DataDisclaimer from './DataDisclaimer.vue'
 
 const router = useRouter()
 const filtersStore = useFiltersStore()
@@ -66,12 +68,13 @@ const getUrl = (crop) => {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  padding: 2px 2px 2rem 2px;
+  padding: 2px;
 }
 .crop-cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
   gap: 1rem;
+  padding-bottom: 1rem;
 }
 
 img {

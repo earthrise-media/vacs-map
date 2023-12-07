@@ -23,6 +23,8 @@
             </div>
           </div>
           <MobileExploreMapControls />
+
+          <DataDisclaimer />
         </div>
       </div>
     </div>
@@ -44,6 +46,7 @@ import MobileExploreMapControls from './components/MobileExploreMapControls.vue'
 import MapTooltip from '@/components/MapTooltip.vue'
 import MapLegend from '@/components/MapLegend.vue'
 import OverviewTop from '@/components/OverviewTop.vue'
+import DataDisclaimer from './components/DataDisclaimer.vue'
 
 const availableMaps = [
   {
@@ -221,6 +224,10 @@ select:hover + .layer-selector-message {
 
 .region-picker:hover + .region-picker-message {
   opacity: 1;
+}
+
+.overlay-wrapper .disclaimer-wrapper {
+  padding: 0 2rem 0 6rem !important;
 }
 
 @media only screen and (max-width: 720px) {
