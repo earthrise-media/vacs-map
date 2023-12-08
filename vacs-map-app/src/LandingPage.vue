@@ -50,6 +50,7 @@
           </a>
         </div>
       </div>
+      <DataDisclaimer />
     </div>
 
     <ContentModal
@@ -83,7 +84,7 @@
         <br />
         <p>
           The program has brought together experts in various fields, including climate adaptation,
-          plant breeding, nutrition, and food composition. The selection process for crops was
+          plant breeding, nutrition, and food composition. <a href="https://agmip.org/" target="_blank"> AgMIP</a> was chosen to lead the initial phase of crop-climate modeling work, the results of which are visualized on this website. The selection process for crops was
           informed by scientific data and expert opinions, ensuring a balance of priorities across
           different scientific disciplines and stakeholder interests. This collaborative approach is
           critical for developing an inclusive and effective strategy to address the nutritional
@@ -124,6 +125,7 @@ import { storeToRefs } from 'pinia'
 import { useContentStore } from '@/stores/siteContent'
 import LayoutOpen from '@/components/layouts/LayoutOpen.vue'
 import ContentModal from '@/components/ContentModal.vue'
+import DataDisclaimer from './components/DataDisclaimer.vue'
 
 const router = useRouter()
 const navigate = () => router.push('/crops')
@@ -273,6 +275,10 @@ a {
   margin-left: auto;
 }
 
+.mobile {
+  display: none;
+}
+
 @media only screen and (max-width: 1080px) {
   .callout-header {
     font-size: 2rem;
@@ -328,5 +334,12 @@ a {
     width: 100%;
     font-size: 1rem;
   }
+}
+</style>
+
+<style>
+
+.overlay .disclaimer-wrapper {
+  justify-content: center;
 }
 </style>

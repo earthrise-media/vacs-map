@@ -29,7 +29,14 @@
           >
             {{ cat }}
           </span>
-          <span v-if="showBenchmark" class="category-label benchmark-label"> Benchmark </span>
+          <span
+            v-if="showBenchmark"
+            class="category-label benchmark-label"
+            @mouseenter="hoveredCategory = 'benchmark'"
+            @mouseleave="hoveredCategory = null"
+          >
+            Benchmark
+          </span>
         </div>
       </div>
     </div>
@@ -64,15 +71,19 @@
                 v-for="indicator in benchmarkIndicators"
                 :key="indicator.key"
                 fill="#ffffff01"
-                stroke="#7e899c"
+                stroke="#DAB967"
                 :stroke-width="1"
                 :d="arc(indicator)"
                 :class="{
                   highlighted:
-                    hovered?.key === indicator.key || hoveredCategory === indicator.category,
+                    hovered?.key === indicator.key ||
+                    hoveredCategory === indicator.category ||
+                    hoveredCategory === 'benchmark',
                   unhighlighted:
-                    (hovered && hovered.key !== indicator.key) ||
-                    (hoveredCategory && hoveredCategory !== indicator.category)
+                    (hovered && hovered.key !== indicator.key && hoveredCategory !== 'benchmark') ||
+                    (hoveredCategory &&
+                      hoveredCategory !== indicator.category &&
+                      hoveredCategory !== 'benchmark')
                 }"
               />
             </g>
@@ -220,6 +231,7 @@ const arc = computed(() => {
 }
 .svg-wrapper {
   height: 100%;
+  margin-top: 1rem;
 }
 
 svg {
@@ -240,7 +252,7 @@ svg {
 }
 
 .unhighlighted {
-  opacity: 0.5;
+  opacity: 0.2;
 }
 
 .legend {
@@ -289,7 +301,7 @@ svg {
 }
 
 .benchmark-label {
-  color: var(--gray);
-  border: 1px solid var(--gray);
+  color: #dab967;
+  border: 1px solid #dab967;
 }
 </style>
