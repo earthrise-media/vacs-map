@@ -3,9 +3,9 @@
 <script setup>
 import * as d3 from 'd3'
 import { computed, toRefs, watch } from 'vue'
-import { divergingScheme } from '@/utils/colors'
 import { storeToRefs } from 'pinia'
 import { useMapExploreStore } from '../stores/mapExplore'
+import { useColorStore } from '@/stores/colors'
 
 const props = defineProps({
   id: {
@@ -86,6 +86,9 @@ const {
 
 const mapExploreStore = useMapExploreStore()
 const { hoveredId } = storeToRefs(mapExploreStore)
+
+const colorStore = useColorStore()
+const { diverging: divergingScheme } = storeToRefs(colorStore)
 
 const addLayer = () => {
   if (!map.value || !mapReady.value || map.value.getLayer(id.value)) return
@@ -247,8 +250,8 @@ const getCircleColorDiverging = (extent, center) => {
     // const interpolator = d3.interpolateBrBG;
 
     // const interpolator = d3.interpolatePiYG;
-
-    const interpolator = d3.interpolateHsl(divergingScheme.min, divergingScheme.max)
+    const interpolator = d3.interpolateHsl(divergingScheme.value.min, divergingScheme.value.max)
+    console.log(divergingScheme.value)
 
     return interpolator(value)
   }
@@ -267,7 +270,7 @@ const getCircleColorDiverging = (extent, center) => {
         min,
         getColor(0),
         center,
-        divergingScheme.center,
+        divergingScheme.value.center,
         max,
         getColor(1)
       ]
@@ -313,6 +316,10 @@ watch(mapReady, () => {
 })
 
 watch(colorColumn, () => {
+  updateLayer()
+})
+
+watch(divergingScheme, () => {
   updateLayer()
 })
 

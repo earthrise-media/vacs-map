@@ -11,8 +11,8 @@ import { computed, toRefs, ref, onMounted, watch } from 'vue'
 import { useFiltersStore } from '@/stores/filters'
 import { useCropYieldsStore } from '@/stores/cropYields'
 import { useMapExploreStore } from '../stores/mapExplore'
+import { useColorStore } from '@/stores/colors'
 import { storeToRefs } from 'pinia'
-import { divergingScheme } from '@/utils/colors'
 
 const props = defineProps({
   scenario: {
@@ -28,6 +28,9 @@ const filtersStore = useFiltersStore()
 const { selectedMetric, selectedCrop, availableModels, availableCrops } = storeToRefs(filtersStore)
 const { data: cropYieldsData } = storeToRefs(cropYieldsStore)
 const { hoveredId } = storeToRefs(mapExploreStore)
+
+const colorStore = useColorStore()
+const { diverging: divergingScheme } = storeToRefs(colorStore)
 
 const canvasRef = ref(null)
 const context = ref(null)
@@ -89,7 +92,7 @@ const getCellColor = (value) => {
   const scale = d3
     .scaleLinear()
     .domain([cropExtent.value[0], 0, cropExtent.value[1]])
-    .range([divergingScheme.min, divergingScheme.center, divergingScheme.max])
+    .range([divergingScheme.value.min, divergingScheme.value.center, divergingScheme.value.max])
     .clamp(true)
 
   return scale(value)
@@ -190,6 +193,10 @@ watch(selectedCrop, () => {
 })
 
 watch(hoveredId, () => {
+  draw()
+})
+
+watch(divergingScheme, () => {
   draw()
 })
 </script>

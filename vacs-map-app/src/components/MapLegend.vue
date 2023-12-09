@@ -25,15 +25,17 @@ import { storeToRefs } from 'pinia'
 import { useCropInformationStore } from '@/stores/cropInformation'
 import { useFiltersStore } from '@/stores/filters'
 import { useContentStore } from '@/stores/siteContent'
-import { divergingScheme } from '@/utils/colors'
+import { useColorStore } from '@/stores/colors'
 import ContentModal from '@/components/ContentModal.vue'
 
 const contentStore = useContentStore()
 const cropInformationStore = useCropInformationStore()
 const filtersStore = useFiltersStore()
+const colorStore = useColorStore()
 const { selectedCrop } = storeToRefs(filtersStore)
 const { data: cropInformation } = storeToRefs(cropInformationStore)
 const { copy } = storeToRefs(contentStore)
+const { diverging: divergingScheme } = storeToRefs(colorStore)
 
 const modalOpen = ref(false)
 const modalHeader = ref('')
@@ -43,10 +45,12 @@ const selectedCropInfo = computed(() => {
   return cropInformation?.value?.find((d) => d.id === selectedCrop.value)
 })
 
-const gradientStyle = {
-  background: `linear-gradient(to right, ${divergingScheme.min},
-  ${divergingScheme.center}, ${divergingScheme.max})`
-}
+const gradientStyle = computed(() => {
+  return {
+    background: `linear-gradient(to right, ${divergingScheme.value.min},
+  ${divergingScheme.value.center}, ${divergingScheme.value.max})`
+  }
+})
 
 const openYieldRatioModal = () => {
   modalOpen.value = true
