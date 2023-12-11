@@ -66,8 +66,6 @@ const getUrl = (crop) => {
   const schemeFolder = colorblindFriendly.value ? 'colorblindFriendly/' : 'default/'
   const url = `../assets/img/minimaps/${schemeFolder}${crop}_${selectedModel.value}.svg`
 
-  console.log(url)
-
   return new URL(url, import.meta.url).href
 }
 </script>
