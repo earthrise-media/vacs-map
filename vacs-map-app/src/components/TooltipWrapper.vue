@@ -130,7 +130,7 @@ const setPosition = (px, py) => {
 @media only screen and (max-width: 720px) {
   .tooltip {
     top: unset !important;
-    bottom: 8rem !important;
+    bottom: 10rem !important;
     left: 1rem !important;
     transform: unset !important;
   }
