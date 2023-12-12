@@ -84,11 +84,14 @@
         <br />
         <p>
           The program has brought together experts in various fields, including climate adaptation,
-          plant breeding, nutrition, and food composition. <a href="https://agmip.org/" target="_blank"> AgMIP</a> was chosen to lead the initial phase of crop-climate modeling work, the results of which are visualized on this website. The selection process for crops was
-          informed by scientific data and expert opinions, ensuring a balance of priorities across
-          different scientific disciplines and stakeholder interests. This collaborative approach is
-          critical for developing an inclusive and effective strategy to address the nutritional
-          needs and environmental challenges in Africa.
+          plant breeding, nutrition, and food composition.
+          <a href="https://agmip.org/" target="_blank"> AgMIP</a> was chosen to lead the initial
+          phase of crop-climate modeling work, the results of which are visualized on this website.
+          The selection process for crops was informed by scientific data and expert opinions,
+          ensuring a balance of priorities across different scientific disciplines and stakeholder
+          interests. This collaborative approach is critical for developing an inclusive and
+          effective strategy to address the nutritional needs and environmental challenges in
+          Africa.
         </p>
         <br />
         <p>
@@ -338,7 +341,6 @@ a {
 </style>
 
 <style>
-
 .overlay .disclaimer-wrapper {
   justify-content: center;
 }

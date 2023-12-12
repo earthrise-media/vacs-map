@@ -28,6 +28,7 @@ import { storeToRefs } from 'pinia'
 import * as d3 from 'd3'
 import { useFiltersStore } from '@/stores/filters'
 import { useCropInformationStore } from '../stores/cropInformation'
+import { useColorStore } from '@/stores/colors'
 import CardWrapper from './CardWrapper.vue'
 import DataDisclaimer from './DataDisclaimer.vue'
 
@@ -37,6 +38,9 @@ const cropInformationStore = useCropInformationStore()
 const { selectedCrop, selectedModel, selectedCropGroup, cropSortBy, cropSortOrder } =
   storeToRefs(filtersStore)
 const { data: cropInformation } = storeToRefs(cropInformationStore)
+
+const colorStore = useColorStore()
+const { colorblindFriendly } = storeToRefs(colorStore)
 
 const filteredCrops = computed(() => {
   if (!selectedCropGroup.value) return cropInformation.value
@@ -59,7 +63,10 @@ const navigate = (crop) => {
 }
 
 const getUrl = (crop) => {
-  return new URL(`../assets/img/minimaps/${crop}_${selectedModel.value}.svg`, import.meta.url).href
+  const schemeFolder = colorblindFriendly.value ? 'colorblindFriendly/' : 'default/'
+  const url = `../assets/img/minimaps/${schemeFolder}${crop}_${selectedModel.value}.svg`
+
+  return new URL(url, import.meta.url).href
 }
 </script>
 
