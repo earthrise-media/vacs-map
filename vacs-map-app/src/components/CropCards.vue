@@ -64,7 +64,7 @@ const navigate = (crop) => {
 
 const getUrl = (crop) => {
   const schemeFolder = colorblindFriendly.value ? 'colorblindFriendly/' : 'default/'
-  const url = `../assets/img/minimaps/${schemeFolder}${crop}_${selectedModel.value}.svg`
+  const url = `/src/assets/img/minimaps/${schemeFolder}${crop}_${selectedModel.value}.svg`
 
   return new URL(url, import.meta.url).href
 }
