@@ -23,7 +23,7 @@ import rewind from '@turf/rewind'
 import { useFiltersStore } from '@/stores/filters'
 import { useAfricanUnionRegionsStore } from '@/stores/africanUnionRegions'
 import { useCropInformationStore } from '@/stores/cropInformation'
-import { stopLightScheme } from '@/utils/colors'
+import { useColorStore } from '@/stores/colors'
 
 const props = defineProps({
   map: {
@@ -45,6 +45,9 @@ const africanUnionRegionsStore = useAfricanUnionRegionsStore()
 const { bboxes } = storeToRefs(africanUnionRegionsStore)
 const { data: cropInformation } = storeToRefs(cropInformationStore)
 const { selectedCrop } = storeToRefs(filtersStore)
+
+const colorStore = useColorStore()
+const { stopLight: stopLightScheme } = storeToRefs(colorStore)
 
 const wrapperRef = ref(null)
 const width = ref(0)
@@ -84,8 +87,8 @@ const selectedCropRegionalPotentials = computed(() => {
 const getColor = (regionId) => {
   if (!selectedCropRegionalPotentials.value) return stopLightScheme.default
   const rp = selectedCropRegionalPotentials.value[regionId]
-  if (!rp) return stopLightScheme.default
-  return stopLightScheme[rp.toLowerCase()]
+  if (!rp) return stopLightScheme.value.default
+  return stopLightScheme.value[rp.toLowerCase()]
 }
 
 const paths = computed(() => {
