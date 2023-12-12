@@ -19,12 +19,10 @@ const props = defineProps({
   color: var(--white);
   background: var(--dark-gray);
   font-size: 1rem;
-  padding: 0.5rem 0.75rem;
-  height: 2.4375rem;
+  padding: 0.625rem 0.75rem;
   text-decoration: none;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 .navigation-button:hover {

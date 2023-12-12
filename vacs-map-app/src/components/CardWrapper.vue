@@ -22,8 +22,7 @@
 
 <script setup>
 import { toRefs, computed } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useColorStore } from '@/stores/colors'
+import { stopLightScheme } from '@/utils/colors'
 
 defineEmits(['showInfo'])
 const props = defineProps({
@@ -64,9 +63,6 @@ const props = defineProps({
 })
 const { title, description, handleClick, indicator } = toRefs(props)
 
-const colorStore = useColorStore()
-const { stopLight: stopLightScheme } = storeToRefs(colorStore)
-
 const indicatorLevel = computed(() => {
   if (indicator?.value.val === null) return 'no data'
   if (indicator.value.val < 3) return 'low'
@@ -75,8 +71,8 @@ const indicatorLevel = computed(() => {
 })
 
 const indicatorColor = computed(() => {
-  if (indicatorLevel.value === 'no data') return stopLightScheme.value.default
-  return stopLightScheme.value[indicatorLevel.value]
+  if (indicatorLevel.value === 'no data') return stopLightScheme.default
+  return stopLightScheme[indicatorLevel.value]
 })
 </script>
 

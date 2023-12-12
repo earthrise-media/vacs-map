@@ -3,27 +3,14 @@
     <div class="row">
       <div class="header-question" @click="navigateHome">{{ copy.header_question }}</div>
       <div class="buttons">
-        <button @click="copyLink" @mouseleave="linkCopied = false" class="desktop">
+        <button @click="copyLink">
           <img src="@/assets/img/copy-link.svg" alt="copy-link" />
-          <span class="copy-link-message">
-            {{ linkCopied ? 'Link copied to clipboard' : 'Copy a link to your clipboard' }}
-          </span>
-        </button>
-        <button @click="toggleColorblindFriendly" :class="{ 'button-active': colorblindFriendly }">
-          <img v-if="colorblindFriendly" src="@/assets/img/colorblind-active.svg" alt="" />
-          <img v-else src="@/assets/img/colorblind.svg" alt="" />
-          <span class="toggle-colormode-message">
-            {{
-              colorblindFriendly
-                ? 'Colorblind friendly color palette: ON'
-                : 'Colorblind friendly color palette: OFF'
-            }}
-          </span>
         </button>
         <NavigationButton :to="backRoute" class="desktop">Back</NavigationButton>
         <NavigationButton :to="backRoute" class="mobile">
           <img src="@/assets/img/back-arrow.svg" alt="" />
         </NavigationButton>
+        <span v-if="linkCopied" class="link-copied-message"> Url copied to clipboard </span>
       </div>
     </div>
   </div>
@@ -33,8 +20,7 @@
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { useContentStore } from '@/stores/siteContent'
-import { useColorStore } from '@/stores/colors'
+import { useContentStore } from '../stores/siteContent'
 import NavigationButton from '@/components/NavigationButton.vue'
 
 const linkCopied = ref(false)
@@ -47,16 +33,12 @@ const navigateHome = () => router.push('/')
 const contentStore = useContentStore()
 const { copy } = storeToRefs(contentStore)
 
-const colorStore = useColorStore()
-const { colorblindFriendly } = storeToRefs(colorStore)
-
-const toggleColorblindFriendly = () => {
-  colorblindFriendly.value = !colorblindFriendly.value
-}
-
 const copyLink = () => {
   navigator.clipboard.writeText(window.location.href)
   linkCopied.value = true
+  setTimeout(() => {
+    linkCopied.value = false
+  }, 1200)
 }
 </script>
 
@@ -75,27 +57,21 @@ const copyLink = () => {
   cursor: pointer;
 }
 
-.copy-link-message,
-.toggle-colormode-message {
-  display: none;
+.link-copied-message {
   position: absolute;
   bottom: 0;
-  left: 50%;
-  transform: translateY(calc(100% + 0.5rem)) translateX(-80%);
-  font-size: 0.75rem;
+  transform: translateY(-5%) translateX(-40%);
+  font-size: 1rem;
   font-family: var(--font-family-body);
-  font-weight: 400;
-  animation: fadeIn 0.5s linear;
+  font-weight: 500;
+  animation: fadeIn 0.5s;
+  white-space: nowrap;
   background: var(--ui-blue);
   box-shadow: var(--shadow);
   color: var(--black);
   padding: 0.5rem;
-  border-radius: 0.125rem;
+  border-radius: 0.25rem;
   cursor: default;
-  width: max-content;
-  max-width: 12rem;
-  z-index: 5000;
-  box-shadow: var(--shadow);
 }
 
 .row {
@@ -112,11 +88,9 @@ const copyLink = () => {
   justify-content: space-between;
   align-items: center;
   gap: 0.5rem;
-  padding-bottom: 0.25rem;
 }
 
 button {
-  position: relative;
   appearance: none;
   border: none;
   text-decoration: none;
@@ -124,32 +98,17 @@ button {
   display: flex;
   align-items: center;
 
+  padding: 0.625rem 0.75rem;
   border-radius: 100%;
   background: var(--dark-gray);
   display: flex;
-  width: 2.4375rem;
-  height: 2.4375rem;
-  justify-content: center;
-  align-items: center;
+  aspect-ratio: 1/1;
 
   cursor: pointer;
 }
 
 button:hover {
   background: var(--dark-gray-hover);
-}
-
-button:hover .copy-link-message,
-button:hover .toggle-colormode-message {
-  display: flex;
-}
-
-.button-active {
-  background: var(--ui-blue);
-}
-
-.button-active:hover {
-  background: var(--ui-blue-hover);
 }
 
 .mobile {
@@ -172,9 +131,6 @@ button:hover .toggle-colormode-message {
 
 @keyframes fadeIn {
   0% {
-    opacity: 0;
-  }
-  50% {
     opacity: 0;
   }
   100% {

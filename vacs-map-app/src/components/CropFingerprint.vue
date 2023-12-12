@@ -1,8 +1,8 @@
 <template>
   <div class="fingerprint-wrapper">
     <div class="legend">
-      <span class="reference-message">
-        *As compared to reference crop {{ referenceCropObject?.label }}</span
+      <span class="benchmark-message">
+        *As compared to benchmark crop {{ benchmarkCropObject?.label }}</span
       >
 
       <div class="responsive-legend">
@@ -14,8 +14,8 @@
           >
             {{ selectedCropObject?.label }}
           </span>
-          <span v-if="showReference" class="category-label reference-label">
-            {{ referenceCropObject?.label }}
+          <span v-if="showBenchmark" class="category-label benchmark-label">
+            {{ benchmarkCropObject?.label }}
           </span>
         </div>
         <div v-else class="hovered-label">
@@ -30,12 +30,12 @@
             {{ cat }}
           </span>
           <span
-            v-if="showReference"
-            class="category-label reference-label"
-            @mouseenter="hoveredCategory = 'reference'"
+            v-if="showBenchmark"
+            class="category-label benchmark-label"
+            @mouseenter="hoveredCategory = 'benchmark'"
             @mouseleave="hoveredCategory = null"
           >
-            Reference
+            Benchmark
           </span>
         </div>
       </div>
@@ -66,9 +66,9 @@
               <circle v-for="d in d3.range(11)" :key="d" :r="y(d)" />
             </g>
 
-            <g v-if="showReference">
+            <g v-if="showBenchmark">
               <path
-                v-for="indicator in referenceIndicators"
+                v-for="indicator in benchmarkIndicators"
                 :key="indicator.key"
                 fill="#ffffff01"
                 stroke="#DAB967"
@@ -78,12 +78,12 @@
                   highlighted:
                     hovered?.key === indicator.key ||
                     hoveredCategory === indicator.category ||
-                    hoveredCategory === 'reference',
+                    hoveredCategory === 'benchmark',
                   unhighlighted:
-                    (hovered && hovered.key !== indicator.key && hoveredCategory !== 'reference') ||
+                    (hovered && hovered.key !== indicator.key && hoveredCategory !== 'benchmark') ||
                     (hoveredCategory &&
                       hoveredCategory !== indicator.category &&
-                      hoveredCategory !== 'reference')
+                      hoveredCategory !== 'benchmark')
                 }"
               />
             </g>
@@ -154,22 +154,22 @@ const hoverIndicators = computed(() => {
   })
 })
 
-const referenceCropObject = computed(() => {
+const benchmarkCropObject = computed(() => {
   if (!cropInformation.value) return null
   return cropInformation.value.find(
     (d) => d.crop_group === selectedCropObject.value.crop_group && d.benchmark
   )
 })
 
-const referenceIndicators = computed(() => {
-  return getIndicators(referenceCropObject.value).filter(
+const benchmarkIndicators = computed(() => {
+  return getIndicators(benchmarkCropObject.value).filter(
     (d, i) => selectedIndicators.value[i].value
   )
 })
 
-const showReference = computed(() => {
-  if (!referenceCropObject.value) return false
-  return referenceCropObject.value !== selectedCropObject.value
+const showBenchmark = computed(() => {
+  if (!benchmarkCropObject.value) return false
+  return benchmarkCropObject.value !== selectedCropObject.value
 })
 
 const getIndicators = (crop) => {
@@ -262,7 +262,7 @@ svg {
   color: var(--white);
 }
 
-.reference-message {
+.benchmark-message {
   color: var(--gray);
   font-size: 0.8125rem;
   font-style: italic;
@@ -300,7 +300,7 @@ svg {
   text-transform: uppercase;
 }
 
-.reference-label {
+.benchmark-label {
   color: #dab967;
   border: 1px solid #dab967;
 }

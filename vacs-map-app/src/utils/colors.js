@@ -16,18 +16,3 @@ export const stopLightScheme = {
   high: '#34A853',
   default: '#7E899C'
 }
-
-// colorblind-friendly colors for use via toggle
-// not currently implemented anywhere
-export const colorblindDivergingScheme = {
-  min: '#E7EB2A',
-  center: '#424242',
-  max: '#D156F0'
-}
-
-export const colorblindStopLightScheme = {
-  low: '#E7EB2A',
-  medium: '#F35613',
-  high: '#D156F0',
-  default: '#B7C1D2'
-}
