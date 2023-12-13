@@ -89,3 +89,9 @@ img {
   aspect-ratio: 1/1;
 }
 </style>
+
+<style>
+.crop-cards .card-wrapper {
+  background: #3b4650;
+}
+</style>
