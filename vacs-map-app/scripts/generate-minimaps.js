@@ -8,7 +8,7 @@ import * as topojsonServer from 'topojson-server';
 const geo_filename = 'public/data/world-110m-2020.json';
 const data_filename = 'public/data/crop-yields-mean-models.csv';
 const grid_filename = 'public/data/grid.csv';
-const output_folder = 'src/assets/img/minimaps/';
+const output_folder = 'public/minimaps/';
 
 const divergingScheme = {
   name: 'default',
