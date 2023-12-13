@@ -343,5 +343,6 @@ a {
 <style>
 .overlay .disclaimer-wrapper {
   justify-content: center;
+  background: var(--black-80);
 }
 </style>
