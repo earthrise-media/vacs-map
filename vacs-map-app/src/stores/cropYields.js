@@ -65,8 +65,8 @@ export const useCropYieldsStore = defineStore('cropYields', () => {
           const obj = {
             maxCrop: null,
             minCrop: null,
-            maxVal: -10000,
-            minVal: 10000
+            maxVal: null,
+            minVal: null
           }
           groupYieldRatioKeys.forEach((k) => {
             if (d[k] && d[k] > obj.maxVal) {
@@ -78,8 +78,6 @@ export const useCropYieldsStore = defineStore('cropYields', () => {
               obj.minCrop = k.split('_')[1]
             }
           })
-          if (obj.maxVal === -10000) obj.maxVal = null;
-          if (obj.minVal === 10000) obj.minVal = null;
           const groupKey = [g,s].join('_')
           rowWithGroupValues[groupKey] = obj;
         })
