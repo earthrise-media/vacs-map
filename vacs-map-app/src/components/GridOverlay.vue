@@ -251,7 +251,6 @@ const getCircleColorDiverging = (extent, center) => {
 
     // const interpolator = d3.interpolatePiYG;
     const interpolator = d3.interpolateHsl(divergingScheme.value.min, divergingScheme.value.max)
-    console.log(divergingScheme.value)
 
     return interpolator(value)
   }
