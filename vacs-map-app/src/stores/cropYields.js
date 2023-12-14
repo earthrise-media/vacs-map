@@ -1,11 +1,15 @@
 import * as d3 from 'd3'
 import { ref } from 'vue'
-import { defineStore } from 'pinia'
+import { defineStore, storeToRefs } from 'pinia'
 import { getDataUrl } from '@/constants/data-load'
+import { useCropInformationStore } from '@/stores/cropInformation'
 
 export const useCropYieldsStore = defineStore('cropYields', () => {
   const data = ref(null)
   const loading = ref(false)
+
+  const cropInformationStore = useCropInformationStore()
+  const { data: cropInfo } = storeToRefs(cropInformationStore)
 
   const load = async () => {
     if (loading.value || data.value) return false
@@ -17,6 +21,7 @@ export const useCropYieldsStore = defineStore('cropYields', () => {
 
     const yieldKeys = Object.keys(transformedData[0]).filter((k) => k.startsWith('yield'))
 
+    // add yield ratio columns for all crops and scenarios
     transformedData = transformedData.map((d, i) => {
       const rowWithYields = Object.fromEntries(
         Object.entries(d).filter(([k, v]) => v !== null)
@@ -43,6 +48,43 @@ export const useCropYieldsStore = defineStore('cropYields', () => {
       })
 
       return rowWithYields
+    })
+
+    // get max/min yield ratios (and which crops they correspond to) 
+    // for each food group at each grid cell
+    const cropGroups = Array.from(new Set(cropInfo.value?.map((d) => d.crop_group)))
+    const futureScenarios = ['future_ssp126', 'future_ssp370']
+
+    transformedData = transformedData.map((d, i) => {
+      const rowWithGroupValues = { ...d }
+      futureScenarios.forEach((s) => {
+        cropGroups.forEach((g) => {
+          const groupYieldRatioKeys = cropInfo.value.filter((c) => c.crop_group === g).map((c) => {
+            return ['yieldratio', c.id, s].join('_')
+          })
+          const obj = {
+            maxCrop: null,
+            minCrop: null,
+            maxVal: -10000,
+            minVal: 10000
+          }
+          groupYieldRatioKeys.forEach((k) => {
+            if (d[k] && d[k] > obj.maxVal) {
+              obj.maxVal = d[k]
+              obj.maxCrop = k.split('_')[1]
+            } 
+            if (d[k] && d[k] < obj.minVal) {
+              obj.minVal = d[k]
+              obj.minCrop = k.split('_')[1]
+            }
+          })
+          if (obj.maxVal === -10000) obj.maxVal = null;
+          if (obj.minVal === 10000) obj.minVal = null;
+          const groupKey = [g,s].join('_')
+          rowWithGroupValues[groupKey] = obj;
+        })
+      })
+      return rowWithGroupValues;
     })
 
     data.value = Object.freeze(transformedData)
