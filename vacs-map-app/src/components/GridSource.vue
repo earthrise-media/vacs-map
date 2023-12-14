@@ -1,10 +1,10 @@
 <template></template>
 
 <script setup>
-import { computed, onMounted, toRefs, watch } from 'vue'
+import { onMounted, toRefs, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { point, featureCollection } from '@turf/helpers'
 import { useCropYieldsStore } from '@/stores/cropYields'
+import { useJoinedCropDataStore } from '@/stores/joinedCropData'
 import { useGridStore } from '@/stores/grid'
 
 const props = defineProps({
@@ -28,38 +28,13 @@ const { id, map, mapReady } = toRefs(props)
 
 const cropYieldsStore = useCropYieldsStore()
 const gridStore = useGridStore()
+const joinedCropDataStore = useJoinedCropDataStore()
 
-const { data: cropYieldsData } = storeToRefs(cropYieldsStore)
-const { data: gridData } = storeToRefs(gridStore)
+const { gridFeatureCollection } = storeToRefs(joinedCropDataStore);
 
 onMounted(() => {
   gridStore.load()
   cropYieldsStore.load()
-})
-
-// TODO do this stuff in another store?
-const joinData = (grid, yields) => {
-  const joined = Object.fromEntries(grid.map((row) => [row.id, row]))
-  yields.forEach((row) => {
-    if (joined[row.id]) {
-      joined[row.id] = { ...joined[row.id], ...row }
-    }
-  })
-  return Object.values(joined)
-}
-
-const joinedData = computed(() => {
-  if (!gridData.value) return []
-  if (cropYieldsData.value) {
-    return joinData(gridData.value, cropYieldsData.value)
-  }
-  return gridData.value
-})
-
-const joinedGeoJson = computed(() => {
-  return featureCollection(
-    joinedData.value.map((row) => point([row.X, row.Y], row, { id: row.id }))
-  )
 })
 
 const addSource = (geoJson) => {
@@ -72,13 +47,13 @@ const addSource = (geoJson) => {
 }
 
 watch(mapReady, () => {
-  if (!joinedGeoJson.value) return
-  addSource(joinedGeoJson.value)
+  if (!gridFeatureCollection.value) return
+  addSource(gridFeatureCollection.value)
 })
 
-watch(joinedGeoJson, () => {
-  if (!joinedGeoJson.value) return
-  addSource(joinedGeoJson.value)
+watch(gridFeatureCollection, () => {
+  if (!gridFeatureCollection.value) return
+  addSource(gridFeatureCollection.value)
 })
 </script>
 

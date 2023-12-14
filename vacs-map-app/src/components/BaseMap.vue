@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, shallowRef, watch } from 'vue'
+import { onMounted, onUnmounted, ref, shallowRef, watch } from 'vue'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { INITIAL_MAP_BOUNDS, MAPBOX_GL_ACCESS_TOKEN, MAPBOX_STYLE } from '@/constants'
@@ -46,6 +46,10 @@ onMounted(() => {
   initializeMap()
   if (mapPadding.value) map.value.setPadding(mapPadding.value)
 })
+
+onUnmounted(() => {
+  map.value.remove();
+});
 
 watch(mapPadding, () => {
   if (mapPadding.value) map.value.setPadding(mapPadding.value)
