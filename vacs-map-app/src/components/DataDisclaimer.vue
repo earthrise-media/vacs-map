@@ -17,7 +17,6 @@ const { copy } = storeToRefs(contentStore)
 <style scoped>
 .disclaimer-wrapper {
   width: 100%;
-  background: var(--black-80);
   display: flex;
   padding: 0.3rem 2rem;
 }

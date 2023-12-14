@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import fs from 'fs';
+import sharp from 'sharp';
 import { JSDOM } from 'jsdom';
 import { geoChamberlinAfrica } from 'd3-geo-projection';
 import * as topojsonClient from 'topojson-client';
@@ -8,13 +9,26 @@ import * as topojsonServer from 'topojson-server';
 const geo_filename = 'public/data/world-110m-2020.json';
 const data_filename = 'public/data/crop-yields-mean-models.csv';
 const grid_filename = 'public/data/grid.csv';
-const output_folder = 'src/assets/img/minimaps/';
+const output_folder = 'public/minimaps/';
 
 const divergingScheme = {
+  name: 'default',
   min: "#FFA31A",
   center: "#424242",
   max: "#13F364",
 }
+
+const colorblindDivergingScheme = {
+  name: 'colorblindFriendly',
+  min: '#E7EB2A',
+  center: '#424242',
+  max: '#D156F0'
+}
+
+// running for both schemes at once is too much for JS, so uncomment the line below that you want
+// const colorSchemes = [divergingScheme, colorblindDivergingScheme]
+const colorSchemes = [divergingScheme]
+// const colorSchemes = [colorblindDivergingScheme]
 
 const getGeoData = () => {
   return JSON.parse(fs.readFileSync(geo_filename)); 
@@ -94,7 +108,7 @@ const getModels = (data) => {
   )).filter(m => m.startsWith('future')).sort();
 }
 
-const getColorGenerator = (data, crop) => {
+const getColorGenerator = (data, crop, scheme) => {
   const columnNames = getModels(data).map(m => `yieldratio_${crop}_${m}`);
   const extents = columnNames.map(d => getExtent(data, d));
   const extent = [
@@ -104,7 +118,7 @@ const getColorGenerator = (data, crop) => {
 
   return d3.scaleLinear()
     .domain([extent[0], 0, extent[1]])
-    .range([divergingScheme.min, divergingScheme.center, divergingScheme.max]);
+    .range([scheme.min, scheme.center, scheme.max]);
 };
 
 const generateMapSvg = (crop, model, data, world, Africa, AfricanCountries, Africa0, color) => {
@@ -226,16 +240,35 @@ const generateMaps = () => {
 
   const Africa = topojsonClient.merge(Africa0, Africa0.objects.countries.geometries);
 
-  crops.forEach(crop => {
-    models.forEach(model => {
-      const color = getColorGenerator(data, crop);
-      
-      const svg = generateMapSvg(crop, model, data, world, Africa, AfricanCountries, Africa0, color);
+  console.log("Generating maps...")
 
-      fs.writeFileSync(`${output_folder}${crop}_${model}.svg`, svg.html());
+  colorSchemes.forEach(scheme => {
+    crops.forEach(crop => {
+      models.forEach(model => {
+        const color = getColorGenerator(data, crop, scheme);
+        
+        const svg = generateMapSvg(crop, model, data, world, Africa, AfricanCountries, Africa0, color);
+
+        const fileName = `${output_folder}${scheme.name}/${crop}_${model}`
+  
+        fs.writeFileSync(fileName + '.svg', svg.html());
+
+        sharp(fileName + '.svg')
+          .png()
+          .toFile(fileName + '.png')
+          .catch((err) => {
+            console.log(err);
+          })
+          .then(() => {
+            fs.unlink(fileName + '.svg', (err) => {
+              if (err) {
+                console.log(err);
+              }
+            })
+          });
+      })
     })
   })
-
 }
 
 generateMaps();

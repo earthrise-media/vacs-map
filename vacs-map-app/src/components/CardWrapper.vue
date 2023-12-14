@@ -6,7 +6,11 @@
       <div class="title" :class="{ bold: boldTitle }">{{ title }}</div>
       <div v-if="indicator" class="indicator">
         <span class="indicator-category"> {{ indicator.key }} </span>
-        <span class="indicator-level" :style="{ background: indicatorColor }">
+        <span
+          class="indicator-level"
+          :class="{ 'dark-text': useDarkIndicatorText }"
+          :style="{ background: indicatorColor }"
+        >
           {{ indicatorLevel }}
         </span>
       </div>
@@ -22,7 +26,8 @@
 
 <script setup>
 import { toRefs, computed } from 'vue'
-import { stopLightScheme } from '@/utils/colors'
+import { storeToRefs } from 'pinia'
+import { useColorStore } from '@/stores/colors'
 
 defineEmits(['showInfo'])
 const props = defineProps({
@@ -63,6 +68,9 @@ const props = defineProps({
 })
 const { title, description, handleClick, indicator } = toRefs(props)
 
+const colorStore = useColorStore()
+const { stopLight: stopLightScheme, colorblindFriendly } = storeToRefs(colorStore)
+
 const indicatorLevel = computed(() => {
   if (indicator?.value.val === null) return 'no data'
   if (indicator.value.val < 3) return 'low'
@@ -71,8 +79,15 @@ const indicatorLevel = computed(() => {
 })
 
 const indicatorColor = computed(() => {
-  if (indicatorLevel.value === 'no data') return stopLightScheme.default
-  return stopLightScheme[indicatorLevel.value]
+  if (indicatorLevel.value === 'no data') return stopLightScheme.value.default
+  return stopLightScheme.value[indicatorLevel.value]
+})
+
+const useDarkIndicatorText = computed(() => {
+  return (
+    (indicatorLevel.value === 'low' && colorblindFriendly.value) ||
+    (indicatorLevel.value === 'medium' && !colorblindFriendly.value)
+  )
 })
 </script>
 
@@ -150,6 +165,10 @@ const indicatorColor = computed(() => {
   padding: 0.0625rem 0.1875rem;
   text-transform: capitalize;
   font-weight: 600;
+}
+
+.dark-text {
+  color: var(--gray);
 }
 
 .active {
