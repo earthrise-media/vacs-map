@@ -13,6 +13,26 @@ const props = defineProps({
     default: ''
   },
 
+  useCropGroupMap: {
+    type: Boolean,
+    default: false
+  },
+
+  cropGroupColumn: {
+    type: String,
+    default: ''
+  },
+
+  cropGroupCrops: {
+    type: Array,
+    default: () => []
+  },
+
+  cropGroupMetric: {
+    type: String,
+    default: 'max'
+  },
+
   colorColumn: {
     type: String,
     default: ''
@@ -71,6 +91,10 @@ const props = defineProps({
 
 const {
   id,
+  useCropGroupMap,
+  cropGroupColumn,
+  cropGroupCrops,
+  cropGroupMetric,
   colorColumn,
   colorColumnExtent,
   colorColumnQuintiles,
@@ -88,7 +112,7 @@ const mapExploreStore = useMapExploreStore()
 const { hoveredId } = storeToRefs(mapExploreStore)
 
 const colorStore = useColorStore()
-const { diverging: divergingScheme } = storeToRefs(colorStore)
+const { diverging: divergingScheme, ordinal: ordinalScheme } = storeToRefs(colorStore)
 
 const addLayer = () => {
   if (!map.value || !mapReady.value || map.value.getLayer(id.value)) return
@@ -278,6 +302,27 @@ const getCircleColorDiverging = (extent, center) => {
   ]
 }
 
+const getCircleColorByCrop = () => {
+  if (!cropGroupColumn.value) return 'transparent'
+
+  const cases = ['case']
+    .concat(
+      cropGroupCrops.value
+        .map((crop, i) => {
+          return [
+            ['==', ['get', cropGroupMetric.value + 'Crop', ['get', cropGroupColumn.value]], crop],
+            ordinalScheme.value[i]
+          ]
+        })
+        .flat()
+    )
+    .concat(['#777'])
+
+  return ['case', ['!=', ['get', cropGroupColumn.value], null], cases, 'transparent']
+
+  return cases
+}
+
 const getCircleFillColor = () => {
   if (!fill.value) return 'transparent'
   return getCircleColor()
@@ -285,10 +330,15 @@ const getCircleFillColor = () => {
 
 const getCircleStrokeColor = () => {
   if (!stroke.value) return 'transparent'
+
   return getCircleColor()
 }
 
 const getCircleColor = () => {
+  if (useCropGroupMap.value) {
+    return getCircleColorByCrop()
+  }
+
   if (colorDiverging.value) {
     // < 0, decrease
     // 0 = no change
@@ -319,6 +369,14 @@ watch(colorColumn, () => {
 })
 
 watch(divergingScheme, () => {
+  updateLayer()
+})
+
+watch(useCropGroupMap, () => {
+  updateLayer()
+})
+
+watch(cropGroupMetric, () => {
   updateLayer()
 })
 
