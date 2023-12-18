@@ -19,21 +19,18 @@ export const stopLightScheme = {
 
 // need at least 7 for now
 export const ordinalScheme = [
-  '#00868E', 
-  '#6BC39A', 
-  '#FFDA98', 
-  '#F36867', 
-  '#DF2F6C', 
-  '#34A853', 
-  '#7E899C',
-  '#C4D3EB',
-  '#13F364'
+  '#00A6BA',
+  '#007C23',
+  '#F7B300',
+  '#F66E09',
+  '#BF4556',
+  '#D28463',
+  '#9BA700'
 ]
 
-export const noDataFill = '#666666'
+export const noDataFill = '#6A6F77'
 
 // colorblind-friendly colors for use via toggle
-// not currently implemented anywhere
 export const colorblindDivergingScheme = {
   min: '#E7EB2A',
   center: '#424242',
@@ -46,3 +43,16 @@ export const colorblindStopLightScheme = {
   high: '#D156F0',
   default: '#B7C1D2'
 }
+
+// need at least 7 for now
+export const colorblindOrdinalScheme = [
+  '#6032E4',
+  '#147FBE',
+  '#77E4F3',
+  '#EFE633',
+  '#EFAD00',
+  '#FD4B45',
+  '#FA76ED'
+]
+
+export const colorblindNoDataFill = '#757B85'
