@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 import { getDataUrl } from '@/constants/data-load'
 import { useCropInformationStore } from '@/stores/cropInformation'
@@ -7,9 +7,6 @@ import { useCropInformationStore } from '@/stores/cropInformation'
 export const useCropYieldsStore = defineStore('cropYields', () => {
   const data = ref(null)
   const loading = ref(false)
-
-  const cropInformationStore = useCropInformationStore()
-  const { data: cropInfo } = storeToRefs(cropInformationStore)
 
   const load = async () => {
     if (loading.value || data.value) return false
@@ -23,9 +20,7 @@ export const useCropYieldsStore = defineStore('cropYields', () => {
 
     // add yield ratio columns for all crops and scenarios
     transformedData = transformedData.map((d, i) => {
-      const rowWithYields = Object.fromEntries(
-        Object.entries(d).filter(([k, v]) => v !== null)
-      )
+      const rowWithYields = Object.fromEntries(Object.entries(d).filter(([k, v]) => v !== null))
 
       yieldKeys.forEach((k) => {
         const [_, crop, timeframe, scenario] = k.split('_')
@@ -39,8 +34,13 @@ export const useCropYieldsStore = defineStore('cropYields', () => {
         const yieldRatioKey = ['yieldratio', crop, timeframe, scenario].join('_')
 
         let yieldRatioValue = null
-        if (rowWithYields[k] !== null && rowWithYields[historicalKey] !== null && rowWithYields[historicalKey]) {
-          yieldRatioValue = (rowWithYields[k] - rowWithYields[historicalKey]) / rowWithYields[historicalKey]
+        if (
+          rowWithYields[k] !== null &&
+          rowWithYields[historicalKey] !== null &&
+          rowWithYields[historicalKey]
+        ) {
+          yieldRatioValue =
+            (rowWithYields[k] - rowWithYields[historicalKey]) / rowWithYields[historicalKey]
         }
 
         if (yieldRatioValue === null) return
@@ -48,41 +48,6 @@ export const useCropYieldsStore = defineStore('cropYields', () => {
       })
 
       return rowWithYields
-    })
-
-    // get max/min yield ratios (and which crops they correspond to) 
-    // for each food group at each grid cell
-    const cropGroups = Array.from(new Set(cropInfo.value?.map((d) => d.crop_group)))
-    const futureScenarios = ['future_ssp126', 'future_ssp370']
-
-    transformedData = transformedData.map((d, i) => {
-      const rowWithGroupValues = { ...d }
-      futureScenarios.forEach((s) => {
-        cropGroups.forEach((g) => {
-          const groupYieldRatioKeys = cropInfo.value.filter((c) => c.crop_group === g).map((c) => {
-            return ['yieldratio', c.id, s].join('_')
-          })
-          const obj = {
-            maxCrop: null,
-            minCrop: null,
-            maxVal: null,
-            minVal: null
-          }
-          groupYieldRatioKeys.forEach((k) => {
-            if (d[k] && d[k] > obj.maxVal) {
-              obj.maxVal = d[k]
-              obj.maxCrop = k.split('_')[1]
-            } 
-            if (d[k] && d[k] < obj.minVal) {
-              obj.minVal = d[k]
-              obj.minCrop = k.split('_')[1]
-            }
-          })
-          const groupKey = [g,s].join('_')
-          rowWithGroupValues[groupKey] = obj;
-        })
-      })
-      return rowWithGroupValues;
     })
 
     data.value = Object.freeze(transformedData)
@@ -120,6 +85,54 @@ export const useCropYieldsStore = defineStore('cropYields', () => {
       }
     ]
   }
+
+  const cropInformationStore = useCropInformationStore()
+  const { data: cropInfo } = storeToRefs(cropInformationStore)
+
+  watch(cropInfo, () => {
+    // get max/min yield ratios (and which crops they correspond to)
+    // for each food group at each grid cell
+    const cropGroups = Array.from(new Set(cropInfo.value?.map((d) => d.crop_group)))
+    const futureScenarios = ['future_ssp126', 'future_ssp370']
+
+    const dataWithCropGroups = data.value.map((d, i) => {
+      const rowWithGroupValues = { ...d }
+      futureScenarios.forEach((s) => {
+        cropGroups.forEach((g) => {
+          const groupYieldRatioKeys = cropInfo.value
+            .filter((c) => c.crop_group === g)
+            .map((c) => {
+              return ['yieldratio', c.id, s].join('_')
+            })
+          const rowHasYieldRatios = Object.keys(d).filter((k) =>
+            groupYieldRatioKeys.includes(k)
+          ).length
+          if (!rowHasYieldRatios) return
+
+          const obj = {
+            maxCrop: 'none',
+            minCrop: 'none',
+            maxVal: null,
+            minVal: null
+          }
+          groupYieldRatioKeys.forEach((k) => {
+            if (d[k] && d[k] > obj.maxVal) {
+              obj.maxVal = d[k]
+              obj.maxCrop = k.split('_')[1]
+            }
+            if (d[k] && d[k] < obj.minVal) {
+              obj.minVal = d[k]
+              obj.minCrop = k.split('_')[1]
+            }
+          })
+          const groupKey = [g, s].join('_')
+          rowWithGroupValues[groupKey] = obj
+        })
+      })
+      return rowWithGroupValues
+    })
+    data.value = dataWithCropGroups
+  })
 
   return {
     data,

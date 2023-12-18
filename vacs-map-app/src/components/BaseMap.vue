@@ -48,8 +48,8 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  map.value.remove();
-});
+  map.value.remove()
+})
 
 watch(mapPadding, () => {
   if (mapPadding.value) map.value.setPadding(mapPadding.value)
