@@ -112,7 +112,7 @@ const mapExploreStore = useMapExploreStore()
 const { hoveredId } = storeToRefs(mapExploreStore)
 
 const colorStore = useColorStore()
-const { diverging: divergingScheme, ordinal: ordinalScheme } = storeToRefs(colorStore)
+const { diverging: divergingScheme, ordinal: ordinalScheme, noData: noDataFill } = storeToRefs(colorStore)
 
 const addLayer = () => {
   if (!map.value || !mapReady.value || map.value.getLayer(id.value)) return
@@ -316,7 +316,7 @@ const getCircleColorByCrop = () => {
         })
         .flat()
     )
-    .concat(['#777'])
+    .concat([noDataFill.value])
 
   return ['case', ['!=', ['get', cropGroupColumn.value], null], cases, 'transparent']
 

@@ -30,6 +30,8 @@ export const ordinalScheme = [
   '#13F364'
 ]
 
+export const noDataFill = '#666666'
+
 // colorblind-friendly colors for use via toggle
 // not currently implemented anywhere
 export const colorblindDivergingScheme = {
