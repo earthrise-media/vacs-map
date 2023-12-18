@@ -6,5 +6,8 @@ export const useMapExploreStore = defineStore('mapExplore', () => {
   const hoveredId = ref(null)
   const mapPadding = ref(null)
 
-  return { selectedMap, mapPadding, hoveredId }
+  const showCropGroupMap = ref(false)
+  const cropGroupMetric = ref('max')
+
+  return { selectedMap, mapPadding, hoveredId, showCropGroupMap, cropGroupMetric }
 })

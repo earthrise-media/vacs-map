@@ -29,7 +29,11 @@
     </div>
 
     <div class="sidebar-section shrink">
-      <div class="scenarios">
+      Show crop groups {{ cropGroupMetric }}: {{ showCropGroupMap }}
+      <button @click="showCropGroupMap = !showCropGroupMap">Toggle crop group map</button>
+      <button @click="cropGroupMetric = 'max'">Show max increase</button>
+      <button @click="cropGroupMetric = 'min'">Show max decrease</button>
+      <!-- <div class="scenarios">
         <span class="sidebar-header">
           How will future GHG emissions affect {{ selectedCropInfo?.label }}?
           <img
@@ -51,7 +55,7 @@
         >
           <DistributionPlot :scenario="scenario" />
         </CardWrapper>
-      </div>
+      </div> -->
     </div>
 
     <ContentModal v-if="modalOpen" @close="() => (modalOpen = false)" :title="modalHeader">
@@ -67,7 +71,8 @@ import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useFiltersStore } from '@/stores/filters'
 import { useCropInformationStore } from '@/stores/cropInformation'
-import { useContentStore } from '../stores/siteContent'
+import { useContentStore } from '@/stores/siteContent'
+import { useMapExploreStore } from '@/stores/mapExplore'
 import DistributionPlot from '@/components/DistributionPlot.vue'
 import CropFingerprint from '@/components/CropFingerprint.vue'
 import CardWrapper from '@/components/CardWrapper.vue'
@@ -76,10 +81,13 @@ import ContentModal from '@/components/ContentModal.vue'
 const contentStore = useContentStore()
 const filtersStore = useFiltersStore()
 const cropInformationStore = useCropInformationStore()
+const mapExploreStore = useMapExploreStore()
+
 const { availableCrops, selectedCrop, availableModels, selectedModel, availableCropGroups } =
   storeToRefs(filtersStore)
 const { data: cropInformation } = storeToRefs(cropInformationStore)
 const { copy } = storeToRefs(contentStore)
+const { showCropGroupMap, cropGroupMetric } = storeToRefs(mapExploreStore)
 
 const modalOpen = ref(false)
 const modalHeader = ref('')
