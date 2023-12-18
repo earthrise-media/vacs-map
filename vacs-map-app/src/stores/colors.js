@@ -8,7 +8,9 @@ import {
   colorblindDivergingScheme,
   colorblindStopLightScheme,
   ordinalScheme,
+  colorblindOrdinalScheme,
   noDataFill,
+  colorblindNoDataFill
 } from '@/utils/colors'
 
 export const useColorStore = defineStore('colorStore', () => {
@@ -24,9 +26,11 @@ export const useColorStore = defineStore('colorStore', () => {
 
   const fingerprint = computed(() => fingerprintScheme)
 
-  const ordinal = computed(() => ordinalScheme)
+  const ordinal = computed(() => 
+    colorblindFriendly.value ? colorblindOrdinalScheme : ordinalScheme)
 
-  const noData = computed(() => noDataFill)
+  const noData = computed(() => 
+    colorblindFriendly.value ? colorblindNoDataFill : noDataFill)
 
   return { colorblindFriendly, diverging, stopLight, fingerprint, ordinal, noData }
 })
