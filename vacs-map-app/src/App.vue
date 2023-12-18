@@ -23,11 +23,9 @@ const documentHeight = () => {
 }
 
 onMounted(() => {
-  // need to load the crop information file first, then load other data
-  cropInformationStore.load().then(() => {
-    gridStore.load()
-    cropYieldsStore.load()
-  })
+  cropInformationStore.load()
+  gridStore.load()
+  cropYieldsStore.load()
 
   window.addEventListener('resize', documentHeight)
   documentHeight
