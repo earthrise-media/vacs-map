@@ -19,9 +19,9 @@ export const stopLightScheme = {
 
 // need at least 7 for now
 export const ordinalScheme = [
-  '#F7B300',
+  '#F7B300', // this is the color to use for the benchmark crop if not selected
+  '#5A7CB6', // this is the color to use for the selected crop
   '#BF4556',
-  '#00A6BA',
   '#00A949',
   '#F66E09',
   '#AB7430',
