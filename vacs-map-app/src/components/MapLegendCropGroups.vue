@@ -1,7 +1,7 @@
 <template>
   <div class="map-legend">
     <div class="legend-title">
-      {{ selectedCropInfo?.crop_group }}
+      {{ selectedCropInfo?.crop_group }} by largest yield <span class="metric" @click="toggleMetric">{{ metric }}</span>
       <img src="@/assets/img/info.svg" alt="" @click="openCropGroupModal" />
     </div>
     <div class="legend-items">
@@ -30,20 +30,36 @@ import { useCropInformationStore } from '@/stores/cropInformation'
 import { useFiltersStore } from '@/stores/filters'
 import { useContentStore } from '@/stores/siteContent'
 import { useColorStore } from '@/stores/colors'
+import { useMapExploreStore } from '@/stores/mapExplore'
 import ContentModal from '@/components/ContentModal.vue'
 
 const contentStore = useContentStore()
 const cropInformationStore = useCropInformationStore()
 const filtersStore = useFiltersStore()
 const colorStore = useColorStore()
+const mapExploreStore = useMapExploreStore()
+
 const { selectedCrop } = storeToRefs(filtersStore)
 const { data: cropInformation } = storeToRefs(cropInformationStore)
 const { copy } = storeToRefs(contentStore)
 const { ordinal: ordinalScheme, noData: noDataFill } = storeToRefs(colorStore)
+const { cropGroupMetric } = storeToRefs(mapExploreStore)
 
 const modalOpen = ref(false)
 const modalHeader = ref('')
 const modalContent = ref('')
+
+const metric = computed(() => {
+  return cropGroupMetric.value === 'max' ? 'increase' : 'decrease'
+})
+
+const toggleMetric = () => {
+  if (cropGroupMetric.value === 'max') {
+    cropGroupMetric.value = 'min'
+  } else {
+    cropGroupMetric.value = 'max'
+  }
+}
 
 const selectedCropInfo = computed(() => {
   return cropInformation?.value?.find((d) => d.id === selectedCrop.value)
@@ -70,15 +86,17 @@ const openCropGroupModal = () => {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  width: 18rem;
+  width: 20rem;
   margin-top: auto;
 }
 
 .legend-title {
   font-weight: 600;
+  font-size: 0.875rem;
   display: flex;
   align-items: center;
   gap: 0.25rem;
+  padding-bottom: 0.25rem;
 }
 
 .legend-title img {
@@ -93,18 +111,37 @@ const openCropGroupModal = () => {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  column-gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 .crop {
   display: flex;
+  padding: 0.125rem 0.5rem;
   gap: 0.25rem;
   align-items: center;
+  border: 1px solid var(--gray);
+  border-radius: 6.25rem;
+
+  font-size: 0.6875rem;
+}
+
+.metric {
+  display: flex;
+  padding: 0 0.25rem;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 0.125rem;
+  background: var(--dark-gray);
+  font-weight: 600;
+}
+
+.metric:hover {
+  background: var(--dark-gray-hover);
 }
 
 .crop-indicator {
-  width: 1rem;
-  height: 1rem;
+  width: 0.625rem;
+  height: 0.625rem;
   aspect-ratio: 1/1;
   border-radius: 100%;
 }
