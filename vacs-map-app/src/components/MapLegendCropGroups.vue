@@ -72,8 +72,8 @@ const cropGroupCrops = computed(() => {
 
 const openCropGroupModal = () => {
   modalOpen.value = true
-  modalHeader.value = 'What is yield ratio?'
-  modalContent.value = copy.value['yield_ratio']
+  modalHeader.value = 'How do I read this map?'
+  modalContent.value = copy.value['crop_group_map']
 }
 </script>
 

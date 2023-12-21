@@ -148,7 +148,6 @@ const addHoverListeners = () => {
     if (!event?.features?.length) return
     const feature = event?.features[0]
     if (feature?.id) {
-      if (!feature.properties[colorColumn.value]) return
       hoveredId.value = feature.properties.id
     }
   })
