@@ -1,8 +1,12 @@
 <template>
-  <div class="card-wrapper" @click="handleClick" :class="{ active: isActive, bold: boldTitle }">
+  <div
+    class="card-wrapper"
+    @click="handleClick"
+    :class="{ dynamic: isDynamic, active: isActive, bold: boldTitle }"
+  >
     <slot></slot>
 
-    <div class="info" :class="{ bold: boldTitle }">
+    <div class="info" :class="{ bold: boldTitle, hasDescription: description }">
       <div class="title" :class="{ bold: boldTitle }">{{ title }}</div>
       <div v-if="indicator" class="indicator">
         <span class="indicator-category"> {{ indicator.key }} </span>
@@ -51,6 +55,11 @@ const props = defineProps({
     default: () => {}
   },
 
+  isDynamic: {
+    type: Boolean,
+    default: false
+  },
+
   isActive: {
     type: Boolean,
     default: false
@@ -66,7 +75,8 @@ const props = defineProps({
     default: () => {}
   }
 })
-const { title, description, handleClick, indicator } = toRefs(props)
+const { title, description, handleClick, indicator, isActive, isDynamic, showMoreInfo, boldTitle } =
+  toRefs(props)
 
 const colorStore = useColorStore()
 const { stopLight: stopLightScheme, colorblindFriendly } = storeToRefs(colorStore)
@@ -108,6 +118,14 @@ const useDarkIndicatorText = computed(() => {
   border-radius: 0.75rem;
 }
 
+.card-wrapper.dynamic {
+  height: var(--title-height);
+}
+
+.card-wrapper.dynamic.active {
+  height: unset;
+}
+
 .info {
   transition: all 0.5s ease;
   position: absolute;
@@ -129,6 +147,16 @@ const useDarkIndicatorText = computed(() => {
 .info.bold {
   background: var(--white-80);
   height: unset;
+}
+
+.card-wrapper.dynamic .info {
+  transition: none;
+  padding: 0.375rem 0.75rem;
+}
+
+.card-wrapper.dynamic.active .info {
+  padding: 0.75rem;
+  padding-top: 0;
 }
 
 .title {
@@ -179,17 +207,16 @@ const useDarkIndicatorText = computed(() => {
   background: var(--ui-blue);
 }
 
-.info:hover {
+.info.hasDescription:hover {
   transform: translateY(calc((100% - var(--title-height)) * -1));
-  background: var(--white-80);
-}
-
-.active .info:hover {
-  background: var(--ui-blue-80);
 }
 
 .card-wrapper:hover {
   box-shadow: 0 0 0 2px var(--ui-blue);
+}
+
+.card-wrapper.dynamic.active:hover {
+  box-shadow: 0 0 0 1px var(--gray);
 }
 
 .more-info {

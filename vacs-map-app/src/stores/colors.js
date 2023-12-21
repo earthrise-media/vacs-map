@@ -26,11 +26,11 @@ export const useColorStore = defineStore('colorStore', () => {
 
   const fingerprint = computed(() => fingerprintScheme)
 
-  const ordinal = computed(() => 
-    colorblindFriendly.value ? colorblindOrdinalScheme : ordinalScheme)
+  const ordinal = computed(() =>
+    colorblindFriendly.value ? colorblindOrdinalScheme : ordinalScheme
+  )
 
-  const noData = computed(() => 
-    colorblindFriendly.value ? colorblindNoDataFill : noDataFill)
+  const noData = computed(() => (colorblindFriendly.value ? colorblindNoDataFill : noDataFill))
 
   return { colorblindFriendly, diverging, stopLight, fingerprint, ordinal, noData }
 })

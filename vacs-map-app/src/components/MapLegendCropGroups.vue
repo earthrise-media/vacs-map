@@ -1,17 +1,17 @@
 <template>
   <div class="map-legend">
     <div class="legend-title">
-      {{ selectedCropInfo?.crop_group }} 
+      {{ selectedCropInfo?.crop_group }}
       <img src="@/assets/img/info.svg" alt="" @click="openCropGroupModal" />
     </div>
     <div class="legend-items">
       <div v-for="(crop, i) in cropGroupCrops" :key="crop.id" class="crop">
-        <div class="crop-indicator" :style="{background: ordinalScheme[i]}"></div>
-        <div class="crop-label"> {{ crop.label }} </div>
+        <div class="crop-indicator" :style="{ background: ordinalScheme[i] }"></div>
+        <div class="crop-label">{{ crop.label }}</div>
       </div>
       <div class="crop">
-        <div class="crop-indicator" :style="{background: noDataFill}"></div>
-        <div class="crop-label"> None </div>
+        <div class="crop-indicator" :style="{ background: noDataFill }"></div>
+        <div class="crop-label">None</div>
       </div>
     </div>
 
@@ -51,7 +51,7 @@ const selectedCropInfo = computed(() => {
 
 const cropGroupCrops = computed(() => {
   const groupName = selectedCropInfo.value?.crop_group
-  return cropInformation.value?.filter(c => c.crop_group === groupName)
+  return cropInformation.value?.filter((c) => c.crop_group === groupName)
 })
 
 const openCropGroupModal = () => {

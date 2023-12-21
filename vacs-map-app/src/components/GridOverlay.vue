@@ -112,7 +112,11 @@ const mapExploreStore = useMapExploreStore()
 const { hoveredId } = storeToRefs(mapExploreStore)
 
 const colorStore = useColorStore()
-const { diverging: divergingScheme, ordinal: ordinalScheme, noData: noDataFill } = storeToRefs(colorStore)
+const {
+  diverging: divergingScheme,
+  ordinal: ordinalScheme,
+  noData: noDataFill
+} = storeToRefs(colorStore)
 
 const addLayer = () => {
   if (!map.value || !mapReady.value || map.value.getLayer(id.value)) return

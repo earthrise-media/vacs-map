@@ -28,44 +28,51 @@
       </div>
     </div>
 
-    <div class="sidebar-section shrink">
-      Show crop groups {{ cropGroupMetric }}: {{ showCropGroupMap }}
-      <button @click="showCropGroupMap = !showCropGroupMap">Toggle crop group map</button>
-      <button @click="cropGroupMetric = 'max'">Show max increase</button>
-      <button @click="cropGroupMetric = 'min'">Show max decrease</button>
-      <!-- <div class="scenarios">
-        <span class="sidebar-header">
-          How will future GHG emissions affect {{ selectedCropInfo?.label }}?
-          <img
-            class="info"
-            src="@/assets/img/info.svg"
-            alt=""
-            @click="openChartModal('distribution')"
-          />
-        </span>
+    <div class="sidebar-section">
+      <span class="sidebar-header">
+        How will {{ selectedCropInfo?.label }} yields change?
+        <img
+          class="info"
+          src="@/assets/img/info.svg"
+          alt=""
+          @click="openChartModal('distribution')"
+        />
+      </span>
+
+      <div class="map-mode-cards">
         <CardWrapper
-          v-for="scenario in futureScenarios"
-          :key="scenario"
-          :title="copy[`${scenario}_label`] + ` &mdash; ${scenario.split('_')[1].toUpperCase()}`"
-          :description="copy[`${scenario}_short`]"
-          :is-active="selectedModel === scenario"
-          :handle-click="() => (selectedModel = scenario)"
-          :show-more-info="true"
-          @show-info="() => openScenarioModal(scenario)"
+          :title="`${selectedCropInfo?.label} in 2050 compared to 2010`"
+          :is-dynamic="true"
+          :is-active="!showCropGroupMap"
+          :handle-click="
+            () => {
+              showCropGroupMap = false
+            }
+          "
+          @show-info="() => openScenarioModal(selectedModel)"
         >
-          <DistributionPlot :scenario="scenario" />
+          <DistributionPlot :scenario="selectedModel" />
         </CardWrapper>
-      </div> -->
+
+        <CardWrapper
+          :title="`${selectedCropInfo?.label} vs. other ${selectedCropInfo?.crop_group}`"
+          :is-dynamic="true"
+          :is-active="showCropGroupMap"
+          :handle-click="
+            () => {
+              showCropGroupMap = true
+            }
+          "
+        >
+          <CropGroupStackedBarChart />
+        </CardWrapper>
+      </div>
     </div>
 
     <div class="sidebar-section">
       <div class="scenario-switch">
         <span class="scenarios-title"> emissions scenario </span>
-        <RadioSwitch
-          v-model="selectedModel"
-          :options="scenarioOptions"
-          name="selected-scenario"
-        />
+        <RadioSwitch v-model="selectedModel" :options="scenarioOptions" name="selected-scenario" />
       </div>
     </div>
 
@@ -89,6 +96,7 @@ import CropFingerprint from '@/components/CropFingerprint.vue'
 import CardWrapper from '@/components/CardWrapper.vue'
 import ContentModal from '@/components/ContentModal.vue'
 import RadioSwitch from '@/components/RadioSwitch.vue'
+import CropGroupStackedBarChart from '@/components/CropGroupStackedBarChart.vue'
 
 const contentStore = useContentStore()
 const filtersStore = useFiltersStore()
@@ -245,11 +253,12 @@ const openScenarioModal = (s) => {
   width: 100%;
 }
 
-.scenarios {
+.map-mode-cards {
   width: 100%;
   flex-shrink: 1;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  padding-top: 0.5rem;
 }
 </style>

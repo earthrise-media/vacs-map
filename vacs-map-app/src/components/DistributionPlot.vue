@@ -192,6 +192,10 @@ watch(selectedCrop, () => {
   draw()
 })
 
+watch(scenario, () => {
+  draw()
+})
+
 watch(hoveredId, () => {
   draw()
 })
