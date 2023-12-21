@@ -99,7 +99,7 @@ const addLayer = () => {
       type: 'circle',
       paint: {
         'circle-radius': getCircleRadius(),
-        'circle-stroke-width': fill.value ? 0.2 : 1.5,
+        'circle-stroke-width': fill.value ? 0.2 : 0.5,
         'circle-stroke-color': getCircleStrokeColor(),
         'circle-stroke-opacity': fill.value ? 0 : 0.8,
         'circle-opacity': ['case', ['boolean', ['feature-state', 'hovered'], false], 0.5, 1],
