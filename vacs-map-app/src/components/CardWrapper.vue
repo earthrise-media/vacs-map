@@ -8,9 +8,9 @@
 
     <div class="info" :class="{ bold: boldTitle, hasDescription: description }">
       <div class="title" :class="{ bold: boldTitle }">
-        <span> {{ title }}  </span>
+        <span> {{ title }} </span>
         <span class="subtitle"> {{ subtitle }} </span>
-        <img v-if="isDynamic && !isActive" src="../assets/img/arrow-right-pointy.svg" alt="">
+        <img v-if="isDynamic && !isActive" src="../assets/img/arrow-right-pointy.svg" alt="" />
       </div>
       <div v-if="indicator" class="indicator">
         <span class="indicator-category"> {{ indicator.key }} </span>

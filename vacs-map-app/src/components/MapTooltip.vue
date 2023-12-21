@@ -27,11 +27,10 @@ const { copy } = storeToRefs(contentStore)
 const { data: cropInfo } = storeToRefs(cropInformationStore)
 
 const sentence = computed(() => {
-
   const modelDescriptor =
-      selectedModel.value === 'future_ssp126'
-        ? 'a low emissions scenario'
-        : 'a high emissions scenario'
+    selectedModel.value === 'future_ssp126'
+      ? 'a low emissions scenario'
+      : 'a high emissions scenario'
 
   if (!showCropGroupMap.value) {
     const cropName = selectedCropInfo.value?.label
@@ -50,15 +49,17 @@ const sentence = computed(() => {
     const descriptor = cropGroupMetric.value === 'max' ? 'increase' : 'decrease'
 
     if (hoveredCropId === 'none') {
-      return `At this location, no ${selectedCropInfo.value.crop_group} are projected to ${descriptor} in yield` 
+      return `At this location, no ${selectedCropInfo.value.crop_group} are projected to ${descriptor} in yield`
     }
 
     const hoveredCropName = cropInfo.value.find((d) => d.id === hoveredCropId).label
 
-    return `Of the ${selectedCropInfo.value.crop_group}, ${hoveredCropName} is projected to have the greatest yield ${descriptor} (${pFormat(hoveredYieldRatio)}) at this location, in ${modelDescriptor}`
+    return `Of the ${
+      selectedCropInfo.value.crop_group
+    }, ${hoveredCropName} is projected to have the greatest yield ${descriptor} (${pFormat(
+      hoveredYieldRatio
+    )}) at this location, in ${modelDescriptor}`
   }
-
-  
 })
 
 const selectedCropInfo = computed(() => {
@@ -66,12 +67,13 @@ const selectedCropInfo = computed(() => {
 })
 
 const hoveredValue = computed(() => {
-  if (!yieldData.value || !selectedCrop.value || !selectedModel.value || !hoveredId.value) return null
+  if (!yieldData.value || !selectedCrop.value || !selectedModel.value || !hoveredId.value)
+    return null
 
-  const columnName = !showCropGroupMap.value 
+  const columnName = !showCropGroupMap.value
     ? ['yieldratio', selectedCrop.value, selectedModel.value].join('_')
     : [selectedCropInfo.value?.crop_group, selectedModel.value].join('_')
-    
+
   const cellObject = yieldData.value.find((d) => d.id === hoveredId.value)
 
   if (!cellObject) return null

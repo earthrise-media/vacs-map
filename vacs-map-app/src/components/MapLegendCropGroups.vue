@@ -1,7 +1,8 @@
 <template>
   <div class="map-legend">
     <div class="legend-title">
-      {{ selectedCropInfo?.crop_group }} by largest yield <span class="metric" @click="toggleMetric">{{ metric }}</span>
+      {{ selectedCropInfo?.crop_group }} by largest yield
+      <span class="metric" @click="toggleMetric">{{ metric }}</span>
       <img src="@/assets/img/info.svg" alt="" @click="openCropGroupModal" />
     </div>
     <div class="legend-items">
