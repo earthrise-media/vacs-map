@@ -54,7 +54,7 @@ const getRasterColor = () => {
 
 const paint = {
   'raster-color': getRasterColor(),
-  'raster-opacity': 0.35,
+  'raster-opacity': 0.30,
   'raster-color-mix': [255, 0, 0, 0],
   'raster-color-range': [0, maxRasterValue]
 }

@@ -13,6 +13,25 @@
         :map-ready="mapReady"
         :source-id="rasterSourceId"
       />
+      <RasterSource
+        :id="rasterSourceId2"
+        tiles-url="https://plotine-vacs.s3.us-east-2.amazonaws.com/carbon-tiles/{z}/{x}/{y}.png"
+        :map="map"
+        :map-ready="mapReady"
+      />
+      <SoilCarbonLayer
+        id="soil-carbon"
+        :map="map"
+        :map-ready="mapReady"
+        :source-id="rasterSourceId2"
+      />
+      <RasterSource
+        :id="rasterSourceId3"
+        tiles-url="https://plotine-vacs.s3.us-east-2.amazonaws.com/sand-tiles/{z}/{x}/{y}.png"
+        :map="map"
+        :map-ready="mapReady"
+      />
+      <SandLayer id="sand" :map="map" :map-ready="mapReady" :source-id="rasterSourceId3" />
       <GridSource :id="sourceId" :map="map" :mapReady="mapReady" />
       <GridOverlay
         id="grid-layer-1"
@@ -39,10 +58,14 @@ import GridSource from './GridSource.vue'
 import GridOverlay from './GridOverlay.vue'
 import RasterSource from './RasterSource.vue'
 import PopulationLayer from './PopulationLayer.vue'
+import SoilCarbonLayer from './SoilCarbonLayer.vue'
+import SandLayer from './SandLayer.vue'
 import * as d3 from 'd3'
 
 const sourceId = 'cropGrid'
 const rasterSourceId = 'populationSource'
+const rasterSourceId2 = 'soilCarbonSource'
+const rasterSourceId3 = 'sandSource'
 const cropYieldsStore = useCropYieldsStore()
 const filtersStore = useFiltersStore()
 
