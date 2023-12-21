@@ -58,6 +58,17 @@
       </div> -->
     </div>
 
+    <div class="sidebar-section">
+      <div class="scenario-switch">
+        <span class="scenarios-title"> emissions scenario </span>
+        <RadioSwitch
+          v-model="selectedModel"
+          :options="scenarioOptions"
+          name="selected-scenario"
+        />
+      </div>
+    </div>
+
     <ContentModal v-if="modalOpen" @close="() => (modalOpen = false)" :title="modalHeader">
       <p class="modal-content">
         {{ modalContent }}
@@ -77,6 +88,7 @@ import DistributionPlot from '@/components/DistributionPlot.vue'
 import CropFingerprint from '@/components/CropFingerprint.vue'
 import CardWrapper from '@/components/CardWrapper.vue'
 import ContentModal from '@/components/ContentModal.vue'
+import RadioSwitch from '@/components/RadioSwitch.vue'
 
 const contentStore = useContentStore()
 const filtersStore = useFiltersStore()
@@ -94,6 +106,15 @@ const modalHeader = ref('')
 const modalContent = ref('')
 
 const futureScenarios = computed(() => availableModels.value.filter((d) => d.startsWith('future')))
+
+const scenarioOptions = computed(() => {
+  return futureScenarios?.value?.map((s, i) => {
+    return {
+      value: s,
+      label: i ? 'High' : 'Low'
+    }
+  })
+})
 
 const selectedCropInfo = computed(() => {
   return cropInformation?.value?.find((d) => d.id === selectedCrop.value)
@@ -160,6 +181,20 @@ const openScenarioModal = (s) => {
 
 .shrink {
   flex-shrink: 1;
+}
+
+.scenario-switch {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.scenarios-title {
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%; /* 1.05rem */
+  text-transform: uppercase;
 }
 
 .crop-selection {

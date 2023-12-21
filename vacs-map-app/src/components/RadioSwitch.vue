@@ -45,12 +45,13 @@ const { name, options, modelValue } = toRefs(props)
 
 <style scoped>
 .switch {
+  flex-grow: 1;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   border: 1px solid var(--gray);
   border-radius: 100px;
-  background: var(--dark-gray);
+  background: var(--black);
 }
 
 label {
