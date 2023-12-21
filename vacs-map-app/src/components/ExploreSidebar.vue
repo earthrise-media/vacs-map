@@ -41,7 +41,8 @@
 
       <div class="map-mode-cards">
         <CardWrapper
-          :title="`${selectedCropInfo?.label} in 2050 compared to 2010`"
+          :title="`${selectedCropInfo?.label} in 2050`"
+          subtitle="compared to 2010"
           :is-dynamic="true"
           :is-active="!showCropGroupMap"
           :handle-click="
@@ -154,7 +155,7 @@ const openScenarioModal = (s) => {
   height: 100%;
   max-height: 50rem;
   padding: 1.25rem;
-  width: 450px;
+  width: 465px;
   border: 1px solid var(--dark-gray);
   border-radius: 1rem;
   background: var(--black-90);

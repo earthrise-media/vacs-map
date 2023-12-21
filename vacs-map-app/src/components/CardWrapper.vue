@@ -7,7 +7,11 @@
     <slot></slot>
 
     <div class="info" :class="{ bold: boldTitle, hasDescription: description }">
-      <div class="title" :class="{ bold: boldTitle }">{{ title }}</div>
+      <div class="title" :class="{ bold: boldTitle }">
+        <span> {{ title }}  </span>
+        <span class="subtitle"> {{ subtitle }} </span>
+        <img v-if="isDynamic && !isActive" src="../assets/img/arrow-right-pointy.svg" alt="">
+      </div>
       <div v-if="indicator" class="indicator">
         <span class="indicator-category"> {{ indicator.key }} </span>
         <span
@@ -36,6 +40,11 @@ import { useColorStore } from '@/stores/colors'
 defineEmits(['showInfo'])
 const props = defineProps({
   title: {
+    type: String,
+    default: ''
+  },
+
+  subtitle: {
     type: String,
     default: ''
   },
@@ -152,6 +161,8 @@ const useDarkIndicatorText = computed(() => {
 .card-wrapper.dynamic .info {
   transition: none;
   padding: 0.375rem 0.75rem;
+  background: var(--dark-gray);
+  color: var(--white);
 }
 
 .card-wrapper.dynamic.active .info {
@@ -163,12 +174,21 @@ const useDarkIndicatorText = computed(() => {
   font-family: var(--font-family-h2);
   height: var(--title-height);
   font-size: 1.125rem;
-  text-transform: capitalize;
   display: flex;
+  gap: 0.5rem;
   align-items: center;
   overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.title img {
+  margin-left: auto;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  font-family: var(--font-family-h3);
 }
 
 .title.bold {
@@ -205,6 +225,16 @@ const useDarkIndicatorText = computed(() => {
 
 .active .info {
   background: var(--ui-blue);
+}
+
+.dynamic.active {
+  border-color: var(--ui-blue);
+  color: var(--black);
+}
+
+.dynamic.active .info {
+  background: var(--ui-blue);
+  color: var(--black);
 }
 
 .info.hasDescription:hover {
