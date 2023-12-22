@@ -95,18 +95,25 @@ export const useCropYieldsStore = defineStore('cropYields', () => {
     const cropGroups = Array.from(new Set(cropInfo.value?.map((d) => d.crop_group)))
     const futureScenarios = ['future_ssp126', 'future_ssp370']
 
-    const dataWithCropGroups = data.value.map((d, i) => {
-      const rowWithGroupValues = { ...d }
-      futureScenarios.forEach((s) => {
-        cropGroups.forEach((g) => {
-          const groupYieldRatioKeys = cropInfo.value
-            .filter((c) => c.crop_group === g)
+    const groupYieldRatioKeysHash = Object.fromEntries(
+      d3.cross(futureScenarios, cropGroups).map(([scenario, cropGroup]) => {
+        return [`${cropGroup}_${scenario}`,
+          cropInfo.value
+            .filter((c) => c.crop_group === cropGroup)
             .map((c) => {
-              return ['yieldratio', c.id, s].join('_')
+              return ['yieldratio', c.id, scenario].join('_')
             })
-          const rowHasYieldRatios = Object.keys(d).filter((k) =>
-            groupYieldRatioKeys.includes(k)
-          ).length
+        ];
+      })
+    );
+
+    const dataWithCropGroups = data.value.map((row, i) => {
+      const rowUpdates = d3.cross(futureScenarios, cropGroups)
+        .map(([scenario, cropGroup]) => {
+          const groupKey = [cropGroup, scenario].join('_')
+          const groupYieldRatioKeys = groupYieldRatioKeysHash[groupKey];
+          const rowHasYieldRatios = Object.keys(row)
+            .some((k) => groupYieldRatioKeys.includes(k))
           if (!rowHasYieldRatios) return
 
           const obj = {
@@ -115,23 +122,27 @@ export const useCropYieldsStore = defineStore('cropYields', () => {
             maxVal: null,
             minVal: null
           }
+
+          // TODO might be faster just to pull out the relevant entries and sort
+          // them?
           groupYieldRatioKeys.forEach((k) => {
-            if (d[k] && d[k] > obj.maxVal) {
-              obj.maxVal = d[k]
+            if (row[k] === null) return;
+            if (row[k] > obj.maxVal) {
+              obj.maxVal = row[k]
               obj.maxCrop = k.split('_')[1]
             }
-            if (d[k] && d[k] < obj.minVal) {
-              obj.minVal = d[k]
+            if (row[k] < obj.minVal) {
+              obj.minVal = row[k]
               obj.minCrop = k.split('_')[1]
             }
           })
-          const groupKey = [g, s].join('_')
-          rowWithGroupValues[groupKey] = obj
+          return [groupKey, obj]
         })
-      })
-      return rowWithGroupValues
+        .filter(d => !!d)
+
+      return { ...row, ...Object.fromEntries(rowUpdates) };
     })
-    data.value = dataWithCropGroups
+    data.value = Object.freeze(dataWithCropGroups)
   })
 
   return {
