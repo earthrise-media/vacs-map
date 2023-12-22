@@ -60,6 +60,7 @@ import { useCropInformationStore } from '@/stores/cropInformation'
 import { useContentStore } from '@/stores/siteContent'
 import RadioSwitch from '@/components/RadioSwitch.vue'
 import MapLegend from '@/components/MapLegend.vue'
+import MapLegendCropGroups from '@/components/MapLegendCropGroups.vue'
 import ContentModal from '@/components/ContentModal.vue'
 
 const contentStore = useContentStore()

@@ -13,7 +13,8 @@
           <div class="map-overlay desktop">
             <div class="overlay-left">
               <ExploreSidebar class="interactive" ref="overlayLeftRef" />
-              <MapLegend class="interactive" />
+              <MapLegendCropGroups v-if="showCropGroupMap" class="interactive" />
+              <MapLegend v-else class="interactive" />
             </div>
             <div class="overlay-right">
               <select v-model="selectedMap" class="interactive">
@@ -46,7 +47,8 @@ import MobileExploreMapControls from './components/MobileExploreMapControls.vue'
 import MapTooltip from '@/components/MapTooltip.vue'
 import MapLegend from '@/components/MapLegend.vue'
 import OverviewTop from '@/components/OverviewTop.vue'
-import DataDisclaimer from './components/DataDisclaimer.vue'
+import DataDisclaimer from '@/components/DataDisclaimer.vue'
+import MapLegendCropGroups from '@/components/MapLegendCropGroups.vue'
 
 const availableMaps = [
   {
@@ -75,7 +77,7 @@ useResizeObserver(overlayLeftRef, ([entry]) => {
 })
 
 const mapExploreStore = useMapExploreStore()
-const { selectedMap, mapPadding } = storeToRefs(mapExploreStore)
+const { selectedMap, mapPadding, showCropGroupMap } = storeToRefs(mapExploreStore)
 
 if (!selectedMap.value) {
   selectedMap.value = availableMaps[0].id

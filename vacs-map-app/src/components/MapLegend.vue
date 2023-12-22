@@ -74,6 +74,7 @@ const openYieldRatioModal = () => {
 
 .legend-title {
   font-weight: 600;
+  font-size: 0.875rem;
   display: flex;
   align-items: center;
   gap: 0.25rem;

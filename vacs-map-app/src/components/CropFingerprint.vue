@@ -43,6 +43,8 @@
     <div class="svg-wrapper" ref="wrapperRef">
       <svg>
         <g class="chart" :transform="`translate(${width / 2}, ${height / 2})`">
+          <circle class="chart-background" :r="y(11)" fill="#17191b" />
+
           <g class="selected-crop-plots">
             <path
               v-for="indicator in selectedIndicators"

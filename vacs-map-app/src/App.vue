@@ -23,16 +23,16 @@ const documentHeight = () => {
 }
 
 onMounted(() => {
+  cropInformationStore.load()
   gridStore.load()
   cropYieldsStore.load()
-  cropInformationStore.load()
 
   window.addEventListener('resize', documentHeight)
   documentHeight
 })
 
 onUnmounted(() => {
-  window.removeEventListener('resize')
+  window.removeEventListener('resize', documentHeight)
 })
 </script>
 

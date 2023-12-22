@@ -1,3 +1,4 @@
+import * as d3 from 'd3'
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import {
@@ -5,7 +6,11 @@ import {
   stopLightScheme,
   fingerprintScheme,
   colorblindDivergingScheme,
-  colorblindStopLightScheme
+  colorblindStopLightScheme,
+  ordinalScheme,
+  colorblindOrdinalScheme,
+  noDataFill,
+  colorblindNoDataFill
 } from '@/utils/colors'
 
 export const useColorStore = defineStore('colorStore', () => {
@@ -21,5 +26,11 @@ export const useColorStore = defineStore('colorStore', () => {
 
   const fingerprint = computed(() => fingerprintScheme)
 
-  return { colorblindFriendly, diverging, stopLight, fingerprint }
+  const ordinal = computed(() =>
+    colorblindFriendly.value ? colorblindOrdinalScheme : ordinalScheme
+  )
+
+  const noData = computed(() => (colorblindFriendly.value ? colorblindNoDataFill : noDataFill))
+
+  return { colorblindFriendly, diverging, stopLight, fingerprint, ordinal, noData }
 })
