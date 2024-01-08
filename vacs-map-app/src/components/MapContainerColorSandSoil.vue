@@ -27,6 +27,8 @@
         :color-column-extent="selectedColumnExtent"
         :color-column-quintiles="selectedColumnQuintiles"
         :color-diverging="true"
+        :fill="false"
+        :stroke="true"
         :sourceId="sourceId"
         :map="map"
         :mapReady="mapReady"
@@ -45,8 +47,8 @@ import { useCropYieldsStore } from '@/stores/cropYields'
 import GridSource from './GridSource.vue'
 import GridOverlay from './GridOverlay.vue'
 import RasterSource from './RasterSource.vue'
-import SoilCarbonLayer from './SoilCarbonLayer.vue'
-import SandLayer from './SandLayer.vue'
+import SoilCarbonLayer from './SoilCarbonLayerFeature.vue'
+import SandLayer from './SandLayerFeature.vue'
 
 const sourceId = 'cropGrid'
 const rasterSourceId = 'soilCarbonSource'

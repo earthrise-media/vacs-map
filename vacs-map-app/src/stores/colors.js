@@ -4,8 +4,12 @@ import {
   divergingScheme,
   stopLightScheme,
   fingerprintScheme,
+  // sandScheme,
+  // soilScheme,
   colorblindDivergingScheme,
-  colorblindStopLightScheme
+  colorblindStopLightScheme,
+  // colorblindSandScheme,
+  // colorblindSoilScheme
 } from '@/utils/colors'
 
 export const useColorStore = defineStore('colorStore', () => {
@@ -19,7 +23,16 @@ export const useColorStore = defineStore('colorStore', () => {
     colorblindFriendly.value ? colorblindStopLightScheme : stopLightScheme
   )
 
+  // const sand = computed(() =>
+  //   colorblindFriendly.value ? colorblindSandScheme : sandScheme
+  // )
+
+  // const soil = computed(() =>
+  //   colorblindFriendly.value ? colorblindSoilScheme : soilScheme
+  // )
+
   const fingerprint = computed(() => fingerprintScheme)
 
   return { colorblindFriendly, diverging, stopLight, fingerprint }
+  // return { colorblindFriendly, diverging, stopLight, sand, soil, fingerprint }
 })

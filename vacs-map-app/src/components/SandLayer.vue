@@ -36,18 +36,10 @@ const maxRasterValue = 100
 
 const getRasterColor = () => {
   const getColor = (value) => {
-    // Pick an interpolate function here:
-    //  https://d3js.org/d3-scale-chromatic/sequential
-    //
-    // Like this:
-    //
-    // const interpolator = d3.interpolateRainbow;
-    // const interpolator = d3.interpolatePiYG;
-
-    // Or define your own:
     const interpolator = d3.interpolateHsl('transparent', 'orange')
+    // colorblind version
+    const colorblindInterpolator = d3.interpolateHsl('transparent', '#E7EB2A')
 
-    // const interpolator = d3.interpolateInferno
     return interpolator(value)
   }
 
@@ -61,7 +53,7 @@ const getRasterColor = () => {
 
 const paint = {
   'raster-color': getRasterColor(),
-  'raster-opacity': 0.25,
+  'raster-opacity': 0.2,
   'raster-color-mix': [255, 0, 0, 0],
   'raster-color-range': [0, maxRasterValue]
 }

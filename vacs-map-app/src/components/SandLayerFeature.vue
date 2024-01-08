@@ -31,14 +31,14 @@ const props = defineProps({
 
 const { id, map, mapReady, sourceId } = toRefs(props)
 
-const minRasterValue = 0
+const minRasterValue = 50
 const maxRasterValue = 100
 
 const getRasterColor = () => {
   const getColor = (value) => {
-    const interpolator = d3.interpolateHsl('hsla(143, 52%, 13%, 0)', '#6DACA4')
+    const interpolator = d3.interpolateHsl('transparent', 'orange')
     // colorblind version
-    const colorblindInterpolator = d3.interpolateHsl('hsla(143, 52%, 13%, 0)', '#D156F0')
+    const colorblindInterpolator = d3.interpolateHsl('transparent', '#E7EB2A')
 
     return interpolator(value)
   }
@@ -53,7 +53,7 @@ const getRasterColor = () => {
 
 const paint = {
   'raster-color': getRasterColor(),
-  'raster-opacity': 0.30,
+  'raster-opacity': 0.8,
   'raster-color-mix': [255, 0, 0, 0],
   'raster-color-range': [0, maxRasterValue]
 }
