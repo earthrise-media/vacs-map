@@ -1,8 +1,7 @@
 import * as d3 from 'd3'
-import { ref, watch } from 'vue'
-import { defineStore, storeToRefs } from 'pinia'
+import { ref } from 'vue'
+import { defineStore } from 'pinia'
 import { getDataUrl } from '@/constants/data-load'
-import { useCropInformationStore } from '@/stores/cropInformation'
 
 export const useCropYieldsStore = defineStore('cropYields', () => {
   const data = ref(null)
@@ -13,41 +12,12 @@ export const useCropYieldsStore = defineStore('cropYields', () => {
     loading.value = true
 
     let transformedData = await d3.csv(getDataUrl('crop-yields-mean-models.csv'), (d) => {
-      return Object.fromEntries(Object.entries(d).map(([k, v]) => [k, v && v !== '' ? +v : null]))
-    })
-
-    const yieldKeys = Object.keys(transformedData[0]).filter((k) => k.startsWith('yield'))
-
-    // add yield ratio columns for all crops and scenarios
-    transformedData = transformedData.map((d, i) => {
-      const rowWithYields = Object.fromEntries(Object.entries(d).filter(([k, v]) => v !== null))
-
-      yieldKeys.forEach((k) => {
-        const [_, crop, timeframe, scenario] = k.split('_')
-        if (timeframe === 'historical') return
-
-        // NB: abbreviating these could get more performance improvements
-        const historicalKey = ['yield', crop, 'historical'].join('_')
-
-        if (!yieldKeys.includes(historicalKey)) return
-
-        const yieldRatioKey = ['yieldratio', crop, timeframe, scenario].join('_')
-
-        let yieldRatioValue = null
-        if (
-          rowWithYields[k] !== null &&
-          rowWithYields[historicalKey] !== null &&
-          rowWithYields[historicalKey]
-        ) {
-          yieldRatioValue =
-            (rowWithYields[k] - rowWithYields[historicalKey]) / rowWithYields[historicalKey]
-        }
-
-        if (yieldRatioValue === null) return
-        rowWithYields[yieldRatioKey] = yieldRatioValue
-      })
-
-      return rowWithYields
+      return Object.fromEntries(
+        Object.entries(d).map(([k, v]) => {
+          if (k.includes('maxCrop') || k.includes('minCrop')) return [k, v && v !== '' ? v : null]
+          return [k, v && v !== '' ? +v : null]
+        })
+      )
     })
 
     data.value = Object.freeze(transformedData)
@@ -85,65 +55,6 @@ export const useCropYieldsStore = defineStore('cropYields', () => {
       }
     ]
   }
-
-  const cropInformationStore = useCropInformationStore()
-  const { data: cropInfo } = storeToRefs(cropInformationStore)
-
-  watch(cropInfo, () => {
-    // get max/min yield ratios (and which crops they correspond to)
-    // for each food group at each grid cell
-    const cropGroups = Array.from(new Set(cropInfo.value?.map((d) => d.crop_group)))
-    const futureScenarios = ['future_ssp126', 'future_ssp370']
-
-    const groupYieldRatioKeysHash = Object.fromEntries(
-      d3.cross(futureScenarios, cropGroups).map(([scenario, cropGroup]) => {
-        return [`${cropGroup}_${scenario}`,
-          cropInfo.value
-            .filter((c) => c.crop_group === cropGroup)
-            .map((c) => {
-              return ['yieldratio', c.id, scenario].join('_')
-            })
-        ];
-      })
-    );
-
-    const dataWithCropGroups = data.value.map((row, i) => {
-      const rowUpdates = d3.cross(futureScenarios, cropGroups)
-        .map(([scenario, cropGroup]) => {
-          const groupKey = [cropGroup, scenario].join('_')
-          const groupYieldRatioKeys = groupYieldRatioKeysHash[groupKey];
-          const rowHasYieldRatios = Object.keys(row)
-            .some((k) => groupYieldRatioKeys.includes(k))
-          if (!rowHasYieldRatios) return
-
-          const obj = {
-            maxCrop: 'none',
-            minCrop: 'none',
-            maxVal: null,
-            minVal: null
-          }
-
-          // TODO might be faster just to pull out the relevant entries and sort
-          // them?
-          groupYieldRatioKeys.forEach((k) => {
-            if (row[k] === null) return;
-            if (row[k] > obj.maxVal) {
-              obj.maxVal = row[k]
-              obj.maxCrop = k.split('_')[1]
-            }
-            if (row[k] < obj.minVal) {
-              obj.minVal = row[k]
-              obj.minCrop = k.split('_')[1]
-            }
-          })
-          return [groupKey, obj]
-        })
-        .filter(d => !!d)
-
-      return { ...row, ...Object.fromEntries(rowUpdates) };
-    })
-    data.value = Object.freeze(dataWithCropGroups)
-  })
 
   return {
     data,

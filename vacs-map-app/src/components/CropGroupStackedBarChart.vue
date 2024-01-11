@@ -43,11 +43,15 @@ const cropGroupCrops = computed(() => {
 })
 
 const cropGroupColumn = computed(() => {
-  if (!selectedCropInfo.value || !selectedModel.value) {
+  if (!selectedCropInfo.value || !selectedModel.value || !cropGroupMetric.value) {
     return null
   }
 
-  return [selectedCropInfo.value.crop_group, selectedModel.value].join('_')
+  return [
+    selectedCropInfo.value.crop_group,
+    selectedModel.value,
+    cropGroupMetric.value + 'Crop'
+  ].join('_')
 })
 
 const bars = computed(() => {
@@ -55,9 +59,8 @@ const bars = computed(() => {
   const cropGroupCells = cropYieldsData.value.filter((d) => !!d[cropGroupColumn.value])
 
   const crops = cropGroupCrops.value.map((crop, i) => {
-    const cropCells = cropGroupCells.filter(
-      (d) => d[cropGroupColumn.value][cropGroupMetric.value + 'Crop'] === crop.id
-    )
+    const cropCells = cropGroupCells.filter((d) => d[cropGroupColumn.value] === crop.id)
+
     const gridShare = (cropCells.length / cropGroupCells.length) * 100
     return {
       id: crop.id,
@@ -67,9 +70,7 @@ const bars = computed(() => {
     }
   })
 
-  const noDataCells = cropGroupCells.filter(
-    (d) => d[cropGroupColumn.value][cropGroupMetric.value + 'Crop'] == 'none'
-  )
+  const noDataCells = cropGroupCells.filter((d) => d[cropGroupColumn.value] == 'none')
 
   const noDataGridShare = (noDataCells.length / cropGroupCells.length) * 100
 

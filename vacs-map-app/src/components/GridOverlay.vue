@@ -147,7 +147,7 @@ const addHoverListeners = () => {
   map.value.on('mousemove', id.value, (event) => {
     if (!event?.features?.length) return
     const feature = event?.features[0]
-    if (feature?.id) {
+    if (feature.properties.id) {
       hoveredId.value = feature.properties.id
     }
   })
@@ -312,18 +312,13 @@ const getCircleColorByCrop = () => {
     .concat(
       cropGroupCrops.value
         .map((crop, i) => {
-          return [
-            ['==', ['get', cropGroupMetric.value + 'Crop', ['get', cropGroupColumn.value]], crop],
-            ordinalScheme.value[i]
-          ]
+          return [['==', ['get', cropGroupColumn.value], crop], ordinalScheme.value[i]]
         })
         .flat()
     )
     .concat([noDataFill.value])
 
   return ['case', ['!=', ['get', cropGroupColumn.value], null], cases, 'transparent']
-
-  return cases
 }
 
 const getCircleFillColor = () => {

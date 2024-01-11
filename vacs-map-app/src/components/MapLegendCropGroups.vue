@@ -87,7 +87,7 @@ const openCropGroupModal = () => {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  width: 20rem;
+  width: 22rem;
   margin-top: auto;
 }
 

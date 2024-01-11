@@ -1,5 +1,5 @@
 <template>
-  <TooltipWrapper v-if="hoveredValue">
+  <TooltipWrapper v-if="hoveredValue || hoveredCropId">
     {{ sentence }}
   </TooltipWrapper>
 </template>
@@ -40,24 +40,18 @@ const sentence = computed(() => {
       hoveredValue.value
     )} at this location`
   } else {
-    const cropField = cropGroupMetric.value + 'Crop'
-    const valueField = cropGroupMetric.value + 'Val'
-
-    const hoveredCropId = hoveredValue.value[cropField]
-    const hoveredYieldRatio = hoveredValue.value[valueField]
-
     const descriptor = cropGroupMetric.value === 'max' ? 'increase' : 'decrease'
 
-    if (hoveredCropId === 'none') {
+    if (hoveredCropId.value === 'none') {
       return `At this location, no ${selectedCropInfo.value.crop_group} are projected to ${descriptor} in yield`
     }
 
-    const hoveredCropName = cropInfo.value.find((d) => d.id === hoveredCropId).label
+    const hoveredCropName = cropInfo.value.find((d) => d.id === hoveredCropId.value).label
 
     return `Of the ${
       selectedCropInfo.value.crop_group
     }, ${hoveredCropName} is projected to have the greatest yield ${descriptor} (${pFormat(
-      hoveredYieldRatio
+      hoveredValue.value
     )}) at this location, in ${modelDescriptor}`
   }
 })
@@ -66,13 +60,41 @@ const selectedCropInfo = computed(() => {
   return cropInfo.value?.find((d) => d.id === selectedCrop.value)
 })
 
+const hoveredCropId = computed(() => {
+  if (
+    !yieldData.value ||
+    !selectedCrop.value ||
+    !selectedModel.value ||
+    !hoveredId.value ||
+    !cropGroupMetric.value
+  )
+    return null
+
+  const cellObject = yieldData.value.find((d) => d.id === hoveredId.value)
+
+  if (!cellObject) return null
+  return cellObject[
+    [selectedCropInfo.value?.crop_group, selectedModel.value, cropGroupMetric.value + 'Crop'].join(
+      '_'
+    )
+  ]
+})
+
 const hoveredValue = computed(() => {
-  if (!yieldData.value || !selectedCrop.value || !selectedModel.value || !hoveredId.value)
+  if (
+    !yieldData.value ||
+    !selectedCrop.value ||
+    !selectedModel.value ||
+    !hoveredId.value ||
+    !cropGroupMetric.value
+  )
     return null
 
   const columnName = !showCropGroupMap.value
     ? ['yieldratio', selectedCrop.value, selectedModel.value].join('_')
-    : [selectedCropInfo.value?.crop_group, selectedModel.value].join('_')
+    : [selectedCropInfo.value?.crop_group, selectedModel.value, cropGroupMetric.value + 'Val'].join(
+        '_'
+      )
 
   const cellObject = yieldData.value.find((d) => d.id === hoveredId.value)
 

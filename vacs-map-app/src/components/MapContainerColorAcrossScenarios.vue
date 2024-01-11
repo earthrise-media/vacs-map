@@ -77,11 +77,11 @@ const selectedCropGroup = computed(() => {
 })
 
 const cropGroupColumn = computed(() => {
-  if (!selectedCropGroup.value || !selectedModel.value) {
+  if (!selectedCropGroup.value || !selectedModel.value || !cropGroupMetric.value) {
     return null
   }
 
-  return [selectedCropGroup.value, selectedModel.value].join('_')
+  return [selectedCropGroup.value, selectedModel.value, cropGroupMetric.value + 'Crop'].join('_')
 })
 
 const cropGroupCrops = computed(() => {
