@@ -24,8 +24,8 @@ export const ordinalScheme = [
   '#F66E09',
   '#AB7430',
   '#9BA700',
-  '#0f0', //replace with better color
-  '#00f' //replace with better color
+  '#82B7BF',
+  '#BFB36B'
 ]
 
 // this is the color to use for the selected crop
