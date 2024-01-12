@@ -4,6 +4,10 @@
       v-for="bar in bars"
       :key="bar.id"
       class="crop-bar"
+      :class="{
+        highlighted: hoveredCrop === bar.id,
+        unhighlighted: hoveredCrop && hoveredCrop !== bar.id
+      }"
       :style="{
         width: `${bar.gridShare}%`,
         background: bar.fill
@@ -29,9 +33,9 @@ const mapExploreStore = useMapExploreStore()
 
 const { selectedCrop, selectedModel } = storeToRefs(filtersStore)
 const { data: cropInformation } = storeToRefs(cropInformationStore)
-const { ordinal: ordinalScheme, noData: noDataFill } = storeToRefs(colorStore)
+const { ordinal: ordinalScheme, noData: noDataFill, getCropColor } = storeToRefs(colorStore)
 const { data: cropYieldsData } = storeToRefs(cropYieldsStore)
-const { showCropGroupMap, cropGroupMetric } = storeToRefs(mapExploreStore)
+const { showCropGroupMap, cropGroupMetric, hoveredCrop } = storeToRefs(mapExploreStore)
 
 const selectedCropInfo = computed(() => {
   return cropInformation?.value?.find((d) => d.id === selectedCrop.value)
@@ -65,7 +69,7 @@ const bars = computed(() => {
     return {
       id: crop.id,
       label: crop.label,
-      fill: ordinalScheme.value[i],
+      fill: colorStore.getCropColor(crop.id),
       gridShare
     }
   })
@@ -97,5 +101,9 @@ const bars = computed(() => {
 
 .crop-bar {
   height: 100%;
+}
+
+.unhighlighted {
+  opacity: 20%;
 }
 </style>

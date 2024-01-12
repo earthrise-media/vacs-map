@@ -7,10 +7,16 @@
     <slot></slot>
 
     <div class="info" :class="{ bold: boldTitle, hasDescription: description }">
-      <div class="title" :class="{ bold: boldTitle }">
-        <span> {{ title }} </span>
+      <div class="title-row" :class="{ bold: boldTitle }">
+        <span class="title">
+          {{ title }}
+          <img v-if="referenceCrop" src="../assets/img/reference-crop.svg" alt="" />
+        </span>
         <span class="subtitle"> {{ subtitle }} </span>
         <img v-if="isDynamic && !isActive" src="../assets/img/arrow-right-pointy.svg" alt="" />
+      </div>
+      <div v-if="referenceCrop" class="reference-crop-message">
+        <span> {{ cropGroup }} reference crop</span>
       </div>
       <div v-if="indicator" class="indicator">
         <span class="indicator-category"> {{ indicator.key }} </span>
@@ -59,6 +65,16 @@ const props = defineProps({
     default: ''
   },
 
+  referenceCrop: {
+    type: Boolean,
+    default: false
+  },
+
+  cropGroup: {
+    type: String,
+    default: ''
+  },
+
   handleClick: {
     type: Function,
     default: () => {}
@@ -84,8 +100,18 @@ const props = defineProps({
     default: () => {}
   }
 })
-const { title, description, handleClick, indicator, isActive, isDynamic, showMoreInfo, boldTitle } =
-  toRefs(props)
+const {
+  title,
+  description,
+  handleClick,
+  indicator,
+  isActive,
+  isDynamic,
+  showMoreInfo,
+  boldTitle,
+  referenceCrop,
+  cropGroup
+} = toRefs(props)
 
 const colorStore = useColorStore()
 const { stopLight: stopLightScheme, colorblindFriendly } = storeToRefs(colorStore)
@@ -170,20 +196,32 @@ const useDarkIndicatorText = computed(() => {
   padding-top: 0;
 }
 
-.title {
+.title-row {
   font-family: var(--font-family-h2);
   height: var(--title-height);
   font-size: 1.125rem;
   display: flex;
   gap: 0.5rem;
-  align-items: center;
+  align-items: baseline;
   overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.title img {
+.title-row img {
   margin-left: auto;
+}
+
+.title-row.bold {
+  font-family: var(--font-family-header);
+  font-size: 1.375rem;
+}
+
+.title {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .subtitle {
@@ -191,9 +229,8 @@ const useDarkIndicatorText = computed(() => {
   font-family: var(--font-family-h3);
 }
 
-.title.bold {
-  font-family: var(--font-family-header);
-  font-size: 1.375rem;
+.reference-crop-message {
+  color: var(--dark-gray);
 }
 
 .indicator {

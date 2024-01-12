@@ -29,15 +29,7 @@
     </div>
 
     <div class="sidebar-section">
-      <span class="sidebar-header">
-        How will {{ selectedCropInfo?.label }} yields change?
-        <img
-          class="info"
-          src="@/assets/img/info.svg"
-          alt=""
-          @click="openChartModal('distribution')"
-        />
-      </span>
+      <span class="sidebar-header"> How will {{ selectedCropInfo?.label }} yields change? </span>
 
       <div class="map-mode-cards">
         <CardWrapper
@@ -73,6 +65,12 @@
     <div class="sidebar-section">
       <div class="scenario-switch">
         <span class="scenarios-title"> emissions scenario </span>
+        <img
+          class="info"
+          src="@/assets/img/info.svg"
+          alt=""
+          @click="openScenarioModal(selectedModel)"
+        />
         <RadioSwitch v-model="selectedModel" :options="scenarioOptions" name="selected-scenario" />
       </div>
     </div>

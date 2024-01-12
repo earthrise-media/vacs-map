@@ -7,6 +7,8 @@
         :title="crop.label"
         :bold-title="true"
         :description="crop.description"
+        :reference-crop="!!crop.benchmark"
+        :crop-group="crop.crop_group"
         :handle-click="() => navigate(crop.id)"
         :indicator="{
           key: cropSortBy,

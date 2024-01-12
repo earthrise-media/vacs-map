@@ -109,7 +109,7 @@ const {
 } = toRefs(props)
 
 const mapExploreStore = useMapExploreStore()
-const { hoveredId } = storeToRefs(mapExploreStore)
+const { hoveredId, hoveredCrop, showCropGroupMap } = storeToRefs(mapExploreStore)
 
 const colorStore = useColorStore()
 const {
@@ -147,7 +147,7 @@ const addHoverListeners = () => {
   map.value.on('mousemove', id.value, (event) => {
     if (!event?.features?.length) return
     const feature = event?.features[0]
-    if (feature.properties.id) {
+    if (feature.id) {
       hoveredId.value = feature.properties.id
     }
   })
@@ -168,6 +168,18 @@ const updateHoveredFeatureState = (elementId, hovered) => {
       hovered
     }
   )
+}
+
+const updateHoveredCrop = (cropId) => {
+  if (!id.value || !showCropGroupMap.value) return
+
+  let expression = ['case', ['boolean', ['feature-state', 'highlighted'], false], 0.5, 1]
+
+  if (cropId) {
+    expression = ['case', ['==', ['get', cropGroupColumn.value], cropId], 1, 0.2]
+  }
+
+  map.value.setPaintProperty(id.value, 'circle-opacity', expression)
 }
 
 const getCircleColorQuintiles = (quintiles) => {
@@ -312,7 +324,7 @@ const getCircleColorByCrop = () => {
     .concat(
       cropGroupCrops.value
         .map((crop, i) => {
-          return [['==', ['get', cropGroupColumn.value], crop], ordinalScheme.value[i]]
+          return [['==', ['get', cropGroupColumn.value], crop], colorStore.getCropColor(crop)]
         })
         .flat()
     )
@@ -381,6 +393,10 @@ watch(cropGroupMetric, () => {
 watch(hoveredId, (current, prev) => {
   updateHoveredFeatureState(prev, false)
   updateHoveredFeatureState(current, true)
+})
+
+watch(hoveredCrop, (current) => {
+  updateHoveredCrop(current)
 })
 </script>
 

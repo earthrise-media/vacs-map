@@ -104,6 +104,8 @@ const setPosition = (px, py) => {
   z-index: 2000;
 
   display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
   width: max-content;
   max-width: 200px;
   padding: 0.5rem;

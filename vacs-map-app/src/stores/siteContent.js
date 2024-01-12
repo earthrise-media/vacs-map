@@ -29,7 +29,7 @@ export const useContentStore = defineStore('siteContent', () => {
     dataDisclaimer:
       'All data used in this application are preliminary results and subject to change',
     crop_group_map:
-      'This map provides a summary view for a given crop group. Each grid cell is colored to represent the crop from the selected group with the highest projected yield increase, or decrease, based on the currently selected emissions scenario. Whether the map displays highest increase or decrease can be toggled using the legend. Grid cells labeled "None" are places where no crop in the selected group has a positive, or negative, projected yield change.'
+      'This map displays the crop with the greatest increase at a given location. For example, a circle in blue for the cereal crop group indicates that maize increased in that area more than any other cereal crop. \n\n When no crop increases (i.e., the future yield is never projected to be higher than the historic yield), the area will be represented as “No increase”. \n\n Each crop group is viewable by both greatest increase and greatest decrease.'
   })
 
   return {

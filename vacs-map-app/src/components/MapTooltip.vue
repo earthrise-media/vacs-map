@@ -1,6 +1,22 @@
 <template>
-  <TooltipWrapper v-if="hoveredValue || hoveredCropId">
-    {{ sentence }}
+  <TooltipWrapper v-if="hoveredValue || (hoveredCropId && showCropGroupMap)">
+    <div class="tooltip-indicator">
+      <span
+        v-if="showCropGroupMap"
+        class="indicator"
+        :style="{
+          background: getColor(hoveredCropId)
+        }"
+      />
+      <img v-else-if="hoveredValue > 0" src="../assets/img/positive-yield.svg" alt="" />
+      <img v-else src="../assets/img/negative-yield.svg" alt="" />
+      <span class="title">
+        {{ showCropGroupMap ? hoveredCropName : pFormat(hoveredValue) }}
+      </span>
+    </div>
+    <span class="sentence">
+      {{ sentence }}
+    </span>
   </TooltipWrapper>
 </template>
 
@@ -13,6 +29,7 @@ import { useMapExploreStore } from '@/stores/mapExplore'
 import { useCropYieldsStore } from '@/stores/cropYields'
 import { useFiltersStore } from '@/stores/filters'
 import { useContentStore } from '@/stores/siteContent'
+import { useColorStore } from '@/stores/colors'
 import { useCropInformationStore } from '@/stores/cropInformation'
 
 const filtersStore = useFiltersStore()
@@ -20,10 +37,13 @@ const cropYieldsStore = useCropYieldsStore()
 const mapExploreStore = useMapExploreStore()
 const contentStore = useContentStore()
 const cropInformationStore = useCropInformationStore()
+const colorStore = useColorStore()
+
 const { hoveredId, showCropGroupMap, cropGroupMetric } = storeToRefs(mapExploreStore)
 const { data: yieldData } = storeToRefs(cropYieldsStore)
 const { selectedCrop, selectedModel } = storeToRefs(filtersStore)
 const { copy } = storeToRefs(contentStore)
+const { ordinal: ordinalScheme, noData: noDataFill } = storeToRefs(colorStore)
 const { data: cropInfo } = storeToRefs(cropInformationStore)
 
 const sentence = computed(() => {
@@ -34,11 +54,11 @@ const sentence = computed(() => {
 
   if (!showCropGroupMap.value) {
     const cropName = selectedCropInfo.value?.label
-    const valueDescriptor = hoveredValue.value > 0 ? 'increases' : 'decreases'
+    const valueDescriptor = hoveredValue.value > 0 ? 'increase' : 'decrease'
 
-    return `In ${modelDescriptor}, ${cropName} ${valueDescriptor} by ${pFormat(
+    return `${cropName} yields ${valueDescriptor} by ${pFormat(
       hoveredValue.value
-    )} at this location`
+    )} in ${modelDescriptor}`
   } else {
     const descriptor = cropGroupMetric.value === 'max' ? 'increase' : 'decrease'
 
@@ -46,19 +66,32 @@ const sentence = computed(() => {
       return `At this location, no ${selectedCropInfo.value.crop_group} are projected to ${descriptor} in yield`
     }
 
-    const hoveredCropName = cropInfo.value.find((d) => d.id === hoveredCropId.value).label
-
-    return `Of the ${
-      selectedCropInfo.value.crop_group
-    }, ${hoveredCropName} is projected to have the greatest yield ${descriptor} (${pFormat(
+    return `Of the ${selectedCropInfo.value.crop_group}, ${
+      hoveredCropName.value
+    } is projected to have the greatest yield ${descriptor} (${pFormat(
       hoveredValue.value
     )}) at this location, in ${modelDescriptor}`
   }
 })
 
+const hoveredCropName = computed(() => {
+  if (hoveredCropId.value === 'none') return 'None'
+  return cropInfo.value?.find((d) => d.id === hoveredCropId.value)?.label
+})
+
 const selectedCropInfo = computed(() => {
   return cropInfo.value?.find((d) => d.id === selectedCrop.value)
 })
+
+const cropGroupCrops = computed(() => {
+  const groupName = selectedCropInfo.value?.crop_group
+  return cropInfo.value?.filter((c) => c.crop_group === groupName)
+})
+
+const getColor = (crop) => {
+  if (crop === 'none') return noDataFill.value
+  return ordinalScheme.value[cropGroupCrops.value.map((d) => d.id).indexOf(crop)]
+}
 
 const hoveredCropId = computed(() => {
   if (
@@ -107,4 +140,27 @@ const pFormat = (value) => {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.tooltip-indicator {
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.indicator {
+  width: 0.625rem;
+  height: 0.625rem;
+  aspect-ratio: 1/1;
+  border-radius: 100%;
+}
+.title {
+  color: var(--white);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.sentence {
+  color: var(--gray);
+}
+</style>
