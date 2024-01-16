@@ -4,7 +4,8 @@
     class="tooltip"
     :class="{
       [horizontalAlign]: true,
-      [verticalAlign]: true
+      [verticalAlign]: true,
+      showCropGroupMap
     }"
     :style="{
       left: pageX + 'px',
@@ -16,8 +17,15 @@
 </template>
 
 <script setup>
+import { storeToRefs } from 'pinia'
 import { toRefs, ref, computed, onMounted, onUnmounted } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
+
+import { useMapExploreStore } from '@/stores/mapExplore'
+
+const mapExploreStore = useMapExploreStore()
+
+const { showCropGroupMap } = storeToRefs(mapExploreStore)
 
 const props = defineProps({
   align: {
@@ -135,6 +143,10 @@ const setPosition = (px, py) => {
     bottom: 10rem !important;
     left: 1rem !important;
     transform: unset !important;
+  }
+
+  .showCropGroupMap {
+    bottom: 20rem !important;
   }
 }
 </style>

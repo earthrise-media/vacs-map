@@ -5,7 +5,7 @@
         v-if="showCropGroupMap"
         class="indicator"
         :style="{
-          background: getColor(hoveredCropId)
+          background: colorStore?.getCropColor(hoveredCropId)
         }"
       />
       <img v-else-if="hoveredValue > 0" src="../assets/img/positive-yield.svg" alt="" />
@@ -43,7 +43,6 @@ const { hoveredId, showCropGroupMap, cropGroupMetric } = storeToRefs(mapExploreS
 const { data: yieldData } = storeToRefs(cropYieldsStore)
 const { selectedCrop, selectedModel } = storeToRefs(filtersStore)
 const { copy } = storeToRefs(contentStore)
-const { ordinal: ordinalScheme, noData: noDataFill } = storeToRefs(colorStore)
 const { data: cropInfo } = storeToRefs(cropInformationStore)
 
 const sentence = computed(() => {
@@ -82,16 +81,6 @@ const hoveredCropName = computed(() => {
 const selectedCropInfo = computed(() => {
   return cropInfo.value?.find((d) => d.id === selectedCrop.value)
 })
-
-const cropGroupCrops = computed(() => {
-  const groupName = selectedCropInfo.value?.crop_group
-  return cropInfo.value?.filter((c) => c.crop_group === groupName)
-})
-
-const getColor = (crop) => {
-  if (crop === 'none') return noDataFill.value
-  return ordinalScheme.value[cropGroupCrops.value.map((d) => d.id).indexOf(crop)]
-}
 
 const hoveredCropId = computed(() => {
   if (

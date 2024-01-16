@@ -71,7 +71,12 @@
           alt=""
           @click="openScenarioModal(selectedModel)"
         />
-        <RadioSwitch v-model="selectedModel" :options="scenarioOptions" name="selected-scenario" />
+        <RadioSwitch
+          v-model="selectedModel"
+          :options="scenarioOptions"
+          name="selected-scenario"
+          :grow="true"
+        />
       </div>
     </div>
 

@@ -1,5 +1,5 @@
 <template>
-  <span class="switch">
+  <span class="switch" :class="{ grow }">
     <label
       v-for="option in options"
       :key="option.value"
@@ -38,6 +38,11 @@ const props = defineProps({
   modelValue: {
     type: String,
     default: null
+  },
+
+  grow: {
+    type: Boolean,
+    default: false
   }
 })
 const { name, options, modelValue } = toRefs(props)
@@ -45,7 +50,6 @@ const { name, options, modelValue } = toRefs(props)
 
 <style scoped>
 .switch {
-  flex-grow: 1;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -86,6 +90,10 @@ label.selected:hover {
 
 input {
   display: none;
+}
+
+.grow {
+  flex-grow: 1;
 }
 
 @media only screen and (max-width: 720px) {
