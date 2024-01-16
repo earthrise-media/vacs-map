@@ -4,8 +4,10 @@
       <div class="map-wrapper">
         <MapContainerExploreMap>
           <template v-slot="{ map, mapReady }">
-            <RegionPicker :map="map" :map-ready="mapReady" />
-            <span class="region-picker-message hover-message"> Zoom to a region </span>
+            <RegionPicker :map="map" :map-ready="mapReady" :class="{ hidden: showSandAndSoil }" />
+            <span v-if="!showSandAndSoil" class="region-picker-message hover-message">
+              Zoom to a region
+            </span>
           </template>
         </MapContainerExploreMap>
         <div class="overlay-wrapper">
@@ -13,7 +15,7 @@
           <div class="map-overlay desktop">
             <div class="overlay-left">
               <ExploreSidebar class="interactive" ref="overlayLeftRef" />
-              <MapLegend class="interactive" />
+              <MapLegend class="interactive" :class="{ hidden: showSandAndSoil }" />
             </div>
 
             <div class="overlay-right">
@@ -213,6 +215,11 @@ button.active:hover {
   position: absolute;
   right: calc(var(--page-horizontal-margin) - 0.75rem);
   bottom: 11rem;
+}
+
+.hidden {
+  pointer-events: none;
+  opacity: 10%;
 }
 
 @media only screen and (max-width: 720px) {
