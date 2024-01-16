@@ -17,8 +17,8 @@ export const stopLightScheme = {
   default: '#7E899C'
 }
 
-// export const sandScheme = d3.interpolateHsl('transparent', 'orange')
-// export const soilScheme = d3.interpolateHsl('hsla(143, 52%, 13%, 0)', '#6DACA4')
+export const sandScheme = ['transparent', 'orange']
+export const soilScheme = ['hsla(143, 52%, 13%, 0)', '#6DACA4']
 
 // colorblind-friendly colors for use via toggle
 // not currently implemented anywhere
@@ -35,5 +35,5 @@ export const colorblindStopLightScheme = {
   default: '#B7C1D2'
 }
 
-// export const colorblindSandScheme = d3.interpolateHsl('transparent', '#E7EB2A')
-// export const colorblindSoilScheme = d3.interpolateHsl('hsla(143, 52%, 13%, 0)', '#D156F0')
+export const colorblindSandScheme = ['transparent', '#E7EB2A']
+export const colorblindSoilScheme = ['hsla(143, 52%, 13%, 0)', '#D156F0']

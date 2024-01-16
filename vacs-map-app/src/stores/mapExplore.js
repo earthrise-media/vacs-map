@@ -6,5 +6,7 @@ export const useMapExploreStore = defineStore('mapExplore', () => {
   const hoveredId = ref(null)
   const mapPadding = ref(null)
 
-  return { selectedMap, mapPadding, hoveredId }
+  const showSandAndSoil = ref(false)
+
+  return { selectedMap, mapPadding, hoveredId, showSandAndSoil }
 })

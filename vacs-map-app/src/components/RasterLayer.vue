@@ -46,12 +46,24 @@ const addLayer = () => {
   )
 }
 
+const updateLayer = () => {
+  if (!map.value.getLayer(id.value)) return
+
+  Object.entries(paint.value).forEach(([k, v]) => {
+    map.value.setPaintProperty(id.value, k, v)
+  })
+}
+
 watch(map, () => {
   addLayer()
 })
 
 watch(mapReady, () => {
   addLayer()
+})
+
+watch(paint, () => {
+  updateLayer()
 })
 </script>
 

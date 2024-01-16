@@ -4,8 +4,12 @@
 
 <script setup>
 import * as d3 from 'd3'
-import { toRefs, watch } from 'vue'
+import { toRefs, watch, computed } from 'vue'
 import RasterLayer from './RasterLayer.vue'
+
+import { storeToRefs } from 'pinia'
+import { useMapExploreStore } from '@/stores/mapExplore'
+import { useColorStore } from '@/stores/colors'
 
 const props = defineProps({
   id: {
@@ -31,14 +35,18 @@ const props = defineProps({
 
 const { id, map, mapReady, sourceId } = toRefs(props)
 
+const mapExploreStore = useMapExploreStore()
+const { showSandAndSoil } = storeToRefs(mapExploreStore)
+
+const colorStore = useColorStore()
+const { soil: soilScheme } = storeToRefs(colorStore)
+
 const minRasterValue = 0
 const maxRasterValue = 100
 
 const getRasterColor = () => {
   const getColor = (value) => {
-    const interpolator = d3.interpolateHsl('hsla(143, 52%, 13%, 0)', '#6DACA4')
-    // colorblind version
-    const colorblindInterpolator = d3.interpolateHsl('hsla(143, 52%, 13%, 0)', '#D156F0')
+    const interpolator = d3.interpolateHsl(soilScheme.value[0], soilScheme.value[1])
 
     return interpolator(value)
   }
@@ -51,12 +59,14 @@ const getRasterColor = () => {
   return ['interpolate', ['linear'], ['raster-value'], ...steps]
 }
 
-const paint = {
-  'raster-color': getRasterColor(),
-  'raster-opacity': 0.30,
-  'raster-color-mix': [255, 0, 0, 0],
-  'raster-color-range': [0, maxRasterValue]
-}
+const paint = computed(() => {
+  return {
+    'raster-color': getRasterColor(),
+    'raster-opacity': showSandAndSoil.value ? 0.85 : 0.3,
+    'raster-color-mix': [255, 0, 0, 0],
+    'raster-color-range': [0, maxRasterValue]
+  }
+})
 </script>
 
 <style scoped></style>

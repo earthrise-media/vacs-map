@@ -54,6 +54,8 @@
       </div>
     </div>
 
+    <SandAndSoilOverlay v-if="showSandAndSoil" />
+
     <ContentModal v-if="modalOpen" @close="() => (modalOpen = false)" :title="modalHeader">
       <p class="modal-content">
         {{ modalContent }}
@@ -67,19 +69,24 @@ import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useFiltersStore } from '@/stores/filters'
 import { useCropInformationStore } from '@/stores/cropInformation'
-import { useContentStore } from '../stores/siteContent'
+import { useContentStore } from '@/stores/siteContent'
+import { useMapExploreStore } from '@/stores/mapExplore'
 import DistributionPlot from '@/components/DistributionPlot.vue'
 import CropFingerprint from '@/components/CropFingerprint.vue'
 import CardWrapper from '@/components/CardWrapper.vue'
 import ContentModal from '@/components/ContentModal.vue'
+import SandAndSoilOverlay from '@/components/SandAndSoilOverlay.vue'
 
 const contentStore = useContentStore()
 const filtersStore = useFiltersStore()
 const cropInformationStore = useCropInformationStore()
+const mapExploreStore = useMapExploreStore()
+
 const { availableCrops, selectedCrop, availableModels, selectedModel, availableCropGroups } =
   storeToRefs(filtersStore)
 const { data: cropInformation } = storeToRefs(cropInformationStore)
 const { copy } = storeToRefs(contentStore)
+const { showSandAndSoil } = storeToRefs(mapExploreStore)
 
 const modalOpen = ref(false)
 const modalHeader = ref('')
@@ -110,6 +117,8 @@ const openScenarioModal = (s) => {
 
 <style scoped>
 .sidebar {
+  position: relative;
+
   display: flex;
   flex-direction: column;
   gap: 1rem;

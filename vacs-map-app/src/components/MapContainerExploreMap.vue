@@ -40,6 +40,8 @@
         :color-column-quintiles="selectedColumnQuintiles"
         :color-diverging="selectedMetric === 'yieldratio'"
         :sourceId="sourceId"
+        :fill="!showSandAndSoil"
+        :stroke="showSandAndSoil"
         :map="map"
         :mapReady="mapReady"
       />
@@ -54,12 +56,14 @@ import { storeToRefs } from 'pinia'
 import BaseMap from '@/components/BaseMap.vue'
 import { useFiltersStore } from '@/stores/filters'
 import { useCropYieldsStore } from '@/stores/cropYields'
+import { useMapExploreStore } from '@/stores/mapExplore'
 import GridSource from './GridSource.vue'
 import GridOverlay from './GridOverlay.vue'
 import RasterSource from './RasterSource.vue'
 import PopulationLayer from './PopulationLayer.vue'
 import SoilCarbonLayer from './SoilCarbonLayer.vue'
 import SandLayer from './SandLayer.vue'
+
 import * as d3 from 'd3'
 
 const sourceId = 'cropGrid'
@@ -68,8 +72,11 @@ const rasterSourceId2 = 'soilCarbonSource'
 const rasterSourceId3 = 'sandSource'
 const cropYieldsStore = useCropYieldsStore()
 const filtersStore = useFiltersStore()
+const mapExploreStore = useMapExploreStore()
 
 const { selectedCrop, selectedMetric, selectedModel, availableModels } = storeToRefs(filtersStore)
+
+const { showSandAndSoil } = storeToRefs(mapExploreStore)
 
 const selectedColumn = computed(() => {
   if (!selectedMetric.value || !selectedCrop.value || !selectedModel.value) {

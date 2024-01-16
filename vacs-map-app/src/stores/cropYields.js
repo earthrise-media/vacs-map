@@ -18,9 +18,7 @@ export const useCropYieldsStore = defineStore('cropYields', () => {
     const yieldKeys = Object.keys(transformedData[0]).filter((k) => k.startsWith('yield'))
 
     transformedData = transformedData.map((d, i) => {
-      const rowWithYields = Object.fromEntries(
-        Object.entries(d).filter(([k, v]) => v !== null)
-      )
+      const rowWithYields = Object.fromEntries(Object.entries(d).filter(([k, v]) => v !== null))
 
       yieldKeys.forEach((k) => {
         const [_, crop, timeframe, scenario] = k.split('_')
@@ -34,8 +32,13 @@ export const useCropYieldsStore = defineStore('cropYields', () => {
         const yieldRatioKey = ['yieldratio', crop, timeframe, scenario].join('_')
 
         let yieldRatioValue = null
-        if (rowWithYields[k] !== null && rowWithYields[historicalKey] !== null && rowWithYields[historicalKey]) {
-          yieldRatioValue = (rowWithYields[k] - rowWithYields[historicalKey]) / rowWithYields[historicalKey]
+        if (
+          rowWithYields[k] !== null &&
+          rowWithYields[historicalKey] !== null &&
+          rowWithYields[historicalKey]
+        ) {
+          yieldRatioValue =
+            (rowWithYields[k] - rowWithYields[historicalKey]) / rowWithYields[historicalKey]
         }
 
         if (yieldRatioValue === null) return

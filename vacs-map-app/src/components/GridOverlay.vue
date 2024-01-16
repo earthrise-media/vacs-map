@@ -85,7 +85,7 @@ const {
 } = toRefs(props)
 
 const mapExploreStore = useMapExploreStore()
-const { hoveredId } = storeToRefs(mapExploreStore)
+const { hoveredId, showSandAndSoil } = storeToRefs(mapExploreStore)
 
 const colorStore = useColorStore()
 const { diverging: divergingScheme } = storeToRefs(colorStore)
@@ -307,6 +307,7 @@ const updateLayer = () => {
   map.value.setPaintProperty(id.value, 'circle-color', getCircleFillColor())
   map.value.setPaintProperty(id.value, 'circle-stroke-color', getCircleStrokeColor())
   map.value.setPaintProperty(id.value, 'circle-radius', getCircleRadius())
+  map.value.setPaintProperty(id.value, 'circle-stroke-opacity', fill.value ? 0 : 0.8)
 }
 
 watch(mapReady, () => {
@@ -325,6 +326,14 @@ watch(divergingScheme, () => {
 watch(hoveredId, (current, prev) => {
   updateHoveredFeatureState(prev, false)
   updateHoveredFeatureState(current, true)
+})
+
+watch(fill, () => {
+  updateLayer()
+})
+
+watch(stroke, () => {
+  updateLayer()
 })
 </script>
 

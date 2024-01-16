@@ -27,7 +27,9 @@ export const useContentStore = defineStore('siteContent', () => {
     fingerprint_chart:
       'This crop footprint gives an impression of the nutritional, biophysical, and genetic characteristics of the selected crop. Larger segments with more ticks have better scores in that category. Some charts also show a benchmark crop outline that represents a more widely-used or known crop in the same food group that can be useful in understanding footprint of the crop on the map. \n\n Hover over a column to see what each segment is representing or hover over a category to highlight that specific section. Choose a new crop to understand how its nutritional, biophysical, and genetic characteristics vary.',
     dataDisclaimer:
-      'All data used in this application are preliminary results and subject to change'
+      'All data used in this application are preliminary results and subject to change',
+    sandAndSoil:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Auctor neque vitae tempus quam pellentesque nec. \n\n Nullam eget felis eget nunc lobortis mattis aliquam faucibus. Ac tortor vitae purus faucibus ornare suspendisse sed nisi lacus. Egestas erat imperdiet sed euismod. Vulputate ut pharetra sit amet aliquam id diam maecenas ultricies. Tortor aliquam nulla facilisi cras fermentum odio eu. '
   })
 
   return {
