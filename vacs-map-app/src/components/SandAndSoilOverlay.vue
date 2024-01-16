@@ -1,7 +1,7 @@
 <template>
   <div class="overlay-wrapper">
     <h1>Sand and soil</h1>
-    <h2>How do sand content and soil carbom impact crop growth?</h2>
+    <h2>How do sand content and soil carbon impact crop growth?</h2>
     <p>
       {{ copy.sandAndSoil }}
     </p>
