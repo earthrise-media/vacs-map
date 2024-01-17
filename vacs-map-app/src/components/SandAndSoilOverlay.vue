@@ -30,7 +30,7 @@ const { soil: soilScheme, sand: sandScheme } = storeToRefs(colorStore)
   left: 0;
   top: 0;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
 
   background: var(--black-90);
   color: var(--white);
@@ -42,7 +42,6 @@ const { soil: soilScheme, sand: sandScheme } = storeToRefs(colorStore)
 
   padding: 1.25rem;
 
-  overflow-y: auto;
 }
 
 h1 {

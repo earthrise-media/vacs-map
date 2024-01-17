@@ -29,7 +29,7 @@ export const useContentStore = defineStore('siteContent', () => {
     dataDisclaimer:
       'All data used in this application are preliminary results and subject to change',
     sandAndSoil:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Auctor neque vitae tempus quam pellentesque nec. \n\n Nullam eget felis eget nunc lobortis mattis aliquam faucibus. Ac tortor vitae purus faucibus ornare suspendisse sed nisi lacus. Egestas erat imperdiet sed euismod. Vulputate ut pharetra sit amet aliquam id diam maecenas ultricies. Tortor aliquam nulla facilisi cras fermentum odio eu. '
+      'High sand levels and low soil carbon can negatively impact crop growth. The coarse texture of sandy soils leads to poor water and nutrient retention, posing challenges for crops that require consistent moisture and nutrient availability. This can result in weaker growth and lower yields. \n\n Low soil carbon levels reduce soil fertility and structure. Without adequate organic matter, soils struggle to support the diverse microorganisms vital for nutrient cycling. This leads to reduced nutrient availability hindering robust and healthy crop growth.'
   })
 
   return {
