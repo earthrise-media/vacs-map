@@ -15,7 +15,8 @@
           <div class="map-overlay desktop">
             <div class="overlay-left">
               <ExploreSidebar class="interactive" ref="overlayLeftRef" />
-              <MapLegend class="interactive" :class="{ hidden: showSandAndSoil }" />
+              <MapLegendCropGroups v-if="showCropGroupMap" class="interactive" :class="{ hidden: showSandAndSoil }"/>
+              <MapLegend v-else class="interactive" :class="{ hidden: showSandAndSoil }"/>
             </div>
 
             <div class="overlay-right">
@@ -53,7 +54,8 @@ import MobileExploreMapControls from '@/components/MobileExploreMapControls.vue'
 import MapTooltip from '@/components/MapTooltip.vue'
 import MapLegend from '@/components/MapLegend.vue'
 import OverviewTop from '@/components/OverviewTop.vue'
-import DataDisclaimer from './components/DataDisclaimer.vue'
+import DataDisclaimer from '@/components/DataDisclaimer.vue'
+import MapLegendCropGroups from '@/components/MapLegendCropGroups.vue'
 
 const basePadding = 50
 const leftWidth = ref(null)
@@ -69,7 +71,7 @@ useResizeObserver(overlayLeftRef, ([entry]) => {
 })
 
 const mapExploreStore = useMapExploreStore()
-const { selectedMap, mapPadding, showSandAndSoil } = storeToRefs(mapExploreStore)
+const { selectedMap, mapPadding, showCropGroupMap, showSandAndSoil } = storeToRefs(mapExploreStore)
 
 if (!selectedMap.value) {
   selectedMap.value = 'explore-map'

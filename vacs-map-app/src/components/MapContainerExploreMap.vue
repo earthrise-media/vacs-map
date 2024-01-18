@@ -35,6 +35,10 @@
       <GridSource :id="sourceId" :map="map" :mapReady="mapReady" />
       <GridOverlay
         id="grid-layer-1"
+        :use-crop-group-map="showCropGroupMap"
+        :crop-group-column="cropGroupColumn"
+        :crop-group-crops="cropGroupCrops"
+        :crop-group-metric="cropGroupMetric"
         :color-column="selectedColumn"
         :color-column-extent="selectedExtent"
         :color-column-quintiles="selectedColumnQuintiles"
@@ -57,6 +61,7 @@ import BaseMap from '@/components/BaseMap.vue'
 import { useFiltersStore } from '@/stores/filters'
 import { useCropYieldsStore } from '@/stores/cropYields'
 import { useMapExploreStore } from '@/stores/mapExplore'
+import { useCropInformationStore } from '@/stores/cropInformation'
 import GridSource from './GridSource.vue'
 import GridOverlay from './GridOverlay.vue'
 import RasterSource from './RasterSource.vue'
@@ -73,10 +78,13 @@ const rasterSourceId3 = 'sandSource'
 const cropYieldsStore = useCropYieldsStore()
 const filtersStore = useFiltersStore()
 const mapExploreStore = useMapExploreStore()
+const cropInformationStore = useCropInformationStore()
 
 const { selectedCrop, selectedMetric, selectedModel, availableModels } = storeToRefs(filtersStore)
 
-const { showSandAndSoil } = storeToRefs(mapExploreStore)
+const { data: cropInfo } = storeToRefs(cropInformationStore)
+
+const { showCropGroupMap, cropGroupMetric, showSandAndSoil } = storeToRefs(mapExploreStore)
 
 const selectedColumn = computed(() => {
   if (!selectedMetric.value || !selectedCrop.value || !selectedModel.value) {
@@ -84,6 +92,30 @@ const selectedColumn = computed(() => {
   }
 
   return [selectedMetric.value, selectedCrop.value, selectedModel.value].join('_')
+})
+
+const selectedCropGroup = computed(() => {
+  if (!cropInfo.value || !selectedCrop.value) {
+    return null
+  }
+
+  return cropInfo.value.find((c) => c.id === selectedCrop.value).crop_group
+})
+
+const cropGroupColumn = computed(() => {
+  if (!selectedCropGroup.value || !selectedModel.value || !cropGroupMetric.value) {
+    return null
+  }
+
+  return [selectedCropGroup.value, selectedModel.value, cropGroupMetric.value + 'Crop'].join('_')
+})
+
+const cropGroupCrops = computed(() => {
+  if (!cropInfo.value || !selectedCropGroup.value) {
+    return null
+  }
+
+  return cropInfo.value.filter((c) => c.crop_group === selectedCropGroup.value).map((c) => c.id)
 })
 
 // to get extent across scenarios

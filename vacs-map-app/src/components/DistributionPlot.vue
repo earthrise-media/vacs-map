@@ -160,6 +160,7 @@ const draw = () => {
   //draw hovered
   if (hoveredId.value) {
     const cell = gridCells?.value.find((d) => d.id === hoveredId.value)
+    if (!cell) return
     context.value.fillStyle = 'white'
     context.value.fillRect(cell.x, 0, 3, height.value)
   }
@@ -188,7 +189,15 @@ onMounted(() => {
   draw()
 })
 
+watch(gridCells, () => {
+  draw()
+})
+
 watch(selectedCrop, () => {
+  draw()
+})
+
+watch(scenario, () => {
   draw()
 })
 

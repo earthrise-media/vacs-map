@@ -1,5 +1,9 @@
+import * as d3 from 'd3'
 import { ref, computed } from 'vue'
-import { defineStore } from 'pinia'
+import { defineStore, storeToRefs } from 'pinia'
+import { useCropInformationStore } from '@/stores/cropInformation'
+import { useFiltersStore } from '@/stores/filters'
+
 import {
   divergingScheme,
   stopLightScheme,
@@ -9,7 +13,13 @@ import {
   colorblindDivergingScheme,
   colorblindStopLightScheme,
   colorblindSandScheme,
-  colorblindSoilScheme
+  colorblindSoilScheme,
+  ordinalScheme,
+  colorblindOrdinalScheme,
+  noDataFill,
+  colorblindNoDataFill,
+  selectedFill,
+  referenceFill
 } from '@/utils/colors'
 
 export const useColorStore = defineStore('colorStore', () => {
@@ -29,5 +39,42 @@ export const useColorStore = defineStore('colorStore', () => {
 
   const fingerprint = computed(() => fingerprintScheme)
 
-  return { colorblindFriendly, diverging, stopLight, sand, soil, fingerprint }
+  const ordinal = computed(() =>
+    colorblindFriendly.value ? colorblindOrdinalScheme : ordinalScheme
+  )
+
+  const noData = computed(() => (colorblindFriendly.value ? colorblindNoDataFill : noDataFill))
+
+  const filtersStore = useFiltersStore()
+  const cropInformationStore = useCropInformationStore()
+  const { selectedCrop } = storeToRefs(filtersStore)
+  const { data: cropInfo } = storeToRefs(cropInformationStore)
+
+  const getCropColor = (cropId) => {
+    if (!selectedCrop.value || !cropId || !cropInfo.value || cropId === 'none') return noDataFill
+    if (cropId === selectedCrop.value) return selectedFill
+    const cropObj = cropInfo.value.find((d) => d.id === cropId)
+    if (cropObj.benchmark) return referenceFill
+
+    const cropGroupCrops = cropInfo.value.filter((d) => d.crop_group === cropObj.crop_group)
+    const scheme = d3
+      .scaleOrdinal()
+      .domain(cropGroupCrops.map((d) => d.id))
+      .range(ordinal.value)
+
+    return scheme(cropId)
+  }
+
+  return {
+    colorblindFriendly,
+    diverging,
+    stopLight,
+    fingerprint,
+    ordinal,
+    sand,
+    soil,
+    noData,
+
+    getCropColor
+  }
 })

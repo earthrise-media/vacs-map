@@ -12,40 +12,12 @@ export const useCropYieldsStore = defineStore('cropYields', () => {
     loading.value = true
 
     let transformedData = await d3.csv(getDataUrl('crop-yields-mean-models.csv'), (d) => {
-      return Object.fromEntries(Object.entries(d).map(([k, v]) => [k, v && v !== '' ? +v : null]))
-    })
-
-    const yieldKeys = Object.keys(transformedData[0]).filter((k) => k.startsWith('yield'))
-
-    transformedData = transformedData.map((d, i) => {
-      const rowWithYields = Object.fromEntries(Object.entries(d).filter(([k, v]) => v !== null))
-
-      yieldKeys.forEach((k) => {
-        const [_, crop, timeframe, scenario] = k.split('_')
-        if (timeframe === 'historical') return
-
-        // NB: abbreviating these could get more performance improvements
-        const historicalKey = ['yield', crop, 'historical'].join('_')
-
-        if (!yieldKeys.includes(historicalKey)) return
-
-        const yieldRatioKey = ['yieldratio', crop, timeframe, scenario].join('_')
-
-        let yieldRatioValue = null
-        if (
-          rowWithYields[k] !== null &&
-          rowWithYields[historicalKey] !== null &&
-          rowWithYields[historicalKey]
-        ) {
-          yieldRatioValue =
-            (rowWithYields[k] - rowWithYields[historicalKey]) / rowWithYields[historicalKey]
-        }
-
-        if (yieldRatioValue === null) return
-        rowWithYields[yieldRatioKey] = yieldRatioValue
-      })
-
-      return rowWithYields
+      return Object.fromEntries(
+        Object.entries(d).map(([k, v]) => {
+          if (k.includes('maxCrop') || k.includes('minCrop')) return [k, v && v !== '' ? v : null]
+          return [k, v && v !== '' ? +v : null]
+        })
+      )
     })
 
     data.value = Object.freeze(transformedData)
