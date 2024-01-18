@@ -80,7 +80,7 @@ onClickOutside(contentInnerRef, () => emit('close'))
 .header {
   font-family: var(--font-family-h2);
   font-size: 1.875rem;
-  padding-bottom: 0.25rem;
+  padding-bottom: 0.75rem;
   line-height: 110%;
 }
 

@@ -2,24 +2,33 @@
   <LayoutOpen>
     <div class="map-wrapper-row">
       <div class="map-wrapper">
-        <component :is="selectedMapComponent">
+        <MapContainerExploreMap>
           <template v-slot="{ map, mapReady }">
-            <RegionPicker :map="map" :map-ready="mapReady" />
-            <span class="region-picker-message hover-message"> Zoom to a region </span>
+            <RegionPicker :map="map" :map-ready="mapReady" :class="{ hidden: showSandAndSoil }" />
+            <span v-if="!showSandAndSoil" class="region-picker-message hover-message">
+              Zoom to a region
+            </span>
           </template>
-        </component>
+        </MapContainerExploreMap>
         <div class="overlay-wrapper">
           <OverviewTop class="interactive" />
           <div class="map-overlay desktop">
             <div class="overlay-left">
               <ExploreSidebar class="interactive" ref="overlayLeftRef" />
-              <MapLegend class="interactive" />
+              <MapLegendCropGroups v-if="showCropGroupMap" class="interactive" :class="{ hidden: showSandAndSoil }"/>
+              <MapLegend v-else class="interactive" :class="{ hidden: showSandAndSoil }"/>
             </div>
+
             <div class="overlay-right">
-              <select v-model="selectedMap" class="interactive">
-                <option v-for="map in availableMaps" :value="map.id">{{ map.name }}</option>
-              </select>
-              <span class="layer-selector-message hover-message"> Add layer </span>
+              <button
+                class="interactive"
+                @click="showSandAndSoil = !showSandAndSoil"
+                :class="{ active: showSandAndSoil }"
+              >
+                <img v-if="showSandAndSoil" src="./assets/img/layers.svg" alt="" />
+                <img v-else src="./assets/img/layers-light.svg" alt="" />
+                <span class="widescreen">Sand and soil</span>
+              </button>
             </div>
           </div>
           <MobileExploreMapControls />
@@ -36,30 +45,17 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useResizeObserver } from '@vueuse/core'
-import MapContainerColorAcrossScenarios from './components/MapContainerColorAcrossScenarios.vue'
-import MapContainerColorSandSoil from '@/components/MapContainerColorSandSoil.vue'
 import { useMapExploreStore } from '@/stores/mapExplore'
-import LayoutOpen from './components/layouts/LayoutOpen.vue'
-import ExploreSidebar from './components/ExploreSidebar.vue'
-import RegionPicker from './components/RegionPicker.vue'
-import MobileExploreMapControls from './components/MobileExploreMapControls.vue'
+import MapContainerExploreMap from '@/components/MapContainerExploreMap.vue'
+import LayoutOpen from '@/components/layouts/LayoutOpen.vue'
+import ExploreSidebar from '@/components/ExploreSidebar.vue'
+import RegionPicker from '@/components/RegionPicker.vue'
+import MobileExploreMapControls from '@/components/MobileExploreMapControls.vue'
 import MapTooltip from '@/components/MapTooltip.vue'
 import MapLegend from '@/components/MapLegend.vue'
 import OverviewTop from '@/components/OverviewTop.vue'
-import DataDisclaimer from './components/DataDisclaimer.vue'
-
-const availableMaps = [
-  {
-    id: 'color-across-scenarios',
-    name: 'Default',
-    component: MapContainerColorAcrossScenarios
-  },
-  {
-    id: 'sand-soil',
-    name: 'Sand + Soil',
-    component: MapContainerColorSandSoil
-  }
-]
+import DataDisclaimer from '@/components/DataDisclaimer.vue'
+import MapLegendCropGroups from '@/components/MapLegendCropGroups.vue'
 
 const basePadding = 50
 const leftWidth = ref(null)
@@ -75,15 +71,11 @@ useResizeObserver(overlayLeftRef, ([entry]) => {
 })
 
 const mapExploreStore = useMapExploreStore()
-const { selectedMap, mapPadding } = storeToRefs(mapExploreStore)
+const { selectedMap, mapPadding, showCropGroupMap, showSandAndSoil } = storeToRefs(mapExploreStore)
 
 if (!selectedMap.value) {
-  selectedMap.value = availableMaps[0].id
+  selectedMap.value = 'explore-map'
 }
-
-const selectedMapComponent = computed(() => {
-  return availableMaps.find(({ id }) => id === selectedMap.value).component
-})
 
 onMounted(() => {
   mapPadding.value = {
@@ -146,12 +138,15 @@ onUnmounted(() => {
 }
 
 .overlay-right {
-  position: relative;
+  position: absolute;
   margin-right: var(--page-horizontal-margin);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+
+  right: 9rem;
+  bottom: 3rem;
 }
 
 .interactive {
@@ -179,6 +174,36 @@ select:hover {
   background-color: var(--ui-blue-hover);
 }
 
+button {
+  border: none;
+  border-radius: 6.25rem;
+  background: var(--dark-gray);
+
+  background: var(--dark-gray);
+  color: var(--white);
+
+  display: flex;
+  padding: 0.625rem 0.75rem;
+  align-items: center;
+  gap: 0.5rem;
+
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+button.active {
+  background: var(--ui-blue);
+  color: var(--black);
+}
+
+button:hover {
+  background: var(--dark-gray-hover);
+}
+
+button.active:hover {
+  background: var(--ui-blue-hover);
+}
+
 .hover-message {
   opacity: 0;
   transition: all 0.5s ease;
@@ -188,20 +213,15 @@ select:hover {
   padding: 0.25rem 0.5rem;
 }
 
-.layer-selector-message {
-  position: absolute;
-  left: 1rem;
-  transform: translateX(-130%);
-}
-
 .region-picker-message {
   position: absolute;
   right: calc(var(--page-horizontal-margin) - 0.75rem);
   bottom: 11rem;
 }
 
-select:hover + .layer-selector-message {
-  opacity: 1;
+.hidden {
+  pointer-events: none;
+  opacity: 10%;
 }
 
 @media only screen and (max-width: 720px) {
@@ -232,6 +252,12 @@ select:hover + .layer-selector-message {
 
 @media only screen and (max-width: 720px) {
   .region-picker {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 1260px) {
+  .widescreen {
     display: none;
   }
 }

@@ -4,8 +4,12 @@
 
 <script setup>
 import * as d3 from 'd3'
-import { toRefs, watch } from 'vue'
+import { toRefs, watch, computed } from 'vue'
 import RasterLayer from './RasterLayer.vue'
+
+import { storeToRefs } from 'pinia'
+import { useMapExploreStore } from '@/stores/mapExplore'
+import { useColorStore } from '@/stores/colors'
 
 const props = defineProps({
   id: {
@@ -31,23 +35,19 @@ const props = defineProps({
 
 const { id, map, mapReady, sourceId } = toRefs(props)
 
+const mapExploreStore = useMapExploreStore()
+const { showSandAndSoil } = storeToRefs(mapExploreStore)
+
+const colorStore = useColorStore()
+const { sand: sandScheme } = storeToRefs(colorStore)
+
 const minRasterValue = 50
 const maxRasterValue = 100
 
 const getRasterColor = () => {
   const getColor = (value) => {
-    // Pick an interpolate function here:
-    //  https://d3js.org/d3-scale-chromatic/sequential
-    //
-    // Like this:
-    //
-    // const interpolator = d3.interpolateRainbow;
-    // const interpolator = d3.interpolatePiYG;
+    const interpolator = d3.interpolateHsl(sandScheme.value[0], sandScheme.value[1])
 
-    // Or define your own:
-    const interpolator = d3.interpolateHsl('transparent', 'orange')
-
-    // const interpolator = d3.interpolateInferno
     return interpolator(value)
   }
 
@@ -59,12 +59,14 @@ const getRasterColor = () => {
   return ['interpolate', ['linear'], ['raster-value'], ...steps]
 }
 
-const paint = {
-  'raster-color': getRasterColor(),
-  'raster-opacity': 0.25,
-  'raster-color-mix': [255, 0, 0, 0],
-  'raster-color-range': [0, maxRasterValue]
-}
+const paint = computed(() => {
+  return {
+    'raster-color': getRasterColor(),
+    'raster-opacity': showSandAndSoil.value ? 0.8 : 0.2,
+    'raster-color-mix': [255, 0, 0, 0],
+    'raster-color-range': [0, maxRasterValue]
+  }
+})
 </script>
 
 <style scoped></style>

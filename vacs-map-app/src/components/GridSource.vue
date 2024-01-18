@@ -30,7 +30,7 @@ const cropYieldsStore = useCropYieldsStore()
 const gridStore = useGridStore()
 const joinedCropDataStore = useJoinedCropDataStore()
 
-const { gridFeatureCollection } = storeToRefs(joinedCropDataStore);
+const { gridFeatureCollection } = storeToRefs(joinedCropDataStore)
 
 onMounted(() => {
   gridStore.load()

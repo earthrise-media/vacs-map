@@ -13,6 +13,26 @@ const props = defineProps({
     default: ''
   },
 
+  useCropGroupMap: {
+    type: Boolean,
+    default: false
+  },
+
+  cropGroupColumn: {
+    type: String,
+    default: ''
+  },
+
+  cropGroupCrops: {
+    type: Array,
+    default: () => []
+  },
+
+  cropGroupMetric: {
+    type: String,
+    default: 'max'
+  },
+
   colorColumn: {
     type: String,
     default: ''
@@ -71,6 +91,10 @@ const props = defineProps({
 
 const {
   id,
+  useCropGroupMap,
+  cropGroupColumn,
+  cropGroupCrops,
+  cropGroupMetric,
   colorColumn,
   colorColumnExtent,
   colorColumnQuintiles,
@@ -85,10 +109,14 @@ const {
 } = toRefs(props)
 
 const mapExploreStore = useMapExploreStore()
-const { hoveredId } = storeToRefs(mapExploreStore)
+const { hoveredId, hoveredCrop, showCropGroupMap, showSandAndSoil } = storeToRefs(mapExploreStore)
 
 const colorStore = useColorStore()
-const { diverging: divergingScheme } = storeToRefs(colorStore)
+const {
+  diverging: divergingScheme,
+  ordinal: ordinalScheme,
+  noData: noDataFill
+} = storeToRefs(colorStore)
 
 const addLayer = () => {
   if (!map.value || !mapReady.value || map.value.getLayer(id.value)) return
@@ -99,7 +127,7 @@ const addLayer = () => {
       type: 'circle',
       paint: {
         'circle-radius': getCircleRadius(),
-        'circle-stroke-width': fill.value ? 0.2 : 1.5,
+        'circle-stroke-width': 0.2,
         'circle-stroke-color': getCircleStrokeColor(),
         'circle-stroke-opacity': fill.value ? 0 : 0.8,
         'circle-opacity': ['case', ['boolean', ['feature-state', 'hovered'], false], 0.5, 1],
@@ -119,8 +147,7 @@ const addHoverListeners = () => {
   map.value.on('mousemove', id.value, (event) => {
     if (!event?.features?.length) return
     const feature = event?.features[0]
-    if (feature?.id) {
-      if (!feature.properties[colorColumn.value]) return
+    if (feature.id) {
       hoveredId.value = feature.properties.id
     }
   })
@@ -141,6 +168,18 @@ const updateHoveredFeatureState = (elementId, hovered) => {
       hovered
     }
   )
+}
+
+const updateHoveredCrop = (cropId) => {
+  if (!id.value || !showCropGroupMap.value) return
+
+  let expression = ['case', ['boolean', ['feature-state', 'highlighted'], false], 0.5, 1]
+
+  if (cropId) {
+    expression = ['case', ['==', ['get', cropGroupColumn.value], cropId], 1, 0.2]
+  }
+
+  map.value.setPaintProperty(id.value, 'circle-opacity', expression)
 }
 
 const getCircleColorQuintiles = (quintiles) => {
@@ -278,6 +317,22 @@ const getCircleColorDiverging = (extent, center) => {
   ]
 }
 
+const getCircleColorByCrop = () => {
+  if (!cropGroupColumn.value) return 'transparent'
+
+  const cases = ['case']
+    .concat(
+      cropGroupCrops.value
+        .map((crop, i) => {
+          return [['==', ['get', cropGroupColumn.value], crop], colorStore.getCropColor(crop)]
+        })
+        .flat()
+    )
+    .concat([noDataFill.value])
+
+  return ['case', ['!=', ['get', cropGroupColumn.value], null], cases, 'transparent']
+}
+
 const getCircleFillColor = () => {
   if (!fill.value) return 'transparent'
   return getCircleColor()
@@ -285,10 +340,15 @@ const getCircleFillColor = () => {
 
 const getCircleStrokeColor = () => {
   if (!stroke.value) return 'transparent'
+
   return getCircleColor()
 }
 
 const getCircleColor = () => {
+  if (useCropGroupMap.value) {
+    return getCircleColorByCrop()
+  }
+
   if (colorDiverging.value) {
     // < 0, decrease
     // 0 = no change
@@ -307,6 +367,7 @@ const updateLayer = () => {
   map.value.setPaintProperty(id.value, 'circle-color', getCircleFillColor())
   map.value.setPaintProperty(id.value, 'circle-stroke-color', getCircleStrokeColor())
   map.value.setPaintProperty(id.value, 'circle-radius', getCircleRadius())
+  map.value.setPaintProperty(id.value, 'circle-stroke-opacity', fill.value ? 0 : 0.8)
 }
 
 watch(mapReady, () => {
@@ -322,9 +383,29 @@ watch(divergingScheme, () => {
   updateLayer()
 })
 
+watch(useCropGroupMap, () => {
+  updateLayer()
+})
+
+watch(cropGroupMetric, () => {
+  updateLayer()
+})
+
 watch(hoveredId, (current, prev) => {
   updateHoveredFeatureState(prev, false)
   updateHoveredFeatureState(current, true)
+})
+
+watch(fill, () => {
+  updateLayer()
+})
+
+watch(stroke, () => {
+  updateLayer()
+})
+
+watch(hoveredCrop, (current) => {
+  updateHoveredCrop(current)
 })
 </script>
 

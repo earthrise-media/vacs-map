@@ -48,8 +48,8 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  map.value.remove();
-});
+  map.value.remove()
+})
 
 watch(mapPadding, () => {
   if (mapPadding.value) map.value.setPadding(mapPadding.value)
@@ -72,7 +72,7 @@ watch(mapPadding, () => {
 }
 
 .mapboxgl-ctrl-top-right {
-  top: 8.75rem;
+  top: 5.5rem;
   right: calc(var(--page-horizontal-margin));
 }
 

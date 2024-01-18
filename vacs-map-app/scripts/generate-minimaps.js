@@ -37,7 +37,12 @@ const getGeoData = () => {
 const getData = () => {
   const file = fs.readFileSync(data_filename, 'utf-8');
   let data = d3.csvParse(file, (d) => {
-    return Object.fromEntries(Object.entries(d).map(([k, v]) => [k, v && v !== '' ? +v : null]));
+    return Object.fromEntries(
+      Object.entries(d).map(([k, v]) => {
+        if (k.includes('maxCrop') || k.includes('minCrop')) return [k, v && v !== '' ? v : null]
+        return [k, v && v !== '' ? +v : null]
+      })
+    )
   })
 
   const grid_file = fs.readFileSync(grid_filename, 'utf-8');
@@ -47,32 +52,10 @@ const getData = () => {
     );
   })
 
-  const yieldKeys = Object.keys(data[0]).filter((k) => k.startsWith('yield'));
-
-  data = data.map((d, i) => {
-    const rowWithYields = { 
-      id: d.id,
-      coords: [grid[i].X, grid[i].Y]
-    };
-
-    yieldKeys.forEach((k) => {
-      const [_, crop, timeframe, scenario] = k.split('_');
-      if (timeframe === 'historical') return;
-
-      const historicalKey = ['yield', crop, 'historical'].join('_');
-
-      if (!yieldKeys.includes(historicalKey)) return;
-
-      const yieldRatioKey = ['yieldratio', crop, timeframe, scenario].join('_');
-
-      let yieldRatioValue = null;
-      if (d[k] !== null && d[historicalKey] !== null && d[historicalKey]) {
-        yieldRatioValue = (d[k] - d[historicalKey]) / d[historicalKey];
-      }
-      rowWithYields[yieldRatioKey] = yieldRatioValue;
-    })
-    return rowWithYields;
+  data.forEach((d, i) => {
+    d.coords = [grid[i].X, grid[i].Y]
   })
+
   return data;
 }
 
