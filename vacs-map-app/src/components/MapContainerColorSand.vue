@@ -3,7 +3,7 @@
     <template v-slot="{ map, mapReady }">
       <RasterSource
         :id="rasterSourceId"
-        tiles-url="https://plotine-vacs.s3.us-east-2.amazonaws.com/sand-tiles/{z}/{x}/{y}.png"
+        tiles-url="https://plotine-vacs.s3.us-east-2.amazonaws.com/full-sand-tiles/{z}/{x}/{y}.png"
         :map="map"
         :map-ready="mapReady"
       />
