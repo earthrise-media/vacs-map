@@ -35,7 +35,7 @@ export const selectedFill = '#5A7CB6'
 // this is the color to use for the benchmark crop if not selected
 export const referenceFill = '#F7B300'
 
-export const noDataFill = '#586163'
+export const noDataFill = '#616161'
 
 // colorblind-friendly colors for use via toggle
 export const colorblindDivergingScheme = {
