@@ -14,15 +14,15 @@ export const useMapExploreStore = defineStore('mapExplore', () => {
   const showCropGroupMap = ref(false)
   const cropGroupMetric = ref('max')
 
-  return { 
-    selectedMap, 
-    mapPadding, 
-    
-    hoveredId, 
-    hoveredCrop, 
-    
+  return {
+    selectedMap,
+    mapPadding,
+
+    hoveredId,
+    hoveredCrop,
+
     showSandAndSoil,
-    showCropGroupMap, 
-    cropGroupMetric 
+    showCropGroupMap,
+    cropGroupMetric
   }
 })

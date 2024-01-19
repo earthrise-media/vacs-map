@@ -15,8 +15,12 @@
           <div class="map-overlay desktop">
             <div class="overlay-left">
               <ExploreSidebar class="interactive" ref="overlayLeftRef" />
-              <MapLegendCropGroups v-if="showCropGroupMap" class="interactive" :class="{ hidden: showSandAndSoil }"/>
-              <MapLegend v-else class="interactive" :class="{ hidden: showSandAndSoil }"/>
+              <MapLegendCropGroups
+                v-if="showCropGroupMap"
+                class="interactive"
+                :class="{ hidden: showSandAndSoil }"
+              />
+              <MapLegend v-else class="interactive" :class="{ hidden: showSandAndSoil }" />
             </div>
 
             <div class="overlay-right">
@@ -222,6 +226,7 @@ button.active:hover {
 .hidden {
   pointer-events: none;
   opacity: 10%;
+  filter: blur(8px);
 }
 
 @media only screen and (max-width: 720px) {

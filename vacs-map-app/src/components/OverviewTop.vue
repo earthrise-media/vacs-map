@@ -6,6 +6,7 @@
         <button @click="copyLink" @mouseleave="linkCopied = false" class="desktop">
           <img src="@/assets/img/copy-link.svg" alt="copy-link" />
           <span class="copy-link-message">
+            <img v-if="linkCopied" src="../assets/img/checkmark.svg" alt="" />
             {{ linkCopied ? 'Link copied to clipboard' : 'Copy a link to your clipboard' }}
           </span>
         </button>
@@ -64,11 +65,11 @@ const copyLink = () => {
 .overview-top {
   display: flex;
   flex-direction: column;
-  font-family: var(--font-family-h2);
+  font-family: var(--font-family-header);
   font-size: 1.5rem;
   gap: 0.5rem;
   padding: 1rem var(--page-horizontal-margin) 0.375rem var(--page-horizontal-margin);
-  background: var(--black-90);
+  background: var(--black-70);
 }
 
 .header-question {
@@ -93,9 +94,10 @@ const copyLink = () => {
   border-radius: 0.125rem;
   cursor: default;
   width: max-content;
-  max-width: 12rem;
   z-index: 5000;
   box-shadow: var(--shadow);
+
+  white-space: nowrap;
 }
 
 .row {
@@ -142,6 +144,8 @@ button:hover {
 button:hover .copy-link-message,
 button:hover .toggle-colormode-message {
   display: flex;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 .button-active {

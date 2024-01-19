@@ -35,9 +35,6 @@ const showFilters = ref(false)
 }
 
 @media only screen and (max-width: 720px) {
-  .wrapper {
-    box-shadow: var(--shadow);
-  }
   .desktop {
     display: none;
   }
