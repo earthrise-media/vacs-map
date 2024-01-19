@@ -155,9 +155,11 @@ const useDarkIndicatorText = computed(() => {
 
 .card-wrapper.dynamic {
   height: var(--title-height);
+  box-shadow: 0 0 0 1px var(--dark-gray);
 }
 
 .card-wrapper.dynamic.active {
+  box-shadow: 0 0 0 1px var(--gray);
   height: unset;
 }
 
@@ -209,6 +211,7 @@ const useDarkIndicatorText = computed(() => {
 }
 
 .title-row img {
+  margin: auto 0;
   margin-left: auto;
 }
 

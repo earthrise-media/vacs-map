@@ -32,6 +32,7 @@ const { soil: soilScheme, sand: sandScheme } = storeToRefs(colorStore)
   width: 100%;
   min-height: 100%;
 
+  backdrop-filter: blur(8px);
   background: var(--black-90);
   color: var(--white);
 
@@ -41,7 +42,6 @@ const { soil: soilScheme, sand: sandScheme } = storeToRefs(colorStore)
   justify-content: center;
 
   padding: 1.25rem;
-
 }
 
 h1 {

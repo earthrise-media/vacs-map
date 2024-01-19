@@ -64,13 +64,16 @@
 
     <div class="sidebar-section">
       <div class="scenario-switch">
-        <span class="scenarios-title"> emissions scenario </span>
-        <img
-          class="info"
-          src="@/assets/img/info.svg"
-          alt=""
-          @click="openScenarioModal(selectedModel)"
-        />
+        <div class="scenario-title">
+          <span class="scenarios-title"> emissions scenario </span>
+          <img
+            class="info"
+            src="@/assets/img/info.svg"
+            alt=""
+            @click="openScenarioModal(selectedModel)"
+          />
+        </div>
+
         <RadioSwitch
           v-model="selectedModel"
           :options="scenarioOptions"
@@ -269,5 +272,12 @@ const openScenarioModal = (s) => {
   flex-direction: column;
   gap: 1rem;
   padding-top: 0.5rem;
+}
+
+.scenario-title {
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  align-items: center;
 }
 </style>
