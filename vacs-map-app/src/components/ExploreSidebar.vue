@@ -29,6 +29,27 @@
     </div>
 
     <div class="sidebar-section">
+      <div class="scenario-switch">
+        <div class="scenario-title">
+          <span class="scenarios-title"> emissions scenario </span>
+          <img
+            class="info"
+            src="@/assets/img/info.svg"
+            alt=""
+            @click="openScenarioModal(selectedModel)"
+          />
+        </div>
+
+        <RadioSwitch
+          v-model="selectedModel"
+          :options="scenarioOptions"
+          name="selected-scenario"
+          :grow="true"
+        />
+      </div>
+    </div>
+
+    <div class="sidebar-section">
       <span class="sidebar-header"> How will {{ selectedCropInfo?.label }} yields change? </span>
 
       <div class="map-mode-cards">
@@ -59,27 +80,6 @@
         >
           <CropGroupStackedBarChart />
         </CardWrapper>
-      </div>
-    </div>
-
-    <div class="sidebar-section">
-      <div class="scenario-switch">
-        <div class="scenario-title">
-          <span class="scenarios-title"> emissions scenario </span>
-          <img
-            class="info"
-            src="@/assets/img/info.svg"
-            alt=""
-            @click="openScenarioModal(selectedModel)"
-          />
-        </div>
-
-        <RadioSwitch
-          v-model="selectedModel"
-          :options="scenarioOptions"
-          name="selected-scenario"
-          :grow="true"
-        />
       </div>
     </div>
 
