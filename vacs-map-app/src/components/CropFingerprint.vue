@@ -233,7 +233,7 @@ const arc = computed(() => {
 }
 .svg-wrapper {
   height: 100%;
-  margin-top: 1rem;
+  padding-top: 1rem;
 }
 
 svg {

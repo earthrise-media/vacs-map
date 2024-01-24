@@ -2,7 +2,10 @@
   <div class="map-legend">
     <div class="legend-title">
       All {{ selectedCropInfo?.crop_group }} by largest yield
-      <span class="metric" @click="toggleMetric">{{ metric }}</span>
+      <span class="metric" @click="toggleMetric">
+        <img src="../assets/img/up-down-arrow.svg" alt="" />
+        {{ metric }}
+      </span>
       <img src="@/assets/img/info.svg" alt="" @click="openCropGroupModal" />
     </div>
     <div class="legend-items">
@@ -222,6 +225,7 @@ const openCropGroupModal = () => {
 
 .metric {
   display: flex;
+  gap: 0.25rem;
   padding: 0.125rem 0.375rem;
   align-items: center;
   cursor: pointer;
