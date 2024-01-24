@@ -3,7 +3,7 @@
     <div class="legend-title">
       All {{ selectedCropInfo?.crop_group }} by largest yield
       <span class="metric" @click="toggleMetric">
-        <img src="../assets/img/up-down-arrow.svg" alt="">
+        <img src="../assets/img/up-down-arrow.svg" alt="" />
         {{ metric }}
       </span>
       <img src="@/assets/img/info.svg" alt="" @click="openCropGroupModal" />

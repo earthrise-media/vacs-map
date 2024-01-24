@@ -5,14 +5,20 @@
       :key="bar.id"
       class="crop-bar"
       :class="{
-        highlighted: hoveredCrop === bar.id,
-        unhighlighted: hoveredCrop && hoveredCrop !== bar.id
+        unhighlighted:
+          (hoveredCrop && hoveredCrop !== bar.id) || (localHovered && localHovered.id !== bar.id)
       }"
       :style="{
         width: `${bar.gridShare}%`,
         background: bar.fill
       }"
+      @mouseenter="localHovered = bar"
+      @mouseleave="localHovered = null"
     />
+
+    <div v-if="localHovered" class="tooltip">
+      {{ localHovered.label }}
+    </div>
   </div>
 </template>
 
@@ -36,6 +42,8 @@ const { data: cropInformation } = storeToRefs(cropInformationStore)
 const { ordinal: ordinalScheme, noData: noDataFill, getCropColor } = storeToRefs(colorStore)
 const { data: cropYieldsData } = storeToRefs(cropYieldsStore)
 const { showCropGroupMap, cropGroupMetric, hoveredCrop } = storeToRefs(mapExploreStore)
+
+const localHovered = ref(null)
 
 const selectedCropInfo = computed(() => {
   return cropInformation?.value?.find((d) => d.id === selectedCrop.value)
@@ -80,7 +88,7 @@ const bars = computed(() => {
 
   const noData = {
     id: 'none',
-    lable: 'No Data',
+    label: 'None',
     fill: noDataFill.value,
     gridShare: noDataGridShare
   }
@@ -97,6 +105,20 @@ const bars = computed(() => {
   color: var(--white);
 
   display: flex;
+  position: relative;
+}
+
+.tooltip {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+
+  background: var(--black-90);
+  border: 1px solid var(--dark-gray);
+  color: var(--white);
+  border-radius: 4px;
+  padding: 0.125rem 0.375rem;
+  font-size: 0.875rem;
 }
 
 .crop-bar {
