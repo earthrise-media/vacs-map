@@ -64,27 +64,27 @@
           <a href="https://www.state.gov/the-vision-for-adapted-crops-and-soils/" target="_blank"
             >The Vision for Adapted Crops and Soils</a
           >
-          (VACS) is a multi-phase initiative launched by the U.S. Department of State, in
-          collaboration with the African Union, and the Food and Agriculture Organization (FAO).
-          VACS aims to address food security and nutrition challenges in Africa in the face of
-          climate change. The program focuses on identifying, adapting, and promoting the use of
-          nutritious, indigenous, and traditional food crops that are well-suited to the local
-          environment and are able to withstand the changing climate conditions.
+          The Vision for Adapted Crops and Soils (VACS) is a global movement that aims to foster more resilient food systems by focusing on the fundamentals of food security: climate-adapted crops and healthy soils. Initially launched by the U.S. Department of State, the African Union, and the Food and Agriculture Organization of the UN, VACS seeks to boost agricultural productivity and nutrition by developing diverse, climate-resilient crop varieties and building healthy soils. VACS provides a unified investment framework for stakeholders to advance these goals. VACS is working with <a href="https://agmip.org/" target="_blank"> AgMIP</a> to develop a models of future crop productivity that will help identify the most promising crops for a changing climate. This application visualizes initial results of these models.
+        </p>
+        <br />
+        <p>VACS seeks to create a solid foundation for sustaining and increasing crop production by mobilizing investment in the fundamentals above and below ground: above ground by developing resilient crop varieties and below ground by building and conserving healthier soils for those crops to grow in. This approach addresses the core challenges facing the global food system:</p>
+        <!-- add a bullet point list that reads point 1 and point 2-->
+        <ul>
+          <li>
+            Currently, more than 700 million people are undernourished, and child stunting and
+            nutrient deficiencies are widespread in developing countries.
+          </li>
+          <li>
+            Global food demand will increase by more than 50 percent by 2050, while climate change
+            and land degradation are bringing down crop yields.
+          </li>
+        </ul>
+        <br />
+        <p>
+          
         </p>
         <br />
         <p>
-          VACS promotes an integrated approach, with investments designed to be self-sustaining and
-          have increasing returns year after year. Interventions will be guided by a cohesive
-          framework that recognizes the complexity of land use—with a particular focus on what
-          farmers should plant and where. Farmers, policymakers, extension workers, and suppliers
-          will be empowered with options and information tailored for their own local conditions and
-          preferences. Nutrition will also be prioritized as the endpoint for resilient food
-          systems.
-        </p>
-        <br />
-        <p>
-          The program has brought together experts in various fields, including climate adaptation,
-          plant breeding, nutrition, and food composition.
           <a href="https://agmip.org/" target="_blank"> AgMIP</a> was chosen to lead the initial
           phase of crop-climate modeling work, the results of which are visualized on this website.
           The selection process for crops was informed by scientific data and expert opinions,

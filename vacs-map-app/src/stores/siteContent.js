@@ -7,9 +7,9 @@ export const useContentStore = defineStore('siteContent', () => {
   const copy = ref({
     header_question: 'Which crops have the most potential in a changing climate?',
     vacs_mini:
-      'Vision for Adapted Crops and Soils (VACS) addresses food security in Africa by developing and mobilizing investment in resilient, nutritious indigenous crops suited to the changing climate.',
+      'The Vision for Adapted Crops and Soils (VACS) is a global movement that aims to foster more resilient food systems by focusing on the fundamentals of food security: climate-adapted crops and healthy soils.',
     vacs_short:
-      'Vision for Adapted Crops and Soils (VACS) addresses food security in Africa by developing and mobilizing investment in resilient, nutritious indigenous crops suited to the changing climate. VACS is a multi-phase initiative launched by the U.S. Department of State, in collaboration with the African Union, the Food and Agriculture Organization (FAO), and AgMIP. VACS aims to address food security and nutrition challenges in Africa in the face of climate change by identifying, adapting, and promoting the use of food crops that are well-suited to the local environment and are able to withstand changing climate conditions.',
+      'The Vision for Adapted Crops and Soils (VACS) is a global movement that aims to foster more resilient food systems by focusing on the fundamentals of food security: climate-adapted crops and healthy soils. Initially launched by the U.S. Department of State, the African Union, and the Food and Agriculture Organization of the UN, VACS seeks to boost agricultural productivity and nutrition by developing diverse, climate-resilient crop varieties and building healthy soils. VACS provides a unified investment framework for stakeholders to advance these goals. VACS is working with AgMIP to develop a models of future crop productivity that will help identify the most promising crops for a changing climate. This application visualizes iniial results of these models.',
     future_ssp126_label: 'Low emissions',
     future_ssp370_label: 'High emissions',
     future_ssp126_short:
