@@ -1,0 +1,27 @@
+id,Heat Tolerance,Drought Tolerance,Yield % Change,Yield Under Current Conditions
+maize,4,5,2,6
+fonio,10,7,7,2
+tef,10,9,10,3
+fingermillet,10,7,10,1
+sorghum,8,7,4,1
+soybean,6,7,3,5
+cowpea,7,7,3,1
+grasspea,4,8,9,5
+mungbean,2,7,0,3
+pigeonpea,6,7,9,4
+lablab,1,8,0,5
+bambaragroundnut,5,7,3,8
+groundnut,6,3,10,10
+sesame,10,7,7,1
+cassava,8,7,10,10
+cocoyam,5,8,3,10
+taro,5,7,5,10
+sweetpotato,5,8,8,6
+yams,8,6,7,10
+tomato,2,2,3,6
+okra,5,9,6,10
+africaneggplant,5,8,3,10
+josephscoat,5,9,1,10
+pearlmillet,10,7,6,2
+plantain,0,0,0,0
+pumpkin,0,0,0,0
