@@ -25,6 +25,8 @@
         <NavigationButton :to="backRoute" class="mobile">
           <img src="@/assets/img/back-arrow.svg" alt="" />
         </NavigationButton>
+        <attributionLogo></attributionLogo>
+
       </div>
     </div>
   </div>
@@ -37,6 +39,7 @@ import { storeToRefs } from 'pinia'
 import { useContentStore } from '@/stores/siteContent'
 import { useColorStore } from '@/stores/colors'
 import NavigationButton from '@/components/NavigationButton.vue'
+import attributionLogo from '@/components/attributionLogo.vue'
 
 const linkCopied = ref(false)
 const route = useRoute()

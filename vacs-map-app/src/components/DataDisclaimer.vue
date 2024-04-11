@@ -19,6 +19,7 @@ const { copy } = storeToRefs(contentStore)
   width: 100%;
   display: flex;
   padding: 0.3rem 2rem;
+  margin-bottom: 0.2rem;
 }
 
 .disclaimer {
