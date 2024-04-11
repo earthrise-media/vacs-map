@@ -10,7 +10,7 @@
   height: auto;
   /* background-color: pink; */
 }
-@media only screen and (max-width: 720px) {
+@media only screen and (max-width: 850px) {
   /* don't show */
   .attribution-logo {
     display: none;
