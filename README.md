@@ -30,7 +30,8 @@ In the application, crop profiles were built using data from AgMIP. They assesse
 - Roots & Tubers Cassava
 - Cereals - Maize
 - Legume - Soybean
-Note that this data is actively being refined by the AgMIP team and with further research these values may be adjusted.
+
+Note that all data is actively being refined by the AgMIP team and with further research these values may be adjusted.
 
 ## Additional data
 A few additional data sources were used in the basemap of the application. Population data is from World Pop. Soil organic carbon and sand content data was sourced from ISRIC. This data was processed as raster data tilesets. More information on how we process raster data can be found in a previous blog post. 

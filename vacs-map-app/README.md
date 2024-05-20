@@ -54,8 +54,15 @@ _Disclaimer: there are a number of remnants from prototyping in this directory t
 ## Updating The Data
 Most of this process is automated, but there are a few things to keep track of and make sure are in sync.
 
+### Step 1: Data Processing
+1. download raw data and replace existing data in folder `data/unsynced-data/crop-yield-data/` This directory is not synced with the repo, so you may have to create this directory and add the data.
+2. open the notebook `data/crop-data-processing.ipynb` and run all cells
+3. copy the newly updated `/data/synced-data/crop-yields-mean-models.csv` into the `vacs-map-app/public/data-raw` directory and continue with step 2
+
+### Step 2: Updating App Data
+
 **If crop yields data gets updated, but crops are all the same:**
-1. replace `public/data-raw/crop-yields-mean-models.csv`
+1. ensure the `public/data-raw/crop-yields-mean-models.csv` has been replaced with the new data
 2. run `node scripts/format-yields-data.js` (this files contains an input filename which can be edited)
 3. update minimaps (see below)
 
@@ -64,7 +71,7 @@ Most of this process is automated, but there are a few things to keep track of a
 2. update the other crop-info files in `public/data` (general, genetic, nutritional, regional-potential)
 - these files come directly from [this spreadsheet](https://docs.google.com/spreadsheets/d/1mU91Pbc--wN14cb_sNCVWaScF0nwho7T/edit#gid=892630347). Make sure each spreadsheet has a row for all desired crops, and that the `id` field matches the crop variable name used in the yields data. Once they are updated, download each sheet as a csv and replace the crop-info files, leaving the filenames as they were.
 
-**Updating minimaps**
+### Step 3: Updating Minimaps
 1. run `node scripts/generate-minimaps.js`
 2. because this script generates a new image for each crop in each scenario and using both the default and colorblind friendly color schemes, it can reach the js stack limit if all are generated at once
 3. to deal with this there are some arrays at the top of the file which control the minimaps that are generated in a run of the script (see comments there for more detail)
