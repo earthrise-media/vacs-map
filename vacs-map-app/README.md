@@ -57,12 +57,11 @@ Most of this process is automated, but there are a few things to keep track of a
 ### Step 1: Data Processing
 1. download raw data and replace existing data in folder `data/unsynced-data/crop-yield-data/` This directory is not synced with the repo, so you may have to create this directory and add the data.
 2. open the notebook `data/crop-data-processing.ipynb` and run all cells
-3. copy the newly updated `/data/synced-data/crop-yields-mean-models.csv` into the `vacs-map-app/public/data-raw` directory and continue with step 2
 
 ### Step 2: Updating App Data
 
 **If crop yields data gets updated, but crops are all the same:**
-1. ensure the `public/data-raw/crop-yields-mean-models.csv` has been replaced with the new data
+1. ensure the `public/data-raw/crop-yields-mean-models.csv` has been replaced with the new data. This should have happened automatically if you followed the Step 1 instructions.
 2. run `node scripts/format-yields-data.js` (this files contains an input filename which can be edited)
 3. update minimaps (see below)
 
