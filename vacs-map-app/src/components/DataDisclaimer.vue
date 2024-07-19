@@ -1,7 +1,10 @@
 <template>
   <div class="disclaimer-wrapper">
-    <span class="disclaimer">
+    <span class="disclaimer full">
       {{ copy.dataDisclaimer }}
+    </span>
+    <span class="disclaimer short">
+      {{ copy.shortDataDisclaimer }}
     </span>
   </div>
 </template>
@@ -26,5 +29,20 @@ const { copy } = storeToRefs(contentStore)
   color: var(--gray);
   font-size: 0.75rem;
   line-height: 120%;
+}
+/* Initially hide the short disclaimer */
+.disclaimer.short {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* Hide the full disclaimer */
+  .disclaimer.full {
+    display: none;
+  }
+  /* Show the short disclaimer */
+  .disclaimer.short {
+    display: block;
+  }
 }
 </style>

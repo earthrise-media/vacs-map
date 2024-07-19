@@ -25,6 +25,7 @@ const initializeMap = () => {
     container: 'baseMapContainer',
     style: MAPBOX_STYLE,
     bounds: INITIAL_MAP_BOUNDS,
+    attributionControl: false,
     minZoom: 2,
     maxzoom: 12
   }
@@ -36,8 +37,13 @@ const initializeMap = () => {
   const nav = new mapboxgl.NavigationControl({
     showCompass: false
   })
+  const attribution = new mapboxgl.AttributionControl({
+    customAttribution: 'Earth Genome',
+    compact: true
+  })
 
   map.value.addControl(nav, 'top-right')
+  map.value.addControl(attribution, 'bottom-right')
   map.value.dragRotate.disable()
   map.value.touchZoomRotate.disableRotation()
 }

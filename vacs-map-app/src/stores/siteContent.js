@@ -3,7 +3,6 @@ import { defineStore } from 'pinia'
 
 export const useContentStore = defineStore('siteContent', () => {
   const tooltips = ref({})
-
   const copy = ref({
     header_question: 'Which crops have the most potential in a changing climate?',
     vacs_mini:
@@ -27,11 +26,12 @@ export const useContentStore = defineStore('siteContent', () => {
     fingerprint_chart:
       'This crop footprint gives an impression of the nutritional, biophysical, and genetic characteristics of the selected crop. Larger segments with more ticks have better scores in that category. Some charts also show a benchmark crop outline that represents a more widely-used or known crop in the same food group that can be useful in understanding footprint of the crop on the map. \n\n Hover over a column to see what each segment is representing or hover over a category to highlight that specific section. Choose a new crop to understand how its nutritional, biophysical, and genetic characteristics vary.',
     dataDisclaimer:
-      'All data in this app are produced by AgMIP, preliminary, and subject to change',
+      'The data presented here is created by AgMIP for informational and research purposes only. It should not be used for local decision-making without additional context-specific information due to uncertainties inherent in climate and crop modeling processes.',
+    shortDataDisclaimer:'The data presented is for informational and research purposes only.',
     sandAndSoil:
       'High sand levels and low soil carbon can negatively impact crop growth. The coarse texture of sandy soils leads to poor water and nutrient retention, posing challenges for crops that require consistent moisture and nutrient availability. This can result in weaker growth and lower yields. \n\n Low soil carbon levels reduce soil fertility and structure. Without adequate organic matter, soils struggle to support the diverse microorganisms vital for nutrient cycling. This leads to reduced nutrient availability hindering robust and healthy crop growth.',
     crop_group_map:
-      'This map displays the crop with the greatest increase at a given location. For example, a circle in blue for the cereal crop group indicates that maize increased in that area more than any other cereal crop. \n\n When no crop increases (i.e., the future yield is never projected to be higher than the historic yield), the area will be represented as “No increase”. \n\n Each crop group is viewable by both greatest increase and greatest decrease.'
+      'This map displays the crop with the greatest increase at a given location. For example, a circle in blue for the cereal crop group indicates that maize increased in that area more than any other cereal crop. \n\n When no crop increases (i.e., the future yield is never projected to be higher than the historic yield), the area will be represented as “No increase”. \n\n Each crop group is viewable by both greatest increase and greatest decrease.',
   })
 
   return {
