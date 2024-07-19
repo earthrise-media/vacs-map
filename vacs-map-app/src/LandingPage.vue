@@ -19,7 +19,7 @@
           <span class="keep-reading" @click="openModal">Keep reading. </span>
         </div>
         <button class="go-to-topic find-out-button" @click="navigate">Explore the Findings</button>
-        <button class="go-to-topic learn-more-button" @click="learnMore">Learn more</button>
+        <button class="go-to-topic learn-more-button" @click="learnMore">Usage Guidelines</button>
       </div>
 
       <div class="logos-row">
